@@ -3,5 +3,7 @@
         <file>img/Bridge.png</file>
         <file>img/cursor.png</file>
         <file>img/Edge.png</file>
+        <file>img/BridgeDelete.png</file>
+        <file>img/EdgeDelete.png</file>
     </qresource>
 </RCC>
