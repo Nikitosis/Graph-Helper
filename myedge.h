@@ -16,9 +16,9 @@ class MyEdge : public QObject,public QGraphicsItem
     Q_INTERFACES(QGraphicsItem)
 public:
     explicit MyEdge(QObject *parent = nullptr);
-    explicit MyEdge(int x,int y,int radius,int num,QObject *parent = nullptr);
-    explicit MyEdge(QPointF p,int radius,int num,QObject *parent = nullptr);
-    int getNum() const;
+    explicit MyEdge(int x, int y, int radius, QString info, int id, QObject *parent = nullptr);
+    explicit MyEdge(QPointF p,int radius,QString info,int id,QObject *parent = nullptr);
+    int getId() const;
     double getRadius() const;
     QPointF getCordinates() const;
 
@@ -37,11 +37,12 @@ protected:
     QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
 private:
-    int x;
-    int y;
-    int radius;
-    int num;
-    int xStart,yStart;
+    int _x;
+    int _y;
+    int _radius;
+    int _id;
+    QString _info;
+    int _xStart,_yStart;
 };
 
 #endif // MYEDGE_H

@@ -23,7 +23,7 @@ class MyGraphicsSceneView :public QGraphicsView
 {
     Q_OBJECT
 public:
-    enum Mode{CursorMode,BridgeMode,EdgeMode};
+    enum Mode{CursorMode,BridgeMode,EdgeMode,BridgeDeleteMode,EdgeDeleteMode};
     explicit MyGraphicsSceneView(QWidget *parent = nullptr);
 
 signals:

@@ -2,52 +2,53 @@
 
 Graph::Graph(QObject *parent) : QObject(parent)
 {
-
+    _edgesAmount=0;
 }
 
 void Graph::addBridge(Bridge *bridge)
 {
-    Bridges.push_back(bridge);
+    _Bridges.push_back(bridge);
 
-    int startNum=bridge->getStartEdge()->getNum()-1;
-    int endNum=bridge->getEndEdge()->getNum()-1;
+    int startNum=bridge->getStartEdge()->getId();
+    int endNum=bridge->getEndEdge()->getId();
 
-    Matrix[startNum][endNum]=1;
+    _Matrix[startNum][endNum]=1;
 }
 
 void Graph::addEdge(MyEdge *edge)
 {
-    Edges.push_back(edge);
-    Matrix.push_back(QVector<int>(Edges.size()-1,0));
-    for(int i=0;i<Matrix.size();i++)
-        Matrix[i].push_back(0);
-    //Matrix.push_back(QVector<int>({}));
+    _edgesAmount++;
+    _Edges.push_back(edge);
+
+    _Matrix.push_back(QVector<int>(_edgesAmount,0));
+    for(int i=0;i<_Matrix.size()-1;i++)//add 0 to other rows
+        _Matrix[i].push_back(0);
 }
 
 int Graph::getEdgesAmount() const
 {
-    return Edges.size();
+    return _edgesAmount;
 }
 
 void Graph::changeConnectMode(Bridge *bridge)
 {
-    int startNum=bridge->getStartEdge()->getNum()-1;
-    int endNum=bridge->getEndEdge()->getNum()-1;
-    Matrix[startNum][endNum]=0;
-    Matrix[endNum][startNum]=0;
+    int startNum=bridge->getStartEdge()->getId();
+    int endNum=bridge->getEndEdge()->getId();
+    _Matrix[startNum][endNum]=0;
+    _Matrix[endNum][startNum]=0;
 
     if(bridge->getConnectMode()==Bridge::StartToEnd)
     {
-        Matrix[startNum][endNum]=1;
+        _Matrix[startNum][endNum]=1;
     }
     if(bridge->getConnectMode()==Bridge::EndToStart)
     {
-        Matrix[startNum][endNum]=1;
+        _Matrix[startNum][endNum]=1;
     }
     if(bridge->getConnectMode()==Bridge::Both)
     {
-        Matrix[startNum][endNum]=1;
-        Matrix[startNum][endNum]=1;
+        _Matrix[startNum][endNum]=1;
+        _Matrix[startNum][endNum]=1;
     }
 }
 
@@ -55,12 +56,12 @@ Bridge *Graph::findClosest(QPointF &point) const
 {
     int minrast=100000;
     Bridge *minBridge=nullptr;
-    for(int i=0;i<Bridges.size();i++)
+    for(int i=0;i<_Bridges.size();i++)
     {
-        if(minrast>getLen(Bridges[i],point))
+        if(minrast>getLen(_Bridges[i],point))
         {
-            minrast=getLen(Bridges[i],point);
-            minBridge=Bridges[i];
+            minrast=getLen(_Bridges[i],point);
+            minBridge=_Bridges[i];
         }
     }
     return minBridge;
@@ -78,6 +79,7 @@ double Graph::getLen(Bridge *bridge, QPointF &point) const
  QPointF AB=Bp-Ap;
  QPointF AC=point-Ap;
  double scal2=AB.x()*AC.x()+AB.y()*AC.y();
+
  if(scal1<0 || scal2<0) // if point isn't in the segment area,
      return 100;
 
@@ -89,19 +91,48 @@ double Graph::getLen(Bridge *bridge, QPointF &point) const
  return rast;
 }
 
+void Graph::deleteEdge(MyEdge *edge)
+{
+    QVector<Bridge*> deleteBridge;
+    QVector<MyEdge*> deleteEdge;
+    //find out,what edge is it and what bridges are being connected to it
+    for(int i=0;i<_Bridges.size();i++)
+    {
+        if(_Bridges[i]->getStartEdge()->getId()==edge->getId() ||
+           _Bridges[i]->getEndEdge()->getId()==edge->getId())
+        {
+            deleteBridge.push_back(_Bridges[i]);
+            _Bridges.erase(_Bridges.begin()+i);
+            i--;
+        }
+    }
+    for(int i=0;i<_Edges.size();i++)
+        if(_Edges[i]->getId()==edge->getId())
+            {
+                deleteEdge.push_back(_Edges[i]);
+                _Edges.erase(_Edges.begin()+i);
+                i--;
+            }
+    //delete edges and connected bridges
+    for(int i=0;i<deleteBridge.size();i++)
+        delete deleteBridge[i];
+    for(int i=0;i<deleteEdge.size();i++)
+        delete deleteEdge[i];
+}
+
 void Graph::setEdgeMovable(bool isMovable)
 {
-    for(int i=0;i<Edges.size();i++)
+    for(int i=0;i<_Edges.size();i++)
         if(isMovable)
-            Edges[i]->setFlag(QGraphicsItem::ItemIsMovable);
+            _Edges[i]->setFlag(QGraphicsItem::ItemIsMovable);
     else
-            Edges[i]->setFlag(QGraphicsItem::ItemIsMovable,false);
+            _Edges[i]->setFlag(QGraphicsItem::ItemIsMovable,false);
 }
 
 void Graph::updateBridges()
 {
-    for(int i=0;i<Bridges.size();i++)
+    for(int i=0;i<_Bridges.size();i++)
     {
-        Bridges[i]->update();
+        _Bridges[i]->update();
     }
 }

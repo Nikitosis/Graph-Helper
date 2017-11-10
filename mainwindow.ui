@@ -55,7 +55,7 @@ QTabWidget::pane{
          <enum>QTabWidget::South</enum>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <property name="movable">
          <bool>false</bool>
@@ -236,7 +236,7 @@ QPushButton:hover{
            <number>9</number>
           </property>
           <item>
-           <widget class="QPushButton" name="cursorMode_2">
+           <widget class="QPushButton" name="bridgeDeleteMode">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>
@@ -271,7 +271,7 @@ QPushButton:hover{
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="cursorMode_3">
+           <widget class="QPushButton" name="edgeDeleteMode">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>

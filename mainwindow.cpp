@@ -12,6 +12,10 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->cursorMode,&QPushButton::clicked,[=]{ui->graphicsView->setMode(MyGraphicsSceneView::Mode::CursorMode);});
     connect(ui->bridgeMode,&QPushButton::clicked,[=]{ui->graphicsView->setMode(MyGraphicsSceneView::Mode::BridgeMode);});
     connect(ui->edgeMode,&QPushButton::clicked,[=]{ui->graphicsView->setMode(MyGraphicsSceneView::Mode::EdgeMode);});
+    connect(ui->bridgeDeleteMode,&QPushButton::clicked,[=]{ui->graphicsView->setMode(MyGraphicsSceneView::Mode::BridgeDeleteMode);});
+    connect(ui->edgeDeleteMode,&QPushButton::clicked,[=]{ui->graphicsView->setMode(MyGraphicsSceneView::Mode::EdgeDeleteMode);});
+
+
 
     //Initializing some variables and installation the scene
     ui->graphicsView->setMode(MyGraphicsSceneView::Mode::EdgeMode);

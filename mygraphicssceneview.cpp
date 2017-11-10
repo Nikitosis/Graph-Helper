@@ -87,7 +87,7 @@ void MyGraphicsSceneView::mousePressEdgeMode(QMouseEvent *event)
     {
         QPointF pos=mapToScene(event->pos());
         const int radius=20;
-        MyEdge *edge=new MyEdge(pos.x()-radius,pos.y()-radius,radius,graph->getEdgesAmount()+1);
+        MyEdge *edge=new MyEdge(pos.x()-radius,pos.y()-radius,radius,QString::number(graph->getEdgesAmount()+1),graph->getEdgesAmount());
         //configuration edge
         connect(edge,SIGNAL(mousePressSignal(QGraphicsSceneMouseEvent*)),this,SLOT(mousePressEdge(QGraphicsSceneMouseEvent*)));
         connect(edge,SIGNAL(edgeMoved(MyEdge*)),this,SLOT(edgeMoved(MyEdge*)));
@@ -181,6 +181,11 @@ void MyGraphicsSceneView::mousePressEdge(QGraphicsSceneMouseEvent *event)//When 
 
             curBridge=nullptr;
         }
-
+    }
+    if(nowMode==EdgeDeleteMode)
+    {
+        QObject *snd=QObject::sender();
+        MyEdge *edge=qobject_cast<MyEdge*>(snd);
+        graph->deleteEdge(edge);
     }
 }

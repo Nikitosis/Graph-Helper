@@ -24,15 +24,18 @@ public:
     Bridge *findClosest(QPointF &point) const;
     double getLen(Bridge *bridge,QPointF &point) const;
 
+    void deleteEdge(MyEdge *edge);
+
 signals:
 
 public slots:
 
 protected:
 private:
-    QVector<QVector<int>> Matrix;
-    QVector<Bridge*> Bridges;
-    QVector<MyEdge*> Edges;
+    QVector<QVector<int>> _Matrix;
+    QVector<Bridge*> _Bridges;
+    QVector<MyEdge*> _Edges;
+    int _edgesAmount;
 };
 
 #endif // GRAPH_H

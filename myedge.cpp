@@ -1,55 +1,57 @@
 #include "myedge.h"
-
 MyEdge::MyEdge(QObject *parent) : QObject(parent)
 {
     this->setZValue(2);
-
+    _id=0;
 }
 
-MyEdge::MyEdge(int x, int y, int radius,int num, QObject *parent):
-    x(x),
-    y(y),
-    radius(radius),
-    num(num),
+MyEdge::MyEdge(int x, int y, int radius,QString info,int id, QObject *parent):
+    _x(x),
+    _y(y),
+    _radius(radius),
+    _info(info),
+    _id(id),
     QObject(parent)
 {
-    xStart=x;
-    yStart=y;
+    _xStart=x;
+    _yStart=y;
     setPos(x,y);
     this->setZValue(2);
 }
 
-MyEdge::MyEdge(QPointF p, int radius, int num, QObject *parent):
-    QObject(parent),
-    x(p.x()),
-    y(p.y()),
-    radius(radius),
-    num(num)
+MyEdge::MyEdge(QPointF p, int radius, QString info,int id, QObject *parent):
+    _x(p.x()),
+    _y(p.y()),
+    _radius(radius),
+    _info(info),
+    _id(id),
+    QObject(parent)
 {
-    xStart=x;
-    yStart=y;
-    setPos(x,y);
+    _xStart=_x;
+    _yStart=_y;
+    setPos(_x,_y);
     this->setZValue(2);
 }
 
-int MyEdge::getNum() const
+int MyEdge::getId() const
 {
-    return num;
+    return _id;
 }
+
 
 double MyEdge::getRadius() const
 {
-    return radius;
+    return _radius;
 }
 
 QPointF MyEdge::getCordinates() const
 {
-    return QPointF(pos().x()+radius,pos().y()+radius);
+    return QPointF(pos().x()+_radius,pos().y()+_radius);
 }
 
 QRectF MyEdge::boundingRect() const
 {
-    return QRectF(0,0,radius*2,radius*2);
+    return QRectF(0,0,_radius*2,_radius*2);
 }
 
 void MyEdge::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -66,12 +68,12 @@ void MyEdge::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QW
     pen.setColor(Qt::black);
 
     painter->setPen(pen);
-    painter->drawText(rect,Qt::AlignCenter,QString::number(num));
+    painter->drawText(rect,Qt::AlignCenter,_info);
 }
 
 void MyEdge::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    qDebug()<<"press"<<num;
+    qDebug()<<"press"<<_id;
     emit mousePressSignal(event);
 }
 
@@ -80,8 +82,8 @@ QVariant MyEdge::itemChange(QGraphicsItem::GraphicsItemChange change, const QVar
     qDebug()<<"Change";
     if(change==ItemPositionChange)
     {
-        x=pos().x();
-        y=pos().y();
+        _x=pos().x();
+        _y=pos().y();
         update();
         emit edgeMoved(this);
     }
