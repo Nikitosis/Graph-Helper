@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/buttons">
+        <file>img/Bridge.png</file>
+        <file>img/cursor.png</file>
+        <file>img/Edge.png</file>
+    </qresource>
+</RCC>
