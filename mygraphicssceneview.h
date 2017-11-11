@@ -11,6 +11,7 @@
 #include <QVector>
 #include <QPainter>
 #include <QScrollBar>
+#include <QVector>
 #include "myedge.h"
 #include "mygraphicsscene.h"
 #include "graph.h"
@@ -44,6 +45,8 @@ public slots:
 
     void mousePressEdge(QGraphicsSceneMouseEvent *event);
     void setMode(Mode mode);
+
+    QVector<QVector<int>> getCorrectMatrix() const;
 
 
 private:

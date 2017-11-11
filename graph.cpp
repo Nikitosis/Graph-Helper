@@ -20,7 +20,7 @@ void Graph::addEdge(MyEdge *edge)
 
     if(edge->getId()>=_Matrix.size())
     {
-        _Matrix.push_back(QVector<int>(_Edges.size()-1,0));
+        _Matrix.push_back(QVector<int>(_Edges.size(),0));
         for(int i=0;i<_Matrix.size()-1;i++)//add 0 to other rows
             _Matrix[i].push_back(0);
     }
@@ -99,6 +99,25 @@ int Graph::getFreeId() const
     while(set.find(num)!=set.end())
         num++;
     return num;
+}
+
+QVector<QVector<int> > Graph::getCorrectMatrix() const
+{
+    int amount=_Edges.size();
+    QVector<QVector<int>> Vec;
+    QSet<int> set;
+    for(int i=0;i<_Edges.size();i++)
+        set.insert(_Edges[i]->getId());
+
+    for(int i=0;i<_Matrix.size();i++)
+        if(set.find(i)!=set.end())
+        {
+            Vec.push_back({});
+            for(int j=0;j<_Matrix.size();j++)
+                if(set.find(j)!=set.end())
+                    Vec[Vec.size()-1].push_back(_Matrix[i][j]);
+        }
+    return Vec;
 }
 
 void Graph::deleteEdge(MyEdge *edge)

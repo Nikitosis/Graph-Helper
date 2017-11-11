@@ -6,6 +6,7 @@
 #include <QtGui>
 #include <QGraphicsScene>
 #include "mygraphicssceneview.h"
+#include "visualgraph.h"
 
 namespace Ui {
 class MainWindow;
@@ -23,9 +24,13 @@ private slots:
 
 
 
+    void on_visualizeGraph_clicked();
+
 private:
     Ui::MainWindow *ui;
     MyGraphicsSceneView::Mode nowMode;
+    VisualGraph *visualGraphWindow;
+
 
 
     //enum Mode{Cursor,Bridge,Edge};

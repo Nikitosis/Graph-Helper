@@ -6,6 +6,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    visualGraphWindow=new VisualGraph(this);
     //Button connections with lambdas
 
 
@@ -30,3 +31,9 @@ MainWindow::~MainWindow()
 
 
 
+
+void MainWindow::on_visualizeGraph_clicked()
+{
+    visualGraphWindow->init(ui->graphicsView->getCorrectMatrix());
+    visualGraphWindow->show();
+}

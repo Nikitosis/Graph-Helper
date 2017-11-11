@@ -32,6 +32,11 @@ void MyGraphicsSceneView::setMode(Mode mode)
     }
 }
 
+QVector<QVector<int> > MyGraphicsSceneView::getCorrectMatrix() const
+{
+    return graph->getCorrectMatrix();
+}
+
 
 
 void MyGraphicsSceneView::mousePressEvent(QMouseEvent *event)//emits the SLOT,which matches the mode

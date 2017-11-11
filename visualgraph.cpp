@@ -12,3 +12,8 @@ VisualGraph::~VisualGraph()
 {
     delete ui;
 }
+
+void VisualGraph::init(QVector<QVector<int> > Vec)
+{
+
+}
