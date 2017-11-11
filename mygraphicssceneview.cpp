@@ -45,6 +45,7 @@ void MyGraphicsSceneView::mousePressEvent(QMouseEvent *event)//emits the SLOT,wh
         {
             case EdgeMode:{emit mousePressEdgeMode(event);break;}
             case BridgeMode:{emit mousePressBridgeMode(event);break;}
+            case BridgeDeleteMode:{emit mousePressDeleteEdgeMode(event);break;}
         }
     }
     QGraphicsView::mousePressEvent(event);//to let children's elements get this event
@@ -87,7 +88,7 @@ void MyGraphicsSceneView::mousePressEdgeMode(QMouseEvent *event)
     {
         QPointF pos=mapToScene(event->pos());
         const int radius=20;
-        MyEdge *edge=new MyEdge(pos.x()-radius,pos.y()-radius,radius,QString::number(graph->getEdgesAmount()+1),graph->getEdgesAmount());
+        MyEdge *edge=new MyEdge(pos.x()-radius,pos.y()-radius,radius,QString::number(graph->getFreeId()+1),graph->getFreeId());
         //configuration edge
         connect(edge,SIGNAL(mousePressSignal(QGraphicsSceneMouseEvent*)),this,SLOT(mousePressEdge(QGraphicsSceneMouseEvent*)));
         connect(edge,SIGNAL(edgeMoved(MyEdge*)),this,SLOT(edgeMoved(MyEdge*)));
@@ -95,6 +96,17 @@ void MyGraphicsSceneView::mousePressEdgeMode(QMouseEvent *event)
 
         scene->addItem(edge);
         graph->addEdge(edge);
+    }
+}
+
+void MyGraphicsSceneView::mousePressDeleteEdgeMode(QMouseEvent *event)
+{
+    QPointF pos=mapToScene(event->pos());
+    Bridge *closest=graph->findClosest(pos);
+    const int maxLen=20;
+    if(closest!=nullptr && graph->getLen(closest,pos)<maxLen)
+    {
+        graph->deleteBridge(closest);
     }
 }
 

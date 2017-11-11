@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QVector>
+#include <QSet>
 
 #include "myedge.h"
 #include "bridge.h"
@@ -20,11 +21,14 @@ public:
     void setEdgeMovable(bool isMovable);
     void updateBridges();
 
-    int getEdgesAmount() const;
+    int getFreeId() const;
     Bridge *findClosest(QPointF &point) const;
-    double getLen(Bridge *bridge,QPointF &point) const;
 
     void deleteEdge(MyEdge *edge);
+    void deleteBridge(Bridge *bridge);
+
+    //some help
+    double getLen(Bridge *bridge,QPointF &point) const;
 
 signals:
 
@@ -35,7 +39,7 @@ private:
     QVector<QVector<int>> _Matrix;
     QVector<Bridge*> _Bridges;
     QVector<MyEdge*> _Edges;
-    int _edgesAmount;
+
 };
 
 #endif // GRAPH_H

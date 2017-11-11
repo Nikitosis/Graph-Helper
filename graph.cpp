@@ -2,7 +2,6 @@
 
 Graph::Graph(QObject *parent) : QObject(parent)
 {
-    _edgesAmount=0;
 }
 
 void Graph::addBridge(Bridge *bridge)
@@ -17,18 +16,17 @@ void Graph::addBridge(Bridge *bridge)
 
 void Graph::addEdge(MyEdge *edge)
 {
-    _edgesAmount++;
     _Edges.push_back(edge);
 
-    _Matrix.push_back(QVector<int>(_edgesAmount,0));
-    for(int i=0;i<_Matrix.size()-1;i++)//add 0 to other rows
-        _Matrix[i].push_back(0);
+    if(edge->getId()>=_Matrix.size())
+    {
+        _Matrix.push_back(QVector<int>(_Edges.size()-1,0));
+        for(int i=0;i<_Matrix.size()-1;i++)//add 0 to other rows
+            _Matrix[i].push_back(0);
+    }
 }
 
-int Graph::getEdgesAmount() const
-{
-    return _edgesAmount;
-}
+
 
 void Graph::changeConnectMode(Bridge *bridge)
 {
@@ -91,11 +89,23 @@ double Graph::getLen(Bridge *bridge, QPointF &point) const
  return rast;
 }
 
+int Graph::getFreeId() const
+{
+    QSet<int> set;
+    for(int i=0;i<_Edges.size();i++)
+        set.insert(_Edges[i]->getId());
+                                        //get the id,which is first empty in sequence 1..infinity
+    int num=0;
+    while(set.find(num)!=set.end())
+        num++;
+    return num;
+}
+
 void Graph::deleteEdge(MyEdge *edge)
 {
     QVector<Bridge*> deleteBridge;
     QVector<MyEdge*> deleteEdge;
-    //find out,what edge is it and what bridges are being connected to it
+                                         //find out,what edge is it and what bridges are being connected to it
     for(int i=0;i<_Bridges.size();i++)
     {
         if(_Bridges[i]->getStartEdge()->getId()==edge->getId() ||
@@ -113,11 +123,39 @@ void Graph::deleteEdge(MyEdge *edge)
                 _Edges.erase(_Edges.begin()+i);
                 i--;
             }
-    //delete edges and connected bridges
+
+    for(int i=0;i<_Matrix.size();i++)       //set to zero in Matrix
+    {
+        if(i==edge->getId())
+        {
+            for(int j=0;j<_Matrix[i].size();j++)
+                _Matrix[i][j]=0;
+        }
+        _Matrix[i][edge->getId()]=0;
+    }
+                                             //delete edges and connected bridges
     for(int i=0;i<deleteBridge.size();i++)
         delete deleteBridge[i];
     for(int i=0;i<deleteEdge.size();i++)
         delete deleteEdge[i];
+}
+
+void Graph::deleteBridge(Bridge *bridge)
+{
+    QVector<Bridge*> deleteBridge;
+    for(int i=0;i<_Bridges.size();i++)
+    {
+        if(_Bridges[i]->getStartEdge()->getId()==bridge->getStartEdge()->getId() &&
+           _Bridges[i]->getEndEdge()->getId()==bridge->getEndEdge()->getId())
+        {
+            deleteBridge.push_back(_Bridges[i]);
+            _Bridges.erase(_Bridges.begin()+i);
+            i--;
+        }
+    }
+
+    for(int i=0;i<deleteBridge.size();i++)
+        delete deleteBridge[i];
 }
 
 void Graph::setEdgeMovable(bool isMovable)

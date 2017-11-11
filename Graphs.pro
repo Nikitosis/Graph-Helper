@@ -30,7 +30,8 @@ SOURCES += \
     mygraphicssceneview.cpp \
     bridge.cpp \
     graph.cpp \
-    line.cpp
+    line.cpp \
+    visualgraph.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -38,10 +39,12 @@ HEADERS += \
     mygraphicssceneview.h \
     bridge.h \
     graph.h \
-    line.h
+    line.h \
+    visualgraph.h
 
 FORMS += \
-        mainwindow.ui
+        mainwindow.ui \
+    visualgraph.ui
 
 RESOURCES += \
     res.qrc

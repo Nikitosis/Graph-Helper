@@ -35,6 +35,7 @@ public slots:
     void mouseMoveBridgeMode(QMouseEvent *event);
     void mousePressBridgeMode(QMouseEvent *event);
     void mousePressEdgeMode(QMouseEvent *event);
+    void mousePressDeleteEdgeMode(QMouseEvent *event);
 
     void mousePressMiddleButton(QMouseEvent *event); //move scene in view
     void mouseMoveMiddleButton(QMouseEvent *event);
