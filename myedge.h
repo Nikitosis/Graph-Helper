@@ -21,9 +21,9 @@ public:
     int getId() const;
     double getRadius() const;
     QPointF getCordinates() const;
+    QString getInfo() const;
 
     QRectF boundingRect() const;
-
 
 signals:
     void mousePressSignal(QGraphicsSceneMouseEvent *event);

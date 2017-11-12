@@ -3,6 +3,11 @@
 
 #include <QDialog>
 #include <QVector>
+#include <QString>
+#include <QScrollBar>
+#include <QtAlgorithms>
+#include <algorithm>
+#include "myedge.h"
 
 namespace Ui {
 class VisualGraph;
@@ -15,7 +20,10 @@ class VisualGraph : public QDialog
 public:
     explicit VisualGraph(QWidget *parent = 0);
     ~VisualGraph();
-    void init(QVector<QVector<int>> Vec);
+    void init(QVector<QVector<int>> Vec,QVector<MyEdge*> Edges);
+    void initMatrix(const QVector<QVector<int>> Vec,const QVector<MyEdge*> Edges);
+    void initList(const QVector<QVector<int>> Vec,const QVector<MyEdge*> Edges);
+    void initBridge(const QVector<QVector<int>> Vec,const QVector<MyEdge*> Edges);
 
 private:
     Ui::VisualGraph *ui;

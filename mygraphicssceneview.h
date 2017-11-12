@@ -47,6 +47,7 @@ public slots:
     void setMode(Mode mode);
 
     QVector<QVector<int>> getCorrectMatrix() const;
+    QVector<MyEdge*> getEdges() const;
 
 
 private:

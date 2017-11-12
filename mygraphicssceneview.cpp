@@ -37,6 +37,11 @@ QVector<QVector<int> > MyGraphicsSceneView::getCorrectMatrix() const
     return graph->getCorrectMatrix();
 }
 
+QVector<MyEdge *> MyGraphicsSceneView::getEdges() const
+{
+    return graph->getEdges();
+}
+
 
 
 void MyGraphicsSceneView::mousePressEvent(QMouseEvent *event)//emits the SLOT,which matches the mode

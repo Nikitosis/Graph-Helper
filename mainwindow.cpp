@@ -34,6 +34,6 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_visualizeGraph_clicked()
 {
-    visualGraphWindow->init(ui->graphicsView->getCorrectMatrix());
-    visualGraphWindow->show();
+    visualGraphWindow->init(ui->graphicsView->getCorrectMatrix(),ui->graphicsView->getEdges());
+    visualGraphWindow->exec();
 }

@@ -14,9 +14,15 @@ void Graph::addBridge(Bridge *bridge)
     _Matrix[startNum][endNum]=1;
 }
 
+bool cmp(MyEdge *first,MyEdge *second) //to compare Edges when sorting
+{
+    return first->getId()<second->getId();
+}
+
 void Graph::addEdge(MyEdge *edge)
 {
     _Edges.push_back(edge);
+    std::sort(_Edges.begin(),_Edges.end(),cmp);
 
     if(edge->getId()>=_Matrix.size())
     {
@@ -41,12 +47,12 @@ void Graph::changeConnectMode(Bridge *bridge)
     }
     if(bridge->getConnectMode()==Bridge::EndToStart)
     {
-        _Matrix[startNum][endNum]=1;
+        _Matrix[endNum][startNum]=1;
     }
     if(bridge->getConnectMode()==Bridge::Both)
     {
         _Matrix[startNum][endNum]=1;
-        _Matrix[startNum][endNum]=1;
+        _Matrix[endNum][startNum]=1;
     }
 }
 
@@ -118,6 +124,11 @@ QVector<QVector<int> > Graph::getCorrectMatrix() const
                     Vec[Vec.size()-1].push_back(_Matrix[i][j]);
         }
     return Vec;
+}
+
+QVector<MyEdge*> Graph::getEdges() const
+{
+    return _Edges;
 }
 
 void Graph::deleteEdge(MyEdge *edge)

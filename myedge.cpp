@@ -49,6 +49,11 @@ QPointF MyEdge::getCordinates() const
     return QPointF(pos().x()+_radius,pos().y()+_radius);
 }
 
+QString MyEdge::getInfo() const
+{
+    return _info;
+}
+
 QRectF MyEdge::boundingRect() const
 {
     return QRectF(0,0,_radius*2,_radius*2);
