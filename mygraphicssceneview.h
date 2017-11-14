@@ -36,7 +36,7 @@ public slots:
     void mouseMoveBridgeMode(QMouseEvent *event);
     void mousePressBridgeMode(QMouseEvent *event);
     void mousePressEdgeMode(QMouseEvent *event);
-    void mousePressDeleteEdgeMode(QMouseEvent *event);
+    void mousePressDeleteBridgeMode(QMouseEvent *event);
 
     void mousePressMiddleButton(QMouseEvent *event); //move scene in view
     void mouseMoveMiddleButton(QMouseEvent *event);
@@ -57,6 +57,7 @@ private:
      Bridge *curBridge;
      Line *line;
      int originPosX,originPosY;
+     bool makingBridge;
 
 };
 

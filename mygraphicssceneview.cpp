@@ -5,14 +5,15 @@ MyGraphicsSceneView::MyGraphicsSceneView(QWidget *parent) : QGraphicsView(parent
     scene=new QGraphicsScene;
     scene->setSceneRect(0,0,1000,1000);
     this->setScene(scene);
-    this->setMouseTracking(true);//for mouse move event
+    this->setMouseTracking(true);               //for mouse move event
 
     graph=new Graph(this);
     curBridge=nullptr;
     line=nullptr;
+    makingBridge=false;
 
 
-    horizontalScrollBar()->setHidden(true);//hide scrollbars
+    horizontalScrollBar()->setHidden(true);         //hide scrollbars
     verticalScrollBar()->setHidden(true);
 }
 
@@ -21,14 +22,14 @@ void MyGraphicsSceneView::setMode(Mode mode)
 {
     if(nowMode==CursorMode)
     {
-        graph->setEdgeMovable(false);//user can't move Edge
+        graph->setEdgeMovable(false);       //user can't move Edge
     }
 
     nowMode=mode;
 
     if(nowMode==CursorMode)
     {
-        graph->setEdgeMovable(true);//user can move edge
+        graph->setEdgeMovable(true);                //user can move edge
     }
 }
 
@@ -44,7 +45,7 @@ QVector<MyEdge *> MyGraphicsSceneView::getEdges() const
 
 
 
-void MyGraphicsSceneView::mousePressEvent(QMouseEvent *event)//emits the SLOT,which matches the mode
+void MyGraphicsSceneView::mousePressEvent(QMouseEvent *event    )//emits the SLOT,which matches the mode
 {
     if(event->buttons() & Qt::MidButton)
         emit mousePressMiddleButton(event);
@@ -55,10 +56,10 @@ void MyGraphicsSceneView::mousePressEvent(QMouseEvent *event)//emits the SLOT,wh
         {
             case EdgeMode:{emit mousePressEdgeMode(event);break;}
             case BridgeMode:{emit mousePressBridgeMode(event);break;}
-            case BridgeDeleteMode:{emit mousePressDeleteEdgeMode(event);break;}
+            case BridgeDeleteMode:{emit mousePressDeleteBridgeMode(event);break;}
         }
     }
-    QGraphicsView::mousePressEvent(event);//to let children's elements get this event
+    QGraphicsView::mousePressEvent(event);                  //to let children's elements get this event
 }
 
 void MyGraphicsSceneView::mouseMoveEvent(QMouseEvent *event)
@@ -74,9 +75,9 @@ void MyGraphicsSceneView::mouseMoveEvent(QMouseEvent *event)
     QGraphicsView::mouseMoveEvent(event);
 }
 
-void MyGraphicsSceneView::mouseMoveBridgeMode(QMouseEvent *event)
+void MyGraphicsSceneView::mouseMoveBridgeMode(QMouseEvent *event)       //move mouse in Bridge mode
 {
-    if(curBridge!=nullptr) //if we are making bridge
+    if(makingBridge)                               //if we are making bridge
     {
         QPointF pos=mapToScene(event->pos());
         MyEdge *edge=curBridge->getStartEdge();
@@ -85,7 +86,7 @@ void MyGraphicsSceneView::mouseMoveBridgeMode(QMouseEvent *event)
             line=new Line(edge->getCordinates().x(),edge->getCordinates().y(),pos.x(),pos.y());
 
         line->setCoords(edge->getCordinates().x(),edge->getCordinates().y(),pos.x(),pos.y());
-        if(!scene->items().contains(line))  //to not add line twice
+        if(!scene->items().contains(line))              //to not add line twice
             scene->addItem(line);
     }
 }
@@ -102,14 +103,14 @@ void MyGraphicsSceneView::mousePressEdgeMode(QMouseEvent *event)
         //configuration edge
         connect(edge,SIGNAL(mousePressSignal(QGraphicsSceneMouseEvent*)),this,SLOT(mousePressEdge(QGraphicsSceneMouseEvent*)));
         connect(edge,SIGNAL(edgeMoved(MyEdge*)),this,SLOT(edgeMoved(MyEdge*)));
-        edge->setFlag(QGraphicsItem::ItemSendsGeometryChanges);//enable onChange slot(while moving Edge)
+        edge->setFlag(QGraphicsItem::ItemSendsGeometryChanges);         //enable onChange slot(while moving Edge)
 
         scene->addItem(edge);
         graph->addEdge(edge);
     }
 }
 
-void MyGraphicsSceneView::mousePressDeleteEdgeMode(QMouseEvent *event)
+void MyGraphicsSceneView::mousePressDeleteBridgeMode(QMouseEvent *event)
 {
     QPointF pos=mapToScene(event->pos());
     Bridge *closest=graph->findClosest(pos);
@@ -122,22 +123,20 @@ void MyGraphicsSceneView::mousePressDeleteEdgeMode(QMouseEvent *event)
 
 void MyGraphicsSceneView::mousePressBridgeMode(QMouseEvent *event)
 {
-    bool wasLine=false;
     if(line!=nullptr)        //if we clicked second time,using bridge-making,we delete line
     {
         delete line;
         line=nullptr;
-        wasLine=true;
     }
 
-    MyEdge *edge=dynamic_cast<MyEdge*>(itemAt(event->pos()));
+    MyEdge *edge=dynamic_cast<MyEdge*>(itemAt(event->pos()));               //find object,we clicked on
     if(!edge)                //if we didn't click on edge
         {
             delete curBridge;
             curBridge=nullptr;
 
-            if(line==nullptr && !wasLine)//if we are not using line(bridge making),we find closest bridge and if
-            {                //length between this bridge and click position is small,then we change bridge mode
+            if(!makingBridge)               //if we are not making bridge,we find closest bridge and if
+            {                                           //length between this bridge and click position is small,then we change bridge mode
                 QPointF pos=mapToScene(event->pos());
                 Bridge *closest=graph->findClosest(pos);
                 const int maxLen=20;
@@ -147,6 +146,7 @@ void MyGraphicsSceneView::mousePressBridgeMode(QMouseEvent *event)
                     graph->changeConnectMode(closest);
                 }
             }
+            makingBridge=false;
         }
 }
 
@@ -190,18 +190,19 @@ void MyGraphicsSceneView::mousePressEdge(QGraphicsSceneMouseEvent *event)//When 
     {
         QObject *snd=QObject::sender();
         MyEdge *edge=qobject_cast<MyEdge*>(snd);
-        if(curBridge==nullptr)//if we have not chosen first point
+        if(!makingBridge)               //if we are not in making bridge process
         {
+            makingBridge=true;
             curBridge=new Bridge(edge);
         }
-        else
+        else                                //else add our bridge to the graph and scene
         {
             curBridge->setEndEdge(edge);
             curBridge->update();
             graph->addBridge(curBridge);
             scene->addItem(curBridge);
-
             curBridge=nullptr;
+            makingBridge=false;
         }
     }
     if(nowMode==EdgeDeleteMode)

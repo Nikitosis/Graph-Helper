@@ -24,7 +24,7 @@ void Graph::addEdge(MyEdge *edge)
     _Edges.push_back(edge);
     std::sort(_Edges.begin(),_Edges.end(),cmp);
 
-    if(edge->getId()>=_Matrix.size())
+    if(edge->getId()>=_Matrix.size())  //if we have all adges from 1..amount,then we make new column and row in Matrix
     {
         _Matrix.push_back(QVector<int>(_Edges.size(),0));
         for(int i=0;i<_Matrix.size()-1;i++)//add 0 to other rows
@@ -56,7 +56,7 @@ void Graph::changeConnectMode(Bridge *bridge)
     }
 }
 
-Bridge *Graph::findClosest(QPointF &point) const
+Bridge *Graph::findClosest(QPointF &point) const     //find closest Bridge to particular point
 {
     int minrast=100000;
     Bridge *minBridge=nullptr;
@@ -71,12 +71,12 @@ Bridge *Graph::findClosest(QPointF &point) const
     return minBridge;
 }
 
-double Graph::getLen(Bridge *bridge, QPointF &point) const
+double Graph::getLen(Bridge *bridge, QPointF &point) const    //length between point and bridge(segment)
 {
  QPointF Ap=bridge->getStartEdge()->getCordinates();
  QPointF Bp=bridge->getEndEdge()->getCordinates();
 
- //check if point is in the segment area(0<=angle<=90)
+                                                //check if point is in the segment area(0<=angle<=90)
  QPointF BA=Ap-Bp;
  QPointF BC=point-Bp;
  double scal1=BA.x()*BC.x()+BA.y()*BC.y();
@@ -84,7 +84,7 @@ double Graph::getLen(Bridge *bridge, QPointF &point) const
  QPointF AC=point-Ap;
  double scal2=AB.x()*AC.x()+AB.y()*AC.y();
 
- if(scal1<0 || scal2<0) // if point isn't in the segment area,
+ if(scal1<0 || scal2<0)                             // if point isn't in the segment area,
      return 100;
 
  int A=Bp.y()-Ap.y();
@@ -95,35 +95,35 @@ double Graph::getLen(Bridge *bridge, QPointF &point) const
  return rast;
 }
 
-int Graph::getFreeId() const
+int Graph::getFreeId() const                //get the id,which is first empty in sequence 1..infinity
 {
     QSet<int> set;
     for(int i=0;i<_Edges.size();i++)
         set.insert(_Edges[i]->getId());
-                                        //get the id,which is first empty in sequence 1..infinity
+
     int num=0;
     while(set.find(num)!=set.end())
         num++;
     return num;
 }
 
-QVector<QVector<int> > Graph::getCorrectMatrix() const
+QVector<QVector<int> > Graph::getCorrectMatrix() const          //get correct Matrix without superfluous(deleted) edges
 {
     int amount=_Edges.size();
-    QVector<QVector<int>> Vec;
-    QSet<int> set;
+    QVector<QVector<int>> CorMatrix;
+    QSet<int> set;                                              //use set to save edges,which are not deleted
     for(int i=0;i<_Edges.size();i++)
         set.insert(_Edges[i]->getId());
 
     for(int i=0;i<_Matrix.size();i++)
-        if(set.find(i)!=set.end())
+        if(set.find(i)!=set.end())                              //check if current edge is not deleted
         {
-            Vec.push_back({});
+            CorMatrix.push_back({});                            //push empty sequense to fill it
             for(int j=0;j<_Matrix.size();j++)
                 if(set.find(j)!=set.end())
-                    Vec[Vec.size()-1].push_back(_Matrix[i][j]);
+                    CorMatrix[CorMatrix.size()-1].push_back(_Matrix[i][j]);
         }
-    return Vec;
+    return CorMatrix;
 }
 
 QVector<MyEdge*> Graph::getEdges() const
@@ -141,7 +141,7 @@ void Graph::deleteEdge(MyEdge *edge)
         if(_Bridges[i]->getStartEdge()->getId()==edge->getId() ||
            _Bridges[i]->getEndEdge()->getId()==edge->getId())
         {
-            deleteBridge.push_back(_Bridges[i]);
+            deleteBridge.push_back(_Bridges[i]);        //push Bridges,that we have to delete in the vector
             _Bridges.erase(_Bridges.begin()+i);
             i--;
         }
@@ -149,21 +149,21 @@ void Graph::deleteEdge(MyEdge *edge)
     for(int i=0;i<_Edges.size();i++)
         if(_Edges[i]->getId()==edge->getId())
             {
-                deleteEdge.push_back(_Edges[i]);
+                deleteEdge.push_back(_Edges[i]);        //push Edge,we have to delete in another vector
                 _Edges.erase(_Edges.begin()+i);
                 i--;
             }
 
-    for(int i=0;i<_Matrix.size();i++)       //set to zero in Matrix
+    for(int i=0;i<_Matrix.size();i++)                   //set rows and columns to zero in Matrix
     {
         if(i==edge->getId())
         {
-            for(int j=0;j<_Matrix[i].size();j++)
+            for(int j=0;j<_Matrix[i].size();j++)        //set to zero col/rows in curent Edge
                 _Matrix[i][j]=0;
         }
         _Matrix[i][edge->getId()]=0;
     }
-                                             //delete edges and connected bridges
+                                                 //delete edges and connected bridges
     for(int i=0;i<deleteBridge.size();i++)
         delete deleteBridge[i];
     for(int i=0;i<deleteEdge.size();i++)
@@ -175,12 +175,17 @@ void Graph::deleteBridge(Bridge *bridge)
     QVector<Bridge*> deleteBridge;
     for(int i=0;i<_Bridges.size();i++)
     {
-        if(_Bridges[i]->getStartEdge()->getId()==bridge->getStartEdge()->getId() &&
-           _Bridges[i]->getEndEdge()->getId()==bridge->getEndEdge()->getId())
+        MyEdge *startEdge=_Bridges[i]->getStartEdge();
+        MyEdge *endEdge=_Bridges[i]->getEndEdge();
+
+        if(startEdge->getId()==bridge->getStartEdge()->getId() &&               //check if it is the right bridge
+           endEdge->getId()==bridge->getEndEdge()->getId())
         {
             deleteBridge.push_back(_Bridges[i]);
             _Bridges.erase(_Bridges.begin()+i);
-            i--;
+            _Matrix[startEdge->getId()][endEdge->getId()]=0;
+            _Matrix[endEdge->getId()][startEdge->getId()]=0;
+            break;
         }
     }
 

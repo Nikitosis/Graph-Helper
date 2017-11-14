@@ -27,11 +27,11 @@ void Bridge::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QW
     painter->drawLine(startEdge->getCordinates(),endEdge->getCordinates());
 
 
-    QPointF A=startEdge->getCordinates();
-    QPointF B=endEdge->getCordinates();
+    QPointF A=startEdge->getCordinates();           //First Point
+    QPointF B=endEdge->getCordinates();             //Second Point
     const double radius=startEdge->getRadius();
 
-    if(len2(startEdge->getCordinates(),endEdge->getCordinates())>2*radius)
+    if(len2(startEdge->getCordinates(),endEdge->getCordinates())>2*radius)      //If they are not intersected,we paint triangles
     {
         painter->setBrush(Qt::blue);
         if(connectMode==StartToEnd)
@@ -54,13 +54,14 @@ void Bridge::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QW
     }
 }
 
-double Bridge::len2(QPointF &a, QPointF &b) const
+double Bridge::len2(QPointF &a, QPointF &b) const           //length between 2 points
 {
     return sqrt((a.x()-b.x())*(a.x()-b.x())+(a.y()-b.y())*(a.y()-b.y()));
 }
 
 QPolygon Bridge::getTrianglePolygon(QPointF &from, QPointF &to, double radius, double side) const
 {
+    //Some geometry calculations,which make triangle polygon
     QPointF A;
     A.setX(from.x());
     A.setY(from.y());
@@ -136,7 +137,7 @@ MyEdge* Bridge::getEndEdge() const
 
 QRectF Bridge::boundingRect() const
 {
-   // return QRectF(startEdge->getCordinates(),endEdge->getCordinates()).normalized();
+    //+-20 to not have any artifacts
     QPointF start=startEdge->getCordinates();
     QPointF end=endEdge->getCordinates();
     return QRectF(QPointF(std::min(start.x(),end.x())-20,std::min(start.y(),end.y())-20),
