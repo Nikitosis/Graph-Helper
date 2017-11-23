@@ -24,6 +24,7 @@ public:
     void initMatrix(const QVector<QVector<int>> Vec,const QVector<MyEdge*> Edges);
     void initList(const QVector<QVector<int>> Vec,const QVector<MyEdge*> Edges);
     void initBridge(const QVector<QVector<int>> Vec,const QVector<MyEdge*> Edges);
+    void initIncidence(const QVector<QVector<int>> Vec,const QVector<MyEdge*> Edges);
 
 private:
     Ui::VisualGraph *ui;

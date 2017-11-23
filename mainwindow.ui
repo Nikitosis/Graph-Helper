@@ -25,7 +25,7 @@
 	background-color:black;
 }</string>
    </property>
-   <layout class="QGridLayout" name="gridLayout_2">
+   <layout class="QGridLayout" name="gridLayout_4">
     <item row="0" column="0">
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
@@ -55,7 +55,7 @@ QTabWidget::pane{
          <enum>QTabWidget::South</enum>
         </property>
         <property name="currentIndex">
-         <number>2</number>
+         <number>0</number>
         </property>
         <property name="movable">
          <bool>false</bool>
@@ -83,117 +83,119 @@ QPushButton:hover{
           <string>Tab 1</string>
          </attribute>
          <layout class="QGridLayout" name="gridLayout">
-          <item row="0" column="0" colspan="3">
-           <layout class="QHBoxLayout" name="horizontalLayout">
-            <property name="spacing">
-             <number>0</number>
+          <property name="topMargin">
+           <number>12</number>
+          </property>
+          <property name="bottomMargin">
+           <number>12</number>
+          </property>
+          <property name="horizontalSpacing">
+           <number>0</number>
+          </property>
+          <item row="0" column="0">
+           <widget class="QPushButton" name="cursorMode">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
             </property>
-            <item>
-             <widget class="QPushButton" name="cursorMode">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>70</width>
-                <height>70</height>
-               </size>
-              </property>
-              <property name="styleSheet">
-               <string notr="true"/>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-              <property name="icon">
-               <iconset resource="res.qrc">
-                <normaloff>:/buttons/img/cursor.png</normaloff>:/buttons/img/cursor.png</iconset>
-              </property>
-              <property name="iconSize">
-               <size>
-                <width>40</width>
-                <height>40</height>
-               </size>
-              </property>
-              <property name="flat">
-               <bool>false</bool>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="bridgeMode">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>70</width>
-                <height>70</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>16777215</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="styleSheet">
-               <string notr="true"/>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-              <property name="icon">
-               <iconset resource="res.qrc">
-                <normaloff>:/buttons/img/Bridge.png</normaloff>:/buttons/img/Bridge.png</iconset>
-              </property>
-              <property name="iconSize">
-               <size>
-                <width>70</width>
-                <height>70</height>
-               </size>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="edgeMode">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>70</width>
-                <height>70</height>
-               </size>
-              </property>
-              <property name="styleSheet">
-               <string notr="true"/>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-              <property name="icon">
-               <iconset resource="res.qrc">
-                <normaloff>:/buttons/img/Edge.png</normaloff>:/buttons/img/Edge.png</iconset>
-              </property>
-              <property name="iconSize">
-               <size>
-                <width>70</width>
-                <height>70</height>
-               </size>
-              </property>
-             </widget>
-            </item>
-           </layout>
+            <property name="minimumSize">
+             <size>
+              <width>70</width>
+              <height>70</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="res.qrc">
+              <normaloff>:/buttons/img/cursor.png</normaloff>:/buttons/img/cursor.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>40</width>
+              <height>40</height>
+             </size>
+            </property>
+            <property name="flat">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QPushButton" name="bridgeMode">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>70</width>
+              <height>70</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="res.qrc">
+              <normaloff>:/buttons/img/Bridge.png</normaloff>:/buttons/img/Bridge.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>70</width>
+              <height>70</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <widget class="QPushButton" name="edgeMode">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>70</width>
+              <height>70</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="res.qrc">
+              <normaloff>:/buttons/img/Edge.png</normaloff>:/buttons/img/Edge.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>70</width>
+              <height>70</height>
+             </size>
+            </property>
+           </widget>
           </item>
          </layout>
         </widget>
@@ -219,23 +221,20 @@ QPushButton:hover{
          <attribute name="title">
           <string>Tab 2</string>
          </attribute>
-         <layout class="QHBoxLayout" name="horizontalLayout_3">
-          <property name="spacing">
-           <number>0</number>
-          </property>
+         <layout class="QGridLayout" name="gridLayout_2">
           <property name="leftMargin">
            <number>9</number>
           </property>
           <property name="topMargin">
-           <number>13</number>
-          </property>
-          <property name="rightMargin">
-           <number>9</number>
+           <number>12</number>
           </property>
           <property name="bottomMargin">
-           <number>9</number>
+           <number>12</number>
           </property>
-          <item>
+          <property name="horizontalSpacing">
+           <number>0</number>
+          </property>
+          <item row="0" column="0">
            <widget class="QPushButton" name="bridgeDeleteMode">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -270,7 +269,7 @@ QPushButton:hover{
             </property>
            </widget>
           </item>
-          <item>
+          <item row="0" column="1">
            <widget class="QPushButton" name="edgeDeleteMode">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -305,9 +304,62 @@ QPushButton:hover{
             </property>
            </widget>
           </item>
+          <item row="0" column="2">
+           <widget class="QPushButton" name="deleteAll">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>70</width>
+              <height>70</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="res.qrc">
+              <normaloff>:/buttons/img/Trash.png</normaloff>:/buttons/img/Trash.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>40</width>
+              <height>50</height>
+             </size>
+            </property>
+            <property name="flat">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
          </layout>
         </widget>
         <widget class="QWidget" name="tab_3">
+         <property name="styleSheet">
+          <string notr="true">QPushButton
+{
+	background-color:#474747;
+	border:0px solid blue;
+	margin:0px 0px 0px 0px;
+	padding: 0px 0px 0px 0px;
+}
+QPushButton:pressed
+{
+	border:2px solid #54bae5;
+	margin:3px;
+}
+QPushButton:hover{
+	background-color:#504f4f;
+	border:2px solid #767676;
+}</string>
+         </property>
          <attribute name="title">
           <string>Страница</string>
          </attribute>
@@ -327,7 +379,17 @@ QPushButton:hover{
              </size>
             </property>
             <property name="text">
-             <string>PushButton</string>
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="res.qrc">
+              <normaloff>:/buttons/img/List.png</normaloff>:/buttons/img/List.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>90</width>
+              <height>90</height>
+             </size>
             </property>
            </widget>
           </item>

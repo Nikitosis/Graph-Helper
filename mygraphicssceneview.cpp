@@ -4,6 +4,7 @@ MyGraphicsSceneView::MyGraphicsSceneView(QWidget *parent) : QGraphicsView(parent
 {
     scene=new QGraphicsScene;
     scene->setSceneRect(0,0,1000,1000);
+
     this->setScene(scene);
     this->setMouseTracking(true);               //for mouse move event
 
@@ -31,6 +32,11 @@ void MyGraphicsSceneView::setMode(Mode mode)
     {
         graph->setEdgeMovable(true);                //user can move edge
     }
+}
+
+void MyGraphicsSceneView::deleteAll()
+{
+    graph->deleteAll();
 }
 
 QVector<QVector<int> > MyGraphicsSceneView::getCorrectMatrix() const
@@ -95,19 +101,21 @@ void MyGraphicsSceneView::mouseMoveBridgeMode(QMouseEvent *event)       //move m
 
 void MyGraphicsSceneView::mousePressEdgeMode(QMouseEvent *event)
 {
-    if(event->buttons() & Qt::LeftButton)
-    {
-        QPointF pos=mapToScene(event->pos());
-        const int radius=20;
-        MyEdge *edge=new MyEdge(pos.x()-radius,pos.y()-radius,radius,QString::number(graph->getFreeId()+1),graph->getFreeId());
-        //configuration edge
-        connect(edge,SIGNAL(mousePressSignal(QGraphicsSceneMouseEvent*)),this,SLOT(mousePressEdge(QGraphicsSceneMouseEvent*)));
-        connect(edge,SIGNAL(edgeMoved(MyEdge*)),this,SLOT(edgeMoved(MyEdge*)));
-        edge->setFlag(QGraphicsItem::ItemSendsGeometryChanges);         //enable onChange slot(while moving Edge)
+    QPointF pos=mapToScene(event->pos());
+    QRectF sceneRect=scene->sceneRect();
+    if(pos.x()>=sceneRect.x() && pos.x()<=sceneRect.width() && pos.y()>=sceneRect.y() && pos.y()<=sceneRect.height())           //check if user clicked out of the scene
+        if(event->buttons() & Qt::LeftButton)
+        {
+            const int radius=20;
+            MyEdge *edge=new MyEdge(pos.x()-radius,pos.y()-radius,radius,QString::number(graph->getFreeId()+1),graph->getFreeId());
+            //configuration edge
+            connect(edge,SIGNAL(mousePressSignal(QGraphicsSceneMouseEvent*)),this,SLOT(mousePressEdge(QGraphicsSceneMouseEvent*)));
+            connect(edge,SIGNAL(edgeMoved(MyEdge*)),this,SLOT(edgeMoved(MyEdge*)));
+            edge->setFlag(QGraphicsItem::ItemSendsGeometryChanges);         //enable onChange slot(while moving Edge)
 
-        scene->addItem(edge);
-        graph->addEdge(edge);
-    }
+            scene->addItem(edge);
+            graph->addEdge(edge);
+        }
 }
 
 void MyGraphicsSceneView::mousePressDeleteBridgeMode(QMouseEvent *event)

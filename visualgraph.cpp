@@ -60,12 +60,12 @@ void VisualGraph::initList(QVector<QVector<int> > Vec, QVector<MyEdge *> Edges)
 
 void VisualGraph::initBridge(const QVector<QVector<int> > Vec, const QVector<MyEdge *> Edges)
 {
-    int amount=0;
+    int bridgesAmount=0;
     for(int i=0;i<Vec.size();i++)
         for(int j=0;j<Vec.size();j++)
             if(Vec[i][j])
-                amount++;
-    QString str=QString::number(Edges.size())+" "+QString::number(amount)+"\n";
+                bridgesAmount++;
+    QString str=QString::number(Edges.size())+" "+QString::number(bridgesAmount)+"\n";
     for(int i=0;i<Vec.size();i++)
     {
         for(int j=0;j<Vec.size();j++)

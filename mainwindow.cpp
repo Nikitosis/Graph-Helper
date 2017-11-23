@@ -15,6 +15,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->edgeMode,&QPushButton::clicked,[=]{ui->graphicsView->setMode(MyGraphicsSceneView::Mode::EdgeMode);});
     connect(ui->bridgeDeleteMode,&QPushButton::clicked,[=]{ui->graphicsView->setMode(MyGraphicsSceneView::Mode::BridgeDeleteMode);});
     connect(ui->edgeDeleteMode,&QPushButton::clicked,[=]{ui->graphicsView->setMode(MyGraphicsSceneView::Mode::EdgeDeleteMode);});
+    connect(ui->deleteAll,SIGNAL(clicked(bool)),ui->graphicsView,SLOT(deleteAll()));
 
 
 

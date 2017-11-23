@@ -28,6 +28,7 @@ public:
 
     void deleteEdge(MyEdge *edge);
     void deleteBridge(Bridge *bridge);
+    void deleteAll();
 
     //some help
     double getLen(Bridge *bridge,QPointF &point) const;

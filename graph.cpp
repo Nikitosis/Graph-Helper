@@ -193,6 +193,18 @@ void Graph::deleteBridge(Bridge *bridge)
         delete deleteBridge[i];
 }
 
+void Graph::deleteAll()
+{
+    for(int i=0;i<_Edges.size();i++)
+        delete _Edges[i];
+    for(int i=0;i<_Bridges.size();i++)
+        delete _Bridges[i];
+
+    _Edges.clear();
+    _Bridges.clear();
+    _Matrix.clear();
+}
+
 void Graph::setEdgeMovable(bool isMovable)
 {
     for(int i=0;i<_Edges.size();i++)

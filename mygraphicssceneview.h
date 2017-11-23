@@ -27,6 +27,9 @@ public:
     enum Mode{CursorMode,BridgeMode,EdgeMode,BridgeDeleteMode,EdgeDeleteMode};
     explicit MyGraphicsSceneView(QWidget *parent = nullptr);
 
+    QVector<QVector<int>> getCorrectMatrix() const;
+    QVector<MyEdge*> getEdges() const;
+
 signals:
 
 public slots:
@@ -44,10 +47,9 @@ public slots:
     void wheelEvent(QWheelEvent *event);
 
     void mousePressEdge(QGraphicsSceneMouseEvent *event);
-    void setMode(Mode mode);
 
-    QVector<QVector<int>> getCorrectMatrix() const;
-    QVector<MyEdge*> getEdges() const;
+    void setMode(Mode mode);
+    void deleteAll();
 
 
 private:
