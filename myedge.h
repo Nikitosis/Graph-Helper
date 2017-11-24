@@ -22,6 +22,7 @@ public:
     double getRadius() const;
     QPointF getCordinates() const;
     QString getInfo() const;
+    void setInfo(QString info);
 
     QRectF boundingRect() const;
 

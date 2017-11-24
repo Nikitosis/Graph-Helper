@@ -54,6 +54,12 @@ QString MyEdge::getInfo() const
     return _info;
 }
 
+void MyEdge::setInfo(QString info)
+{
+    _info=info;
+    update();
+}
+
 QRectF MyEdge::boundingRect() const
 {
     return QRectF(0,0,_radius*2,_radius*2);

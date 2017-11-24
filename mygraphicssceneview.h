@@ -12,11 +12,13 @@
 #include <QPainter>
 #include <QScrollBar>
 #include <QVector>
+#include <QGraphicsProxyWidget>
 #include "myedge.h"
 #include "mygraphicsscene.h"
 #include "graph.h"
 #include "bridge.h"
 #include "line.h"
+#include "edgeedit.h"
 
 
 
@@ -29,6 +31,7 @@ public:
 
     QVector<QVector<int>> getCorrectMatrix() const;
     QVector<MyEdge*> getEdges() const;
+    QGraphicsProxyWidget *getProxyWidget(QWidget *uiElement);
 
 signals:
 
@@ -44,6 +47,8 @@ public slots:
     void mousePressMiddleButton(QMouseEvent *event); //move scene in view
     void mouseMoveMiddleButton(QMouseEvent *event);
 
+    void mouseRightClickCursorMode(QMouseEvent *event);
+
     void wheelEvent(QWheelEvent *event);
 
     void mousePressEdge(QGraphicsSceneMouseEvent *event);
@@ -58,7 +63,9 @@ private:
      Mode nowMode;
      Bridge *curBridge;
      Line *line;
-     int originPosX,originPosY;
+     QGraphicsProxyWidget *curEdgeEditProxy;
+     int originPosX;
+     int originPosY;
      bool makingBridge;
 
 };

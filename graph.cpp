@@ -109,7 +109,6 @@ int Graph::getFreeId() const                //get the id,which is first empty in
 
 QVector<QVector<int> > Graph::getCorrectMatrix() const          //get correct Matrix without superfluous(deleted) edges
 {
-    int amount=_Edges.size();
     QVector<QVector<int>> CorMatrix;
     QSet<int> set;                                              //use set to save edges,which are not deleted
     for(int i=0;i<_Edges.size();i++)

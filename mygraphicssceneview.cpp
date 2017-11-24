@@ -12,6 +12,7 @@ MyGraphicsSceneView::MyGraphicsSceneView(QWidget *parent) : QGraphicsView(parent
     curBridge=nullptr;
     line=nullptr;
     makingBridge=false;
+    curEdgeEditProxy=nullptr;
 
 
     horizontalScrollBar()->setHidden(true);         //hide scrollbars
@@ -56,7 +57,7 @@ void MyGraphicsSceneView::mousePressEvent(QMouseEvent *event    )//emits the SLO
     if(event->buttons() & Qt::MidButton)
         emit mousePressMiddleButton(event);
 
-    if((event->buttons() & (Qt::LeftButton | Qt::RightButton)))
+    if(event->buttons() & Qt::LeftButton)
     {
         switch(nowMode)
         {
@@ -65,6 +66,25 @@ void MyGraphicsSceneView::mousePressEvent(QMouseEvent *event    )//emits the SLO
             case BridgeDeleteMode:{emit mousePressDeleteBridgeMode(event);break;}
         }
     }
+
+    if(curEdgeEditProxy!=nullptr)
+    {
+        QGraphicsProxyWidget *edgeEdit=dynamic_cast<QGraphicsProxyWidget *>(itemAt(event->pos()));
+        if(!edgeEdit)
+        {
+            delete curEdgeEditProxy;
+            curEdgeEditProxy=nullptr;
+        }
+    }
+
+    if(event->buttons() & Qt::RightButton)
+    {
+        switch(nowMode)
+        {
+            case CursorMode:{emit mouseRightClickCursorMode(event);break;}
+        }
+    }
+
     QGraphicsView::mousePressEvent(event);                  //to let children's elements get this event
 }
 
@@ -80,6 +100,7 @@ void MyGraphicsSceneView::mouseMoveEvent(QMouseEvent *event)
 
     QGraphicsView::mouseMoveEvent(event);
 }
+
 
 void MyGraphicsSceneView::mouseMoveBridgeMode(QMouseEvent *event)       //move mouse in Bridge mode
 {
@@ -173,6 +194,32 @@ void MyGraphicsSceneView::mouseMoveMiddleButton(QMouseEvent *event)  //move scen
     originPosY=event->y();
 }
 
+/*When user double clicked on the edge,we create new EdgeEdit
+Firstly,we create curEdgeEdit and give it our edge,we clicked on
+then we initialized curEdgeEditProxy and set coordinates of it.*/
+void MyGraphicsSceneView::mouseRightClickCursorMode(QMouseEvent *event)
+{
+   MyEdge *edge=dynamic_cast<MyEdge*>(itemAt(event->pos()));
+   if(edge)
+   {
+       EdgeEdit *curEdgeEdit=new EdgeEdit;
+       curEdgeEdit->setEdge(edge);
+
+       if(curEdgeEditProxy!=nullptr)
+       {
+           delete curEdgeEditProxy;
+           curEdgeEditProxy=nullptr;
+       }
+
+      curEdgeEditProxy=getProxyWidget(curEdgeEdit);
+
+       QPointF center=edge->getCordinates();
+       QRectF size=curEdgeEditProxy->geometry();
+       curEdgeEditProxy->setPos(center.x(),center.y()-size.height()-edge->getRadius());
+       curEdgeEditProxy->show();
+   }
+}
+
 void MyGraphicsSceneView::wheelEvent(QWheelEvent *event)  //scaling scene with wheel
 {
      const double scaleFactor = 1.15;
@@ -219,4 +266,14 @@ void MyGraphicsSceneView::mousePressEdge(QGraphicsSceneMouseEvent *event)//When 
         MyEdge *edge=qobject_cast<MyEdge*>(snd);
         graph->deleteEdge(edge);
     }
+}
+
+QGraphicsProxyWidget *MyGraphicsSceneView::getProxyWidget(QWidget *uiElement)
+{
+    uiElement->setParent(0);
+    uiElement->setAttribute(Qt::WA_TranslucentBackground);
+    QGraphicsProxyWidget *proxy;
+    proxy=scene->addWidget(uiElement);
+    proxy->setZValue(5000);
+    return proxy;
 }

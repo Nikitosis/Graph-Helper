@@ -8,4 +8,7 @@
         <file>img/Trash.png</file>
         <file>img/List.png</file>
     </qresource>
+    <qresource prefix="/Backgrounds">
+        <file>img/EdgeEdit.png</file>
+    </qresource>
 </RCC>
