@@ -10,5 +10,6 @@
     </qresource>
     <qresource prefix="/Backgrounds">
         <file>img/EdgeEdit.png</file>
+        <file>img/BridgeEdit.png</file>
     </qresource>
 </RCC>

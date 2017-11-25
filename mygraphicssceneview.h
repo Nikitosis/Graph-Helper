@@ -19,6 +19,7 @@
 #include "bridge.h"
 #include "line.h"
 #include "edgeedit.h"
+#include "bridgeedit.h"
 
 
 
@@ -56,7 +57,8 @@ public slots:
     void setMode(Mode mode);
     void deleteAll();
 
-
+protected:
+    void deleteProxys(QMouseEvent *event);
 private:
      QGraphicsScene *scene;
      Graph *graph;
@@ -64,6 +66,7 @@ private:
      Bridge *curBridge;
      Line *line;
      QGraphicsProxyWidget *curEdgeEditProxy;
+     QGraphicsProxyWidget *curBridgeEditProxy;
      int originPosX;
      int originPosY;
      bool makingBridge;

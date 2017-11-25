@@ -25,8 +25,6 @@ private slots:
     void on_edgeName_textChanged(const QString &arg1);
 
 private:
-    int _posX;
-    int _posY;
     MyEdge *_edge;
     Ui::EdgeEdit *ui;
 };

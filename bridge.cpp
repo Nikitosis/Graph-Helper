@@ -4,11 +4,13 @@ Bridge::Bridge(QObject *parent) : QObject(parent),startEdge(nullptr),endEdge(nul
 {
     this->setZValue(1);
     connectMode=StartToEnd;
+    weight=1;
 }
 Bridge::Bridge(MyEdge *start, MyEdge *end, QObject *parent):QObject(parent),startEdge(start),endEdge(end)
 {
     this->setZValue(1);
     connectMode=StartToEnd;
+    weight=1;
 }
 
 
@@ -25,6 +27,7 @@ void Bridge::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QW
     pen.setColor(Qt::green);
     painter->setPen(pen);
     painter->drawLine(startEdge->getCordinates(),endEdge->getCordinates());
+
 
 
     QPointF A=startEdge->getCordinates();           //First Point
@@ -52,6 +55,7 @@ void Bridge::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QW
                 painter->drawPolygon(polygon);
             }
     }
+    paintWeight(painter);
 }
 
 double Bridge::len2(QPointF &a, QPointF &b) const           //length between 2 points
@@ -103,6 +107,21 @@ QPolygon Bridge::getTrianglePolygon(QPointF &from, QPointF &to, double radius, d
 
 }
 
+void Bridge::paintWeight(QPainter *painter)   //paint weight in center of the bridge
+{
+    QPen pen;
+    QRectF rect;
+    rect.setCoords(-30,-30,30,30);
+    pen.setWidth(10);
+    pen.setColor(Qt::black);
+    painter->setPen(pen);
+
+    painter->translate(getCenter());
+    painter->drawText(rect,Qt::AlignCenter,QString::number(weight));
+
+    painter->resetTransform();
+}
+
 void Bridge::setEndEdge(MyEdge *point)
 {
     endEdge=point;
@@ -120,6 +139,11 @@ void Bridge::changeConnectMode()
     update();
 }
 
+void Bridge::setWeight(int weight)
+{
+    this->weight=weight;
+}
+
 int Bridge::getConnectMode() const
 {
     return connectMode;
@@ -133,6 +157,19 @@ MyEdge* Bridge::getStartEdge() const
 MyEdge* Bridge::getEndEdge() const
 {
     return endEdge;
+}
+
+QPointF Bridge::getCenter() const
+{
+    QPointF start=startEdge->getCordinates();
+    QPointF end=endEdge->getCordinates();
+    QPointF center=start+(end-start)/2;
+    return center;
+}
+
+int Bridge::getWeight() const
+{
+    return weight;
 }
 
 QRectF Bridge::boundingRect() const

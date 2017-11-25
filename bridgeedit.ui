@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>EdgeEdit</class>
- <widget class="QWidget" name="EdgeEdit">
+ <class>BridgeEdit</class>
+ <widget class="QWidget" name="BridgeEdit">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>112</width>
-    <height>74</height>
+    <width>113</width>
+    <height>71</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">EdgeEdit
+   <string notr="true">BridgeEdit
 {
-border-radius:10px;
+	background-color:transparent;
 }</string>
   </property>
   <widget class="QLabel" name="background">
    <property name="geometry">
     <rect>
-     <x>0</x>
+     <x>1</x>
      <y>0</y>
      <width>111</width>
      <height>71</height>
@@ -38,7 +38,7 @@ background-color:transparent;
     <string/>
    </property>
    <property name="pixmap">
-    <pixmap resource="res.qrc">:/Backgrounds/img/EdgeEdit.png</pixmap>
+    <pixmap resource="res.qrc">:/Backgrounds/img/BridgeEdit.png</pixmap>
    </property>
    <property name="scaledContents">
     <bool>true</bool>
@@ -62,7 +62,7 @@ background-color:transparent;
   <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
-     <x>4</x>
+     <x>5</x>
      <y>11</y>
      <width>101</width>
      <height>41</height>
@@ -72,7 +72,7 @@ background-color:transparent;
     <item>
      <widget class="QLabel" name="label">
       <property name="text">
-       <string>Название вершины</string>
+       <string>Вес ребра</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
@@ -80,9 +80,9 @@ background-color:transparent;
      </widget>
     </item>
     <item>
-     <widget class="QLineEdit" name="edgeName">
+     <widget class="QLineEdit" name="BridgeWeight">
       <property name="maxLength">
-       <number>3000</number>
+       <number>8</number>
       </property>
      </widget>
     </item>

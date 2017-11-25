@@ -32,7 +32,8 @@ SOURCES += \
     graph.cpp \
     line.cpp \
     visualgraph.cpp \
-    edgeedit.cpp
+    edgeedit.cpp \
+    bridgeedit.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -42,12 +43,14 @@ HEADERS += \
     graph.h \
     line.h \
     visualgraph.h \
-    edgeedit.h
+    edgeedit.h \
+    bridgeedit.h
 
 FORMS += \
         mainwindow.ui \
     visualgraph.ui \
-    edgeedit.ui
+    edgeedit.ui \
+    bridgeedit.ui
 
 RESOURCES += \
     res.qrc

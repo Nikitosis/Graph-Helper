@@ -13,6 +13,7 @@ MyGraphicsSceneView::MyGraphicsSceneView(QWidget *parent) : QGraphicsView(parent
     line=nullptr;
     makingBridge=false;
     curEdgeEditProxy=nullptr;
+    curBridgeEditProxy=nullptr;
 
 
     horizontalScrollBar()->setHidden(true);         //hide scrollbars
@@ -40,6 +41,28 @@ void MyGraphicsSceneView::deleteAll()
     graph->deleteAll();
 }
 
+void MyGraphicsSceneView::deleteProxys(QMouseEvent *event)        //delete proxys if they are not deleted
+{
+    if(curEdgeEditProxy!=nullptr)
+    {
+        QGraphicsProxyWidget *edgeEdit=dynamic_cast<QGraphicsProxyWidget *>(itemAt(event->pos()));
+        if(!edgeEdit)
+        {
+            delete curEdgeEditProxy;
+            curEdgeEditProxy=nullptr;
+        }
+    }
+    if(curBridgeEditProxy!=nullptr)
+    {
+        QGraphicsProxyWidget *BridgeEdit=dynamic_cast<QGraphicsProxyWidget *>(itemAt(event->pos()));
+        if(!BridgeEdit)
+        {
+            delete curBridgeEditProxy;
+            curBridgeEditProxy=nullptr;
+        }
+    }
+}
+
 QVector<QVector<int> > MyGraphicsSceneView::getCorrectMatrix() const
 {
     return graph->getCorrectMatrix();
@@ -52,7 +75,7 @@ QVector<MyEdge *> MyGraphicsSceneView::getEdges() const
 
 
 
-void MyGraphicsSceneView::mousePressEvent(QMouseEvent *event    )//emits the SLOT,which matches the mode
+void MyGraphicsSceneView::mousePressEvent(QMouseEvent *event)//emits the SLOT,which matches the mode
 {
     if(event->buttons() & Qt::MidButton)
         emit mousePressMiddleButton(event);
@@ -67,15 +90,7 @@ void MyGraphicsSceneView::mousePressEvent(QMouseEvent *event    )//emits the SLO
         }
     }
 
-    if(curEdgeEditProxy!=nullptr)
-    {
-        QGraphicsProxyWidget *edgeEdit=dynamic_cast<QGraphicsProxyWidget *>(itemAt(event->pos()));
-        if(!edgeEdit)
-        {
-            delete curEdgeEditProxy;
-            curEdgeEditProxy=nullptr;
-        }
-    }
+    deleteProxys(event);
 
     if(event->buttons() & Qt::RightButton)
     {
@@ -217,6 +232,30 @@ void MyGraphicsSceneView::mouseRightClickCursorMode(QMouseEvent *event)
        QRectF size=curEdgeEditProxy->geometry();
        curEdgeEditProxy->setPos(center.x(),center.y()-size.height()-edge->getRadius());
        curEdgeEditProxy->show();
+   }
+   else
+   {
+       QPointF pos=mapToScene(event->pos());
+       Bridge* bridge=graph->findClosest(pos);
+       const int maxDistance=20;
+       if(graph->getLen(bridge,pos)<=maxDistance)
+       {
+           BridgeEdit *curBridgeEdit=new BridgeEdit;
+           curBridgeEdit->setBridge(bridge);
+
+           if(curBridgeEditProxy!=nullptr)
+           {
+               delete curBridgeEditProxy;
+               curBridgeEditProxy=nullptr;
+           }
+
+           curBridgeEditProxy=getProxyWidget(curBridgeEdit);
+
+           QPointF center=bridge->getCenter();
+           QRectF size=curBridgeEdit->geometry();
+           curBridgeEditProxy->setPos(center.x(),center.y()-size.height());
+           curBridgeEditProxy->show();
+       }
    }
 }
 

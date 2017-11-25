@@ -21,9 +21,12 @@ public:
 
     void setEndEdge(MyEdge *point);
     void changeConnectMode();
+    void setWeight(int weight);
     int getConnectMode() const;
     MyEdge* getStartEdge() const;
     MyEdge* getEndEdge() const;
+    QPointF getCenter() const;
+    int getWeight() const;
 
     QRectF boundingRect() const;
 
@@ -35,9 +38,11 @@ public slots:
 protected:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     QPolygon getTrianglePolygon(QPointF &from,QPointF &to,double radius,double side) const;
+    void paintWeight(QPainter *painter);
     double len2(QPointF &a, QPointF &b) const;
 
 private:
+    int weight;
     ConnectMode connectMode;
     MyEdge *startEdge;
     MyEdge *endEdge;
