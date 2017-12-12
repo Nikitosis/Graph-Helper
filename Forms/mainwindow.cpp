@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -22,7 +23,9 @@ MainWindow::MainWindow(QWidget *parent) :
     //Initializing some variables and installation the scene
     ui->graphicsView->setMode(MyGraphicsSceneView::Mode::EdgeMode);
 
-
+    VisualAlgorithm alg;
+    alg.init();
+    alg.exec();
 }
 
 MainWindow::~MainWindow()

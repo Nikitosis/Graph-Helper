@@ -62,12 +62,13 @@ void MyEdge::setInfo(QString info)
 
 QRectF MyEdge::boundingRect() const
 {
-    return QRectF(0,0,_radius*2,_radius*2);
+    return QRectF(0,0,_radius*2+4,_radius*2+4);   //we added 4 to not have artifacts
 }
 
 void MyEdge::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     QRectF rect=boundingRect();
+    rect.setCoords(rect.x()+2,rect.y()+2,rect.width()-2,rect.height()-2);     //plus and minus 2 to not have artifacts
     QPen pen;
     QBrush brush(Qt::white);
     pen.setWidth(4);
@@ -79,6 +80,7 @@ void MyEdge::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QW
     pen.setColor(Qt::black);
 
     painter->setPen(pen);
+    painter->setFont(getFont(painter));
     painter->drawText(rect,Qt::AlignCenter,_info);
 }
 
@@ -99,6 +101,29 @@ QVariant MyEdge::itemChange(QGraphicsItem::GraphicsItemChange change, const QVar
         emit edgeMoved(this);
     }
     return QGraphicsItem::itemChange(change,value);
+}
+
+QFont MyEdge::getFont(QPainter* painter)
+{
+    QFont font=painter->font();
+    font.setPixelSize(15);
+    int size=font.pixelSize();
+    if(_info.length()>=4)
+    {
+        size-=4;
+        font.setPixelSize(size);
+    }
+    if(_info.length()>=7)
+    {
+        size-=4;
+        font.setPixelSize(size);
+    }
+    if(_info.length()>=10)
+    {
+        size-=2;
+        font.setPixelSize(size);
+    }
+    return font;
 }
 
 

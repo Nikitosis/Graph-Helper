@@ -43,16 +43,16 @@ void Graph::changeConnectMode(Bridge *bridge)
 
     if(bridge->getConnectMode()==Bridge::StartToEnd)
     {
-        _Matrix[startNum][endNum]=1;
+        _Matrix[startNum][endNum]=bridge->getWeight();
     }
     if(bridge->getConnectMode()==Bridge::EndToStart)
     {
-        _Matrix[endNum][startNum]=1;
+        _Matrix[endNum][startNum]=bridge->getWeight();
     }
     if(bridge->getConnectMode()==Bridge::Both)
     {
-        _Matrix[startNum][endNum]=1;
-        _Matrix[endNum][startNum]=1;
+        _Matrix[startNum][endNum]=bridge->getWeight();
+        _Matrix[endNum][startNum]=bridge->getWeight();
     }
 }
 
@@ -218,5 +218,28 @@ void Graph::updateBridges()
     for(int i=0;i<_Bridges.size();i++)
     {
         _Bridges[i]->update();
+        updateBridgeInfo(_Bridges[i]);
+    }
+}
+
+void Graph::updateBridgeInfo(Bridge *bridge)
+{
+    int startNum=bridge->getStartEdge()->getId();
+    int endNum=bridge->getEndEdge()->getId();
+    _Matrix[startNum][endNum]=0;
+    _Matrix[endNum][startNum]=0;
+
+    if(bridge->getConnectMode()==Bridge::StartToEnd)
+    {
+        _Matrix[startNum][endNum]=bridge->getWeight();
+    }
+    if(bridge->getConnectMode()==Bridge::EndToStart)
+    {
+        _Matrix[endNum][startNum]=bridge->getWeight();
+    }
+    if(bridge->getConnectMode()==Bridge::Both)
+    {
+        _Matrix[startNum][endNum]=bridge->getWeight();
+        _Matrix[endNum][startNum]=bridge->getWeight();
     }
 }

@@ -65,6 +65,7 @@ void MyGraphicsSceneView::deleteProxys(QMouseEvent *event)        //delete proxy
 
 QVector<QVector<int> > MyGraphicsSceneView::getCorrectMatrix() const
 {
+    graph->updateBridges();
     return graph->getCorrectMatrix();
 }
 
@@ -92,7 +93,7 @@ void MyGraphicsSceneView::mousePressEvent(QMouseEvent *event)//emits the SLOT,wh
 
     deleteProxys(event);
 
-    if(event->buttons() & Qt::RightButton)
+    if((event->buttons() & Qt::RightButton) && !(event->buttons() & Qt::LeftButton))
     {
         switch(nowMode)
         {
@@ -146,13 +147,14 @@ void MyGraphicsSceneView::mousePressEdgeMode(QMouseEvent *event)
             MyEdge *edge=new MyEdge(pos.x()-radius,pos.y()-radius,radius,QString::number(graph->getFreeId()+1),graph->getFreeId());
             //configuration edge
             connect(edge,SIGNAL(mousePressSignal(QGraphicsSceneMouseEvent*)),this,SLOT(mousePressEdge(QGraphicsSceneMouseEvent*)));
-            connect(edge,SIGNAL(edgeMoved(MyEdge*)),this,SLOT(edgeMoved(MyEdge*)));
+            //connect(edge,SIGNAL(edgeMoved(MyEdge*)),this,SLOT(edgeMoved(MyEdge*)));
             edge->setFlag(QGraphicsItem::ItemSendsGeometryChanges);         //enable onChange slot(while moving Edge)
 
             scene->addItem(edge);
             graph->addEdge(edge);
         }
 }
+
 
 void MyGraphicsSceneView::mousePressDeleteBridgeMode(QMouseEvent *event)
 {

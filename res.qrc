@@ -7,9 +7,11 @@
         <file>img/EdgeDelete.png</file>
         <file>img/Trash.png</file>
         <file>img/List.png</file>
+        <file>img/Question.png</file>
     </qresource>
     <qresource prefix="/Backgrounds">
         <file>img/EdgeEdit.png</file>
         <file>img/BridgeEdit.png</file>
     </qresource>
+    <qresource prefix="/Help"/>
 </RCC>

@@ -6,6 +6,7 @@
 #include <QGraphicsObject>
 #include <QGraphicsSceneMouseEvent>
 #include <QPolygon>
+#include <qmath.h>
 
 #include "myedge.h"
 
@@ -27,6 +28,7 @@ public:
     MyEdge* getEndEdge() const;
     QPointF getCenter() const;
     int getWeight() const;
+    int getAngle() const;
 
     QRectF boundingRect() const;
 

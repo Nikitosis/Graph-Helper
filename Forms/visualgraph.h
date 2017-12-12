@@ -7,7 +7,7 @@
 #include <QScrollBar>
 #include <QtAlgorithms>
 #include <algorithm>
-#include "myedge.h"
+#include "SceneElements/myedge.h"
 
 namespace Ui {
 class VisualGraph;
@@ -25,6 +25,7 @@ public:
     void initList(const QVector<QVector<int>> Vec,const QVector<MyEdge*> Edges);
     void initBridge(const QVector<QVector<int>> Vec,const QVector<MyEdge*> Edges);
     void initIncidence(const QVector<QVector<int>> Vec,const QVector<MyEdge*> Edges);
+    void initHelp();
 
 private:
     Ui::VisualGraph *ui;

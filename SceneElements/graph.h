@@ -20,6 +20,7 @@ public:
     void changeConnectMode(Bridge *bridge);
     void setEdgeMovable(bool isMovable);
     void updateBridges();
+    void updateBridgeInfo(Bridge *bridge);
 
     int getFreeId() const;
     QVector<QVector<int> > getCorrectMatrix() const;

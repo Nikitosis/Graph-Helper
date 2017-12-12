@@ -9,6 +9,7 @@
 #include <QRect>
 #include <QColor>
 #include <QWidget>
+#include <QFont>
 
 class MyEdge : public QObject,public QGraphicsItem
 {
@@ -36,6 +37,7 @@ protected:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+    QFont getFont(QPainter *painter);
 
 private:
     int _x;

@@ -117,6 +117,9 @@ void Bridge::paintWeight(QPainter *painter)   //paint weight in center of the br
     painter->setPen(pen);
 
     painter->translate(getCenter());
+
+    int angle=getAngle();
+    painter->rotate(angle);
     painter->drawText(rect,Qt::AlignCenter,QString::number(weight));
 
     painter->resetTransform();
@@ -170,6 +173,14 @@ QPointF Bridge::getCenter() const
 int Bridge::getWeight() const
 {
     return weight;
+}
+
+int Bridge::getAngle() const
+{
+    double tg=(double)(endEdge->getCordinates().y()-startEdge->getCordinates().y())/
+            (double)(endEdge->getCordinates().x()-startEdge->getCordinates().x());
+    const double PI=3.14159265358979;
+    return atan(tg)/PI*180;
 }
 
 QRectF Bridge::boundingRect() const

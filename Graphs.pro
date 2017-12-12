@@ -24,33 +24,72 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += \
-        main.cpp \
-        mainwindow.cpp \
-    myedge.cpp \
-    mygraphicssceneview.cpp \
-    bridge.cpp \
-    graph.cpp \
-    line.cpp \
-    visualgraph.cpp \
-    edgeedit.cpp \
-    bridgeedit.cpp
+    SceneElements/bridge.cpp \
+    SceneElements/line.cpp \
+    SceneElements/myedge.cpp \
+    AppElements/mygraphicssceneview.cpp \
+    Edits/bridgeedit.cpp \
+    Edits/edgeedit.cpp \
+    Forms/mainwindow.cpp \
+    Forms/visualalgorithm.cpp \
+    Forms/visualgraph.cpp \
+    SceneElements/bridge.cpp \
+    SceneElements/graph.cpp \
+    SceneElements/line.cpp \
+    SceneElements/myedge.cpp \
+    main.cpp \
+    AppElements/mygraphicssceneview.cpp \
+    Edits/bridgeedit.cpp \
+    Edits/edgeedit.cpp \
+    Forms/mainwindow.cpp \
+    Forms/visualalgorithm.cpp \
+    Forms/visualgraph.cpp \
+    SceneElements/bridge.cpp \
+    SceneElements/graph.cpp \
+    SceneElements/line.cpp \
+    SceneElements/myedge.cpp \
+    main.cpp \
+    AppElements/CodeEdit/linenumberarea.cpp \
+    AppElements/CodeEdit/codeeditor.cpp
+
 
 HEADERS += \
-        mainwindow.h \
-    myedge.h \
-    mygraphicssceneview.h \
-    bridge.h \
-    graph.h \
-    line.h \
-    visualgraph.h \
-    edgeedit.h \
-    bridgeedit.h
+    SceneElements/bridge.h \
+    SceneElements/line.h \
+    SceneElements/myedge.h \
+    Edits/bridgeedit.h \
+    Edits/edgeedit.h \
+    Forms/mainwindow.h \
+    Forms/visualalgorithm.h \
+    Forms/visualgraph.h \
+    SceneElements/bridge.h \
+    SceneElements/graph.h \
+    SceneElements/line.h \
+    SceneElements/myedge.h \
+    Edits/bridgeedit.h \
+    Edits/edgeedit.h \
+    Forms/mainwindow.h \
+    Forms/visualalgorithm.h \
+    Forms/visualgraph.h \
+    SceneElements/bridge.h \
+    SceneElements/graph.h \
+    SceneElements/line.h \
+    SceneElements/myedge.h \
+    AppElements/mygraphicssceneview.h \
+    AppElements/CodeEdit/linenumberarea.h \
+    AppElements/CodeEdit/codeeditor.h
+
 
 FORMS += \
-        mainwindow.ui \
-    visualgraph.ui \
-    edgeedit.ui \
-    bridgeedit.ui
+    Edits/bridgeedit.ui \
+    Edits/edgeedit.ui \
+    Forms/mainwindow.ui \
+    Forms/visualalgorithm.ui \
+    Forms/visualgraph.ui
 
 RESOURCES += \
+    res.qrc \
     res.qrc
+
+SUBDIRS += \
+    Graphs.pro

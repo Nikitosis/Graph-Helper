@@ -5,8 +5,9 @@
 #include <QtCore>
 #include <QtGui>
 #include <QGraphicsScene>
-#include "mygraphicssceneview.h"
-#include "visualgraph.h"
+#include "Forms/visualgraph.h"
+#include "AppElements/mygraphicssceneview.h"
+#include "visualalgorithm.h"
 
 namespace Ui {
 class MainWindow;

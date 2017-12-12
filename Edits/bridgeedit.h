@@ -2,7 +2,7 @@
 #define BRIDGEEDIT_H
 
 #include <QWidget>
-#include "bridge.h"
+#include "SceneElements/bridge.h"
 
 namespace Ui {
 class BridgeEdit;

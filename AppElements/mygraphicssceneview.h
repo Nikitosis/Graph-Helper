@@ -13,13 +13,12 @@
 #include <QScrollBar>
 #include <QVector>
 #include <QGraphicsProxyWidget>
-#include "myedge.h"
-#include "mygraphicsscene.h"
-#include "graph.h"
-#include "bridge.h"
-#include "line.h"
-#include "edgeedit.h"
-#include "bridgeedit.h"
+#include "SceneElements/myedge.h"
+#include "SceneElements/graph.h"
+#include "SceneElements/bridge.h"
+#include "SceneElements/line.h"
+#include "Edits/edgeedit.h"
+#include "Edits/bridgeedit.h"
 
 
 

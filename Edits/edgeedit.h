@@ -4,7 +4,7 @@
 #include <QWidget>
 #include <QDialog>
 #include <QGraphicsItem>
-#include "myedge.h"
+#include "SceneElements/myedge.h"
 
 
 namespace Ui {
