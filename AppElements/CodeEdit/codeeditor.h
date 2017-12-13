@@ -3,7 +3,11 @@
 
 #include <QObject>
 #include <QPlainTextEdit>
-#include "AppElements/CodeEdit/linenumberarea.h"
+#include <QPainter>
+#include <QFontMetrics>
+#include <QTextBlock>
+#include <QPaintEvent>
+//#include "AppElements/CodeEdit/linenumberarea.h"
 
 class CodeEditor:public QPlainTextEdit
 {

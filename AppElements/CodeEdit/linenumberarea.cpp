@@ -1,11 +1,16 @@
 #include "linenumberarea.h"
 
-LineNumberArea::LineNumberArea(CodeEditor *parent) : QWidget(parent)
+LineNumberArea::LineNumberArea(CodeEditor *editor) : QWidget(editor)
 {
-    codeEditor=parent;
+    codeEditor=editor;
 }
 
 QSize LineNumberArea::sizeHint() const
 {
-    return QSize(codeEditor->lineNumberAreaWith,0);
+    return QSize(codeEditor->lineNumberAreaWidth(),0);
+}
+
+void LineNumberArea::paintEvent(QPaintEvent *event)
+{
+    codeEditor->lineNumberAreaPaintEvent(event);
 }
