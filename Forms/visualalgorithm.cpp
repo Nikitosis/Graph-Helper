@@ -6,14 +6,19 @@ VisualAlgorithm::VisualAlgorithm(Graph *graph,QWidget *parent) :
     ui(new Ui::VisualAlgorithm)
 {
     ui->setupUi(this);
-    _graph=graph;
+    _graph=new Graph(graph,this);
     init();
 }
 
 void VisualAlgorithm::init()
 {
-    ui->splitter->setStretchFactor(0,7);
-    ui->splitter->setStretchFactor(1,4);
+    QSizePolicy policy=ui->Graph->sizePolicy();
+    policy.setHorizontalStretch(3.93);
+    ui->Graph->setSizePolicy(policy);
+
+    policy=ui->Code->sizePolicy();
+    policy.setHorizontalStretch(7);
+    ui->Code->setSizePolicy(policy);
     ui->splitter_2->setStretchFactor(0,2);
     ui->splitter_2->setStretchFactor(1,1);
 

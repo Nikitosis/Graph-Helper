@@ -24,18 +24,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += \
-    SceneElements/bridge.cpp \
-    SceneElements/line.cpp \
-    SceneElements/myedge.cpp \
-    Edits/bridgeedit.cpp \
-    Edits/edgeedit.cpp \
-    Forms/mainwindow.cpp \
-    Forms/visualalgorithm.cpp \
-    Forms/visualgraph.cpp \
-    SceneElements/bridge.cpp \
-    SceneElements/graph.cpp \
-    SceneElements/line.cpp \
-    SceneElements/myedge.cpp \
     main.cpp \
     Edits/bridgeedit.cpp \
     Edits/edgeedit.cpp \
@@ -46,7 +34,6 @@ SOURCES += \
     SceneElements/graph.cpp \
     SceneElements/line.cpp \
     SceneElements/myedge.cpp \
-    main.cpp \
     AppElements/CodeEdit/linenumberarea.cpp \
     AppElements/CodeEdit/codeeditor.cpp \
     AppElements/visualgraphsceneview.cpp \
@@ -54,18 +41,6 @@ SOURCES += \
 
 
 HEADERS += \
-    SceneElements/bridge.h \
-    SceneElements/line.h \
-    SceneElements/myedge.h \
-    Edits/bridgeedit.h \
-    Edits/edgeedit.h \
-    Forms/mainwindow.h \
-    Forms/visualalgorithm.h \
-    Forms/visualgraph.h \
-    SceneElements/bridge.h \
-    SceneElements/graph.h \
-    SceneElements/line.h \
-    SceneElements/myedge.h \
     Edits/bridgeedit.h \
     Edits/edgeedit.h \
     Forms/mainwindow.h \
@@ -86,11 +61,10 @@ FORMS += \
     Edits/edgeedit.ui \
     Forms/mainwindow.ui \
     Forms/visualalgorithm.ui \
-    Forms/visualgraph.ui
+    Forms/visualgraph.ui \
 
 RESOURCES += \
     res.qrc \
-    res.qrc
 
 SUBDIRS += \
     Graphs.pro

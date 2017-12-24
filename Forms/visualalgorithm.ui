@@ -6,12 +6,19 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>653</width>
-    <height>548</height>
+    <width>567</width>
+    <height>424</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QPushButton
+{
+	margin:0px;
+	padding:0px;
+}</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
@@ -25,7 +32,7 @@
       </property>
       <widget class="VisualAlgorithmSceneView" name="Graph">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+        <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -37,10 +44,20 @@
         </size>
        </property>
       </widget>
-      <widget class="CodeEditor" name="Code"/>
+      <widget class="CodeEditor" name="Code">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+      </widget>
      </widget>
      <widget class="QWidget" name="layoutWidget">
       <layout class="QHBoxLayout" name="horizontalLayout" stretch="7,2,2">
+       <property name="spacing">
+        <number>0</number>
+       </property>
        <item>
         <widget class="QTreeWidget" name="Watch">
          <column>
@@ -57,6 +74,9 @@
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
+         </property>
+         <property name="styleSheet">
+          <string notr="true"/>
          </property>
          <property name="text">
           <string/>
@@ -106,12 +126,12 @@
   <customwidget>
    <class>CodeEditor</class>
    <extends>QPlainTextEdit</extends>
-   <header>codeeditor.h</header>
+   <header>AppElements/CodeEdit/codeeditor.h</header>
   </customwidget>
   <customwidget>
    <class>VisualAlgorithmSceneView</class>
    <extends>QGraphicsView</extends>
-   <header>visualalgorithmsceneview.h</header>
+   <header>AppElements/visualalgorithmsceneview.h</header>
   </customwidget>
  </customwidgets>
  <resources>

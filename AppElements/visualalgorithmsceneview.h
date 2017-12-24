@@ -6,6 +6,7 @@
 #include <QGraphicsScene>
 #include <QGraphicsView>
 #include <QScrollBar>
+#include <SceneElements/myedge.h>
 
 class VisualAlgorithmSceneView : public QGraphicsView
 {

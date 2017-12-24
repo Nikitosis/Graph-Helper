@@ -21,7 +21,6 @@ void CodeEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
     int blockNumber=block.blockNumber();
     int top=(int) blockBoundingGeometry(block).translated(contentOffset()).top();
     int bottom=top+(int)blockBoundingGeometry(block).height();
-    int k=event->rect().bottom();
 
     while(block.isValid() && top<=event->rect().bottom())
     {

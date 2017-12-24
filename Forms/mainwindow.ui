@@ -398,7 +398,7 @@ QPushButton:hover{
        </widget>
       </item>
       <item>
-       <widget class="MyGraphicsSceneView" name="graphicsView">
+       <widget class="VisualGraphSceneView" name="graphicsView">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
           <horstretch>100</horstretch>
@@ -426,9 +426,9 @@ QPushButton:hover{
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>MyGraphicsSceneView</class>
+   <class>VisualGraphSceneView</class>
    <extends>QGraphicsView</extends>
-   <header>mygraphicssceneview.h</header>
+   <header>AppElements/visualgraphsceneview.h</header>
   </customwidget>
  </customwidgets>
  <resources>

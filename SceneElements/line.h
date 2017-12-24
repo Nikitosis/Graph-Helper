@@ -11,6 +11,7 @@
 class Line : public QObject,public QGraphicsItem
 {
     Q_OBJECT
+    Q_INTERFACES(QGraphicsItem)
 public:
     explicit Line(QObject *parent = nullptr);
     explicit Line(int startX,int startY,int endX,int endY,QObject *parent = nullptr);
