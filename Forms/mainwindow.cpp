@@ -11,20 +11,19 @@ MainWindow::MainWindow(QWidget *parent) :
     //Button connections with lambdas
 
 
-    connect(ui->cursorMode,&QPushButton::clicked,[=]{ui->graphicsView->setMode(MyGraphicsSceneView::Mode::CursorMode);});
-    connect(ui->bridgeMode,&QPushButton::clicked,[=]{ui->graphicsView->setMode(MyGraphicsSceneView::Mode::BridgeMode);});
-    connect(ui->edgeMode,&QPushButton::clicked,[=]{ui->graphicsView->setMode(MyGraphicsSceneView::Mode::EdgeMode);});
-    connect(ui->bridgeDeleteMode,&QPushButton::clicked,[=]{ui->graphicsView->setMode(MyGraphicsSceneView::Mode::BridgeDeleteMode);});
-    connect(ui->edgeDeleteMode,&QPushButton::clicked,[=]{ui->graphicsView->setMode(MyGraphicsSceneView::Mode::EdgeDeleteMode);});
+    connect(ui->cursorMode,&QPushButton::clicked,[=]{ui->graphicsView->setMode(VisualGraphSceneView::Mode::CursorMode);});
+    connect(ui->bridgeMode,&QPushButton::clicked,[=]{ui->graphicsView->setMode(VisualGraphSceneView::Mode::BridgeMode);});
+    connect(ui->edgeMode,&QPushButton::clicked,[=]{ui->graphicsView->setMode(VisualGraphSceneView::Mode::EdgeMode);});
+    connect(ui->bridgeDeleteMode,&QPushButton::clicked,[=]{ui->graphicsView->setMode(VisualGraphSceneView::Mode::BridgeDeleteMode);});
+    connect(ui->edgeDeleteMode,&QPushButton::clicked,[=]{ui->graphicsView->setMode(VisualGraphSceneView::Mode::EdgeDeleteMode);});
     connect(ui->deleteAll,SIGNAL(clicked(bool)),ui->graphicsView,SLOT(deleteAll()));
 
 
 
     //Initializing some variables and installation the scene
-    ui->graphicsView->setMode(MyGraphicsSceneView::Mode::EdgeMode);
+    ui->graphicsView->setMode(VisualGraphSceneView::Mode::EdgeMode);
 
-    VisualAlgorithm alg;
-    alg.init();
+    VisualAlgorithm alg(ui->graphicsView->getGraph());
     alg.exec();
 }
 

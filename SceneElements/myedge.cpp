@@ -33,6 +33,20 @@ MyEdge::MyEdge(QPointF p, int radius, QString info,int id, QObject *parent):
     this->setZValue(2);
 }
 
+MyEdge::MyEdge(MyEdge *edge, QObject *parent):
+    _x(edge->_x),
+    _y(edge->_y),
+    _radius(edge->_radius),
+    _info(edge->_info),
+    _id(edge->_id),
+    QObject(parent)
+{
+    _xStart=_x;
+    _yStart=_y;
+    setPos(_x,_y);
+    this->setZValue(2);
+}
+
 int MyEdge::getId() const
 {
     return _id;
@@ -98,7 +112,6 @@ QVariant MyEdge::itemChange(QGraphicsItem::GraphicsItemChange change, const QVar
         _x=pos().x();
         _y=pos().y();
         update();
-        emit edgeMoved(this);
     }
     return QGraphicsItem::itemChange(change,value);
 }

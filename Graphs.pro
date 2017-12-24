@@ -27,7 +27,6 @@ SOURCES += \
     SceneElements/bridge.cpp \
     SceneElements/line.cpp \
     SceneElements/myedge.cpp \
-    AppElements/mygraphicssceneview.cpp \
     Edits/bridgeedit.cpp \
     Edits/edgeedit.cpp \
     Forms/mainwindow.cpp \
@@ -38,7 +37,6 @@ SOURCES += \
     SceneElements/line.cpp \
     SceneElements/myedge.cpp \
     main.cpp \
-    AppElements/mygraphicssceneview.cpp \
     Edits/bridgeedit.cpp \
     Edits/edgeedit.cpp \
     Forms/mainwindow.cpp \
@@ -50,7 +48,9 @@ SOURCES += \
     SceneElements/myedge.cpp \
     main.cpp \
     AppElements/CodeEdit/linenumberarea.cpp \
-    AppElements/CodeEdit/codeeditor.cpp
+    AppElements/CodeEdit/codeeditor.cpp \
+    AppElements/visualgraphsceneview.cpp \
+    AppElements/visualalgorithmsceneview.cpp
 
 
 HEADERS += \
@@ -75,9 +75,10 @@ HEADERS += \
     SceneElements/graph.h \
     SceneElements/line.h \
     SceneElements/myedge.h \
-    AppElements/mygraphicssceneview.h \
     AppElements/CodeEdit/linenumberarea.h \
-    AppElements/CodeEdit/codeeditor.h
+    AppElements/CodeEdit/codeeditor.h \
+    AppElements/visualgraphsceneview.h \
+    AppElements/visualalgorithmsceneview.h
 
 
 FORMS += \

@@ -14,6 +14,7 @@ class Graph : public QObject
     Q_OBJECT
 public:
     explicit Graph(QObject *parent = nullptr);
+    explicit Graph(Graph *graph,QObject *parent=nullptr);
 
     void addBridge(Bridge *bridge);
     void addEdge(MyEdge *edge);

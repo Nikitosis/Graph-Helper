@@ -1,8 +1,8 @@
-#include "mygraphicssceneview.h"
+#include "visualgraphsceneview.h"
 
-MyGraphicsSceneView::MyGraphicsSceneView(QWidget *parent) : QGraphicsView(parent)
+VisualGraphSceneView::VisualGraphSceneView(QWidget *parent) : QGraphicsView(parent)
 {
-    scene=new QGraphicsScene;
+    scene=new QGraphicsScene(this);
     scene->setSceneRect(0,0,1000,1000);
 
     this->setScene(scene);
@@ -21,7 +21,7 @@ MyGraphicsSceneView::MyGraphicsSceneView(QWidget *parent) : QGraphicsView(parent
 }
 
 
-void MyGraphicsSceneView::setMode(Mode mode)
+void VisualGraphSceneView::setMode(Mode mode)
 {
     if(nowMode==CursorMode)
     {
@@ -36,12 +36,12 @@ void MyGraphicsSceneView::setMode(Mode mode)
     }
 }
 
-void MyGraphicsSceneView::deleteAll()
+void VisualGraphSceneView::deleteAll()
 {
     graph->deleteAll();
 }
 
-void MyGraphicsSceneView::deleteProxys(QMouseEvent *event)        //delete proxys if they are not deleted
+void VisualGraphSceneView::deleteProxys(QMouseEvent *event)        //delete proxys if they are not deleted
 {
     if(curEdgeEditProxy!=nullptr)
     {
@@ -63,20 +63,25 @@ void MyGraphicsSceneView::deleteProxys(QMouseEvent *event)        //delete proxy
     }
 }
 
-QVector<QVector<int> > MyGraphicsSceneView::getCorrectMatrix() const
+QVector<QVector<int> > VisualGraphSceneView::getCorrectMatrix() const
 {
     graph->updateBridges();
     return graph->getCorrectMatrix();
 }
 
-QVector<MyEdge *> MyGraphicsSceneView::getEdges() const
+QVector<MyEdge *> VisualGraphSceneView::getEdges() const
 {
     return graph->getEdges();
 }
 
+Graph *VisualGraphSceneView::getGraph() const
+{
+    return graph;
+}
 
 
-void MyGraphicsSceneView::mousePressEvent(QMouseEvent *event)//emits the SLOT,which matches the mode
+
+void VisualGraphSceneView::mousePressEvent(QMouseEvent *event)//emits the SLOT,which matches the mode
 {
     if(event->buttons() & Qt::MidButton)
         emit mousePressMiddleButton(event);
@@ -104,7 +109,7 @@ void MyGraphicsSceneView::mousePressEvent(QMouseEvent *event)//emits the SLOT,wh
     QGraphicsView::mousePressEvent(event);                  //to let children's elements get this event
 }
 
-void MyGraphicsSceneView::mouseMoveEvent(QMouseEvent *event)
+void VisualGraphSceneView::mouseMoveEvent(QMouseEvent *event)
 {
     QPointF pos=mapToScene(event->pos());
     qDebug()<<"Move"<<pos.x()<<" "<<pos.y();
@@ -118,7 +123,7 @@ void MyGraphicsSceneView::mouseMoveEvent(QMouseEvent *event)
 }
 
 
-void MyGraphicsSceneView::mouseMoveBridgeMode(QMouseEvent *event)       //move mouse in Bridge mode
+void VisualGraphSceneView::mouseMoveBridgeMode(QMouseEvent *event)       //move mouse in Bridge mode
 {
     if(makingBridge)                               //if we are making bridge
     {
@@ -126,7 +131,7 @@ void MyGraphicsSceneView::mouseMoveBridgeMode(QMouseEvent *event)       //move m
         MyEdge *edge=curBridge->getStartEdge();
 
         if(line==nullptr)
-            line=new Line(edge->getCordinates().x(),edge->getCordinates().y(),pos.x(),pos.y());
+            line=new Line(edge->getCordinates().x(),edge->getCordinates().y(),pos.x(),pos.y(),this);
 
         line->setCoords(edge->getCordinates().x(),edge->getCordinates().y(),pos.x(),pos.y());
         if(!scene->items().contains(line))              //to not add line twice
@@ -136,7 +141,7 @@ void MyGraphicsSceneView::mouseMoveBridgeMode(QMouseEvent *event)       //move m
 
 
 
-void MyGraphicsSceneView::mousePressEdgeMode(QMouseEvent *event)
+void VisualGraphSceneView::mousePressEdgeMode(QMouseEvent *event)
 {
     QPointF pos=mapToScene(event->pos());
     QRectF sceneRect=scene->sceneRect();
@@ -147,7 +152,6 @@ void MyGraphicsSceneView::mousePressEdgeMode(QMouseEvent *event)
             MyEdge *edge=new MyEdge(pos.x()-radius,pos.y()-radius,radius,QString::number(graph->getFreeId()+1),graph->getFreeId());
             //configuration edge
             connect(edge,SIGNAL(mousePressSignal(QGraphicsSceneMouseEvent*)),this,SLOT(mousePressEdge(QGraphicsSceneMouseEvent*)));
-            //connect(edge,SIGNAL(edgeMoved(MyEdge*)),this,SLOT(edgeMoved(MyEdge*)));
             edge->setFlag(QGraphicsItem::ItemSendsGeometryChanges);         //enable onChange slot(while moving Edge)
 
             scene->addItem(edge);
@@ -156,7 +160,7 @@ void MyGraphicsSceneView::mousePressEdgeMode(QMouseEvent *event)
 }
 
 
-void MyGraphicsSceneView::mousePressDeleteBridgeMode(QMouseEvent *event)
+void VisualGraphSceneView::mousePressDeleteBridgeMode(QMouseEvent *event)
 {
     QPointF pos=mapToScene(event->pos());
     Bridge *closest=graph->findClosest(pos);
@@ -167,7 +171,7 @@ void MyGraphicsSceneView::mousePressDeleteBridgeMode(QMouseEvent *event)
     }
 }
 
-void MyGraphicsSceneView::mousePressBridgeMode(QMouseEvent *event)
+void VisualGraphSceneView::mousePressBridgeMode(QMouseEvent *event)
 {
     if(line!=nullptr)        //if we clicked second time,using bridge-making,we delete line
     {
@@ -196,13 +200,13 @@ void MyGraphicsSceneView::mousePressBridgeMode(QMouseEvent *event)
         }
 }
 
-void MyGraphicsSceneView::mousePressMiddleButton(QMouseEvent *event)
+void VisualGraphSceneView::mousePressMiddleButton(QMouseEvent *event)
 {
     originPosX=event->x();
     originPosY=event->y();
 }
 
-void MyGraphicsSceneView::mouseMoveMiddleButton(QMouseEvent *event)  //move scene with mid button
+void VisualGraphSceneView::mouseMoveMiddleButton(QMouseEvent *event)  //move scene with mid button
 {
     horizontalScrollBar()->setValue(horizontalScrollBar()->value()-(event->x()-originPosX));
     verticalScrollBar()->setValue(verticalScrollBar()->value()-(event->y()-originPosY));
@@ -214,12 +218,12 @@ void MyGraphicsSceneView::mouseMoveMiddleButton(QMouseEvent *event)  //move scen
 /*When user double clicked on the edge,we create new EdgeEdit
 Firstly,we create curEdgeEdit and give it our edge,we clicked on
 then we initialized curEdgeEditProxy and set coordinates of it.*/
-void MyGraphicsSceneView::mouseRightClickCursorMode(QMouseEvent *event)
+void VisualGraphSceneView::mouseRightClickCursorMode(QMouseEvent *event)
 {
    MyEdge *edge=dynamic_cast<MyEdge*>(itemAt(event->pos()));
    if(edge)
    {
-       EdgeEdit *curEdgeEdit=new EdgeEdit;
+       EdgeEdit *curEdgeEdit=new EdgeEdit(this);
        curEdgeEdit->setEdge(edge);
 
        if(curEdgeEditProxy!=nullptr)
@@ -242,7 +246,7 @@ void MyGraphicsSceneView::mouseRightClickCursorMode(QMouseEvent *event)
        const int maxDistance=20;
        if(graph->getLen(bridge,pos)<=maxDistance)
        {
-           BridgeEdit *curBridgeEdit=new BridgeEdit;
+           BridgeEdit *curBridgeEdit=new BridgeEdit(this);
            curBridgeEdit->setBridge(bridge);
 
            if(curBridgeEditProxy!=nullptr)
@@ -261,7 +265,7 @@ void MyGraphicsSceneView::mouseRightClickCursorMode(QMouseEvent *event)
    }
 }
 
-void MyGraphicsSceneView::wheelEvent(QWheelEvent *event)  //scaling scene with wheel
+void VisualGraphSceneView::wheelEvent(QWheelEvent *event)  //scaling scene with wheel
 {
      const double scaleFactor = 1.15;
      if(event->delta() > 0)
@@ -280,7 +284,7 @@ void MyGraphicsSceneView::wheelEvent(QWheelEvent *event)  //scaling scene with w
         }
 }
 
-void MyGraphicsSceneView::mousePressEdge(QGraphicsSceneMouseEvent *event)//When we press Edge
+void VisualGraphSceneView::mousePressEdge(QGraphicsSceneMouseEvent *event)//When we press Edge
 {
     if(nowMode==BridgeMode)
     {
@@ -309,7 +313,7 @@ void MyGraphicsSceneView::mousePressEdge(QGraphicsSceneMouseEvent *event)//When 
     }
 }
 
-QGraphicsProxyWidget *MyGraphicsSceneView::getProxyWidget(QWidget *uiElement)
+QGraphicsProxyWidget *VisualGraphSceneView::getProxyWidget(QWidget *uiElement)
 {
     uiElement->setParent(0);
     uiElement->setAttribute(Qt::WA_TranslucentBackground);

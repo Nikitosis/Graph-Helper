@@ -55,7 +55,7 @@ QTabWidget::pane{
          <enum>QTabWidget::South</enum>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>2</number>
         </property>
         <property name="movable">
          <bool>false</bool>
@@ -113,7 +113,7 @@ QPushButton:hover{
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="res.qrc">
+             <iconset resource="../res.qrc">
               <normaloff>:/buttons/img/cursor.png</normaloff>:/buttons/img/cursor.png</iconset>
             </property>
             <property name="iconSize">
@@ -154,7 +154,7 @@ QPushButton:hover{
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="res.qrc">
+             <iconset resource="../res.qrc">
               <normaloff>:/buttons/img/Bridge.png</normaloff>:/buttons/img/Bridge.png</iconset>
             </property>
             <property name="iconSize">
@@ -186,7 +186,7 @@ QPushButton:hover{
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="res.qrc">
+             <iconset resource="../res.qrc">
               <normaloff>:/buttons/img/Edge.png</normaloff>:/buttons/img/Edge.png</iconset>
             </property>
             <property name="iconSize">
@@ -255,7 +255,7 @@ QPushButton:hover{
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="res.qrc">
+             <iconset resource="../res.qrc">
               <normaloff>:/buttons/img/BridgeDelete.png</normaloff>:/buttons/img/BridgeDelete.png</iconset>
             </property>
             <property name="iconSize">
@@ -290,7 +290,7 @@ QPushButton:hover{
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="res.qrc">
+             <iconset resource="../res.qrc">
               <normaloff>:/buttons/img/EdgeDelete.png</normaloff>:/buttons/img/EdgeDelete.png</iconset>
             </property>
             <property name="iconSize">
@@ -325,7 +325,7 @@ QPushButton:hover{
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="res.qrc">
+             <iconset resource="../res.qrc">
               <normaloff>:/buttons/img/Trash.png</normaloff>:/buttons/img/Trash.png</iconset>
             </property>
             <property name="iconSize">
@@ -382,7 +382,7 @@ QPushButton:hover{
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="res.qrc">
+             <iconset resource="../res.qrc">
               <normaloff>:/buttons/img/List.png</normaloff>:/buttons/img/List.png</iconset>
             </property>
             <property name="iconSize">
@@ -432,7 +432,7 @@ QPushButton:hover{
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="res.qrc"/>
+  <include location="../res.qrc"/>
  </resources>
  <connections/>
 </ui>

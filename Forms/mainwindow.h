@@ -5,9 +5,9 @@
 #include <QtCore>
 #include <QtGui>
 #include <QGraphicsScene>
-#include "Forms/visualgraph.h"
-#include "AppElements/mygraphicssceneview.h"
-#include "visualalgorithm.h"
+#include <Forms/visualgraph.h>
+#include <AppElements/visualgraphsceneview.h>
+#include <Forms/visualalgorithm.h>
 
 namespace Ui {
 class MainWindow;
@@ -29,7 +29,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    MyGraphicsSceneView::Mode nowMode;
+    VisualGraphSceneView::Mode nowMode;
     VisualGraph *visualGraphWindow;
 
 

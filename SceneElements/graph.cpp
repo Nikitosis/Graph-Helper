@@ -4,6 +4,32 @@ Graph::Graph(QObject *parent) : QObject(parent)
 {
 }
 
+Graph::Graph(Graph *graph, QObject *parent):QObject(parent)
+{
+    _Matrix=graph->_Matrix;
+    for(int i=0;i<graph->_Edges.size();i++)    //copy Edges
+    {
+        MyEdge *edge=graph->_Edges[i];
+        _Edges.push_back(new MyEdge(edge));
+    }
+
+    for(int i=0;i<graph->_Bridges.size();i++)  //copy Bridges
+    {
+        MyEdge *firstEdge=graph->_Bridges[i]->getStartEdge();
+        MyEdge *secondEdge=graph->_Bridges[i]->getEndEdge();
+        for(int j=0;j<_Edges.size();j++)
+        {
+            if(_Edges[j]->getId()==firstEdge->getId())
+                firstEdge=_Edges[j];
+            if(_Edges[j]->getId()==secondEdge->getId())
+                secondEdge=_Edges[j];
+        }
+        Bridge *bridge=new Bridge(firstEdge,secondEdge,this);
+        addBridge(bridge);
+    }
+
+}
+
 void Graph::addBridge(Bridge *bridge)
 {
     _Bridges.push_back(bridge);

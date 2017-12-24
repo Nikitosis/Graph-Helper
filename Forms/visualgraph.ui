@@ -110,7 +110,7 @@
               <string/>
              </property>
              <property name="pixmap">
-              <pixmap resource="res.qrc">:/buttons/img/Question.png</pixmap>
+              <pixmap resource="../res.qrc">:/buttons/img/Question.png</pixmap>
              </property>
              <property name="scaledContents">
               <bool>true</bool>
@@ -280,7 +280,7 @@
               <string/>
              </property>
              <property name="pixmap">
-              <pixmap resource="res.qrc">:/buttons/img/Question.png</pixmap>
+              <pixmap resource="../res.qrc">:/buttons/img/Question.png</pixmap>
              </property>
              <property name="scaledContents">
               <bool>true</bool>
@@ -434,7 +434,7 @@
             <string/>
            </property>
            <property name="pixmap">
-            <pixmap resource="res.qrc">:/buttons/img/Question.png</pixmap>
+            <pixmap resource="../res.qrc">:/buttons/img/Question.png</pixmap>
            </property>
            <property name="scaledContents">
             <bool>true</bool>
@@ -499,11 +499,9 @@
     </layout>
    </item>
   </layout>
-  <zorder>label_5</zorder>
-  <zorder>List</zorder>
  </widget>
  <resources>
-  <include location="res.qrc"/>
+  <include location="../res.qrc"/>
  </resources>
  <connections/>
 </ui>

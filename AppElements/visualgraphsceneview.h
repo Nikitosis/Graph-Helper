@@ -1,5 +1,5 @@
-#ifndef MYGRAPHICSSCENEVIEW_H
-#define MYGRAPHICSSCENEVIEW_H
+#ifndef VISUALGRAPHSCENEVIEW_H
+#define VISUALGRAPHSCENEVIEW_H
 
 #include <QObject>
 #include <QWidget>
@@ -22,15 +22,16 @@
 
 
 
-class MyGraphicsSceneView :public QGraphicsView
+class VisualGraphSceneView :public QGraphicsView
 {
     Q_OBJECT
 public:
     enum Mode{CursorMode,BridgeMode,EdgeMode,BridgeDeleteMode,EdgeDeleteMode};
-    explicit MyGraphicsSceneView(QWidget *parent = nullptr);
+    explicit VisualGraphSceneView(QWidget *parent = nullptr);
 
     QVector<QVector<int>> getCorrectMatrix() const;
     QVector<MyEdge*> getEdges() const;
+    Graph *getGraph() const;
     QGraphicsProxyWidget *getProxyWidget(QWidget *uiElement);
 
 signals:
@@ -72,4 +73,4 @@ private:
 
 };
 
-#endif // MYGRAPHICSSCENEVIEW_H
+#endif // VISUALGRAPHSCENEVIEW_H

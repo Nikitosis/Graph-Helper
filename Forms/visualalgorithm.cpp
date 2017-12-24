@@ -1,11 +1,13 @@
 #include "visualalgorithm.h"
 #include "ui_visualalgorithm.h"
 
-VisualAlgorithm::VisualAlgorithm(QWidget *parent) :
+VisualAlgorithm::VisualAlgorithm(Graph *graph,QWidget *parent) :
     QDialog(parent),
     ui(new Ui::VisualAlgorithm)
 {
     ui->setupUi(this);
+    _graph=graph;
+    init();
 }
 
 void VisualAlgorithm::init()
@@ -19,6 +21,8 @@ void VisualAlgorithm::init()
     QStringList list;
     list<<"Name"<<"Value";
     ui->Watch->setHeaderLabels(list);
+
+
 
 }
 

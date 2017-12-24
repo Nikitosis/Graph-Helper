@@ -23,7 +23,20 @@
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
-      <widget class="QGraphicsView" name="Graph"/>
+      <widget class="VisualAlgorithmSceneView" name="Graph">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="baseSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+      </widget>
       <widget class="CodeEditor" name="Code"/>
      </widget>
      <widget class="QWidget" name="layoutWidget">
@@ -94,6 +107,11 @@
    <class>CodeEditor</class>
    <extends>QPlainTextEdit</extends>
    <header>codeeditor.h</header>
+  </customwidget>
+  <customwidget>
+   <class>VisualAlgorithmSceneView</class>
+   <extends>QGraphicsView</extends>
+   <header>visualalgorithmsceneview.h</header>
   </customwidget>
  </customwidgets>
  <resources>

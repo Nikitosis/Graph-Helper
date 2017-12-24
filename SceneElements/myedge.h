@@ -19,6 +19,7 @@ public:
     explicit MyEdge(QObject *parent = nullptr);
     explicit MyEdge(int x, int y, int radius, QString info, int id, QObject *parent = nullptr);
     explicit MyEdge(QPointF p,int radius,QString info,int id,QObject *parent = nullptr);
+    explicit MyEdge(MyEdge *edge,QObject *parent=nullptr);
     int getId() const;
     double getRadius() const;
     QPointF getCordinates() const;
@@ -29,7 +30,6 @@ public:
 
 signals:
     void mousePressSignal(QGraphicsSceneMouseEvent *event);
-    void edgeMoved(MyEdge *edge);
 
 public slots:
 
