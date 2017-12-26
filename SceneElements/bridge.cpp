@@ -55,6 +55,7 @@ void Bridge::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QW
                 painter->drawPolygon(polygon);
             }
     }
+    qDebug()<<"Paint "<<del++<<endl;
     paintWeight(painter);
 }
 
@@ -142,12 +143,17 @@ void Bridge::changeConnectMode()
     update();
 }
 
+void Bridge::setConnectMode(ConnectMode mode)
+{
+    connectMode=mode;
+}
+
 void Bridge::setWeight(int weight)
 {
     this->weight=weight;
 }
 
-int Bridge::getConnectMode() const
+Bridge::ConnectMode Bridge::getConnectMode() const
 {
     return connectMode;
 }

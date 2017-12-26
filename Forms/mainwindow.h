@@ -5,6 +5,7 @@
 #include <QtCore>
 #include <QtGui>
 #include <QGraphicsScene>
+#include <QThread>
 #include <Forms/visualgraph.h>
 #include <AppElements/visualgraphsceneview.h>
 #include <Forms/visualalgorithm.h>
@@ -26,6 +27,8 @@ private slots:
 
 
     void on_visualizeGraph_clicked();
+
+    void on_openDfs_clicked();
 
 private:
     Ui::MainWindow *ui;

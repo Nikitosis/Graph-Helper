@@ -22,8 +22,9 @@ public:
 
     void setEndEdge(MyEdge *point);
     void changeConnectMode();
+    void setConnectMode(ConnectMode mode);
     void setWeight(int weight);
-    int getConnectMode() const;
+    ConnectMode getConnectMode() const;
     MyEdge* getStartEdge() const;
     MyEdge* getEndEdge() const;
     QPointF getCenter() const;
@@ -48,6 +49,7 @@ private:
     ConnectMode connectMode;
     MyEdge *startEdge;
     MyEdge *endEdge;
+    int del=0;
 };
 
 #endif // BRIDGE_H

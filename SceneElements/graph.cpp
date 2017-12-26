@@ -25,6 +25,8 @@ Graph::Graph(Graph *graph, QObject *parent):QObject(parent)
                 secondEdge=_Edges[j];
         }
         Bridge *bridge=new Bridge(firstEdge,secondEdge,this);
+        bridge->setWeight(graph->_Bridges[i]->getWeight());
+        bridge->setConnectMode(graph->_Bridges[i]->getConnectMode());
         addBridge(bridge);
     }
 
@@ -154,6 +156,11 @@ QVector<QVector<int> > Graph::getCorrectMatrix() const          //get correct Ma
 QVector<MyEdge*> Graph::getEdges() const
 {
     return _Edges;
+}
+
+QVector<Bridge *> Graph::getBridges() const
+{
+    return _Bridges;
 }
 
 void Graph::deleteEdge(MyEdge *edge)

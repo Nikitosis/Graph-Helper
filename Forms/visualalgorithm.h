@@ -6,6 +6,7 @@
 #include <QString>
 #include <QVector>
 #include <QTreeWidget>
+#include <QVector>
 #include <Forms/visualarray.h>
 #include <SceneElements/graph.h>
 #include <AppElements/visualalgorithmsceneview.h>

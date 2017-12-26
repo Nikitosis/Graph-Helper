@@ -27,6 +27,27 @@ void VisualAlgorithm::init()
     list<<"Name"<<"Value";
     ui->Watch->setHeaderLabels(list);
 
+    QVector<MyEdge*> Edges=_graph->getEdges();
+    QVector<Bridge*> Bridges=_graph->getBridges();
+
+    for(int i=0;i<Edges.size();i++)
+    {
+        ui->Graph->addElement(Edges[i]);
+        Edges[i]->setParent(ui->Graph);
+    }
+
+    for(int i=0;i<Bridges.size();i++)
+    {
+        ui->Graph->addElement(Bridges[i]);
+        Bridges[i]->setParent(ui->Graph);
+    }
+
+   /* MyEdge *first=new MyEdge(500,500,20,"ada",1,this);
+    MyEdge *second=new MyEdge(600,600,20,"kad",2,this);
+    Bridge *bridge=new Bridge(first,second,this);
+    ui->Graph->addElement(first);
+    ui->Graph->addElement(second);
+    ui->Graph->addElement(bridge);*/
 
 
 }

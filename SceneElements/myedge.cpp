@@ -82,7 +82,7 @@ QRectF MyEdge::boundingRect() const
 void MyEdge::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     QRectF rect=boundingRect();
-    rect.setCoords(rect.x()+2,rect.y()+2,rect.width()-2,rect.height()-2);     //plus and minus 2 to not have artifacts
+    rect.setCoords(rect.x()+2,rect.y()+2,rect.width()-2,rect.height()-2);     //plus and minus 2 to avoid artifacts
     QPen pen;
     QBrush brush(Qt::white);
     pen.setWidth(4);

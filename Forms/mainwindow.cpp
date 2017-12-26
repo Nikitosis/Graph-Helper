@@ -22,9 +22,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //Initializing some variables and installation the scene
     ui->graphicsView->setMode(VisualGraphSceneView::Mode::EdgeMode);
+    ui->graphicsView->setViewportUpdateMode(QGraphicsView::NoViewportUpdate);
 
-    VisualAlgorithm alg(ui->graphicsView->getGraph());
-    alg.exec();
 }
 
 MainWindow::~MainWindow()
@@ -39,4 +38,11 @@ void MainWindow::on_visualizeGraph_clicked()
 {
     visualGraphWindow->init(ui->graphicsView->getCorrectMatrix(),ui->graphicsView->getEdges());
     visualGraphWindow->exec();
+}
+
+void MainWindow::on_openDfs_clicked()
+{
+    VisualAlgorithm *alg=new VisualAlgorithm(ui->graphicsView->getGraph(),this);
+    alg->show();
+    //this->hide();
 }

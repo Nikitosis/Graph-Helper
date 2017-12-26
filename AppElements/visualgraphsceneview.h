@@ -32,6 +32,7 @@ public:
     QVector<QVector<int>> getCorrectMatrix() const;
     QVector<MyEdge*> getEdges() const;
     Graph *getGraph() const;
+    QGraphicsScene *getScene() const;
     QGraphicsProxyWidget *getProxyWidget(QWidget *uiElement);
 
 signals:
@@ -70,6 +71,8 @@ private:
      int originPosX;
      int originPosY;
      bool makingBridge;
+
+     QTimer *timer; //update optimization
 
 };
 

@@ -15,6 +15,11 @@ VisualGraphSceneView::VisualGraphSceneView(QWidget *parent) : QGraphicsView(pare
     curEdgeEditProxy=nullptr;
     curBridgeEditProxy=nullptr;
 
+    //update optimization.Update viewport every 17 ms
+    timer=new QTimer(this);
+    connect(timer,SIGNAL(timeout()),this->viewport(),SLOT(update()));
+    timer->start(17);
+
 
     horizontalScrollBar()->setHidden(true);         //hide scrollbars
     verticalScrollBar()->setHidden(true);
@@ -77,6 +82,11 @@ QVector<MyEdge *> VisualGraphSceneView::getEdges() const
 Graph *VisualGraphSceneView::getGraph() const
 {
     return graph;
+}
+
+QGraphicsScene *VisualGraphSceneView::getScene() const
+{
+    return scene;
 }
 
 

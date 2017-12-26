@@ -26,6 +26,7 @@ public:
     int getFreeId() const;
     QVector<QVector<int> > getCorrectMatrix() const;
     QVector<MyEdge *> getEdges() const;
+    QVector<Bridge *> getBridges() const;
     Bridge *findClosest(QPointF &point) const;
 
     void deleteEdge(MyEdge *edge);
