@@ -32,8 +32,8 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    VisualGraphSceneView::Mode nowMode;
-    VisualGraph *visualGraphWindow;
+    VisualGraphSceneView::Mode _nowMode;
+    VisualGraph *_visualGraphWindow;
 
 
 

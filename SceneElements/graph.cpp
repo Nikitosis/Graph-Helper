@@ -24,7 +24,7 @@ Graph::Graph(Graph *graph, QObject *parent):QObject(parent)
             if(_Edges[j]->getId()==secondEdge->getId())
                 secondEdge=_Edges[j];
         }
-        Bridge *bridge=new Bridge(firstEdge,secondEdge,this);
+        Bridge *bridge=new Bridge(graph->getFreeBridgeId(),firstEdge,secondEdge,this);
         bridge->setWeight(graph->_Bridges[i]->getWeight());
         bridge->setConnectMode(graph->_Bridges[i]->getConnectMode());
         addBridge(bridge);
@@ -123,11 +123,23 @@ double Graph::getLen(Bridge *bridge, QPointF &point) const    //length between p
  return rast;
 }
 
-int Graph::getFreeId() const                //get the id,which is first empty in sequence 1..infinity
+int Graph::getFreeEdgeId() const                //get the id,which is first empty in sequence 1..infinity
 {
     QSet<int> set;
     for(int i=0;i<_Edges.size();i++)
         set.insert(_Edges[i]->getId());
+
+    int num=0;
+    while(set.find(num)!=set.end())
+        num++;
+    return num;
+}
+
+int Graph::getFreeBridgeId() const
+{
+    QSet<int> set;
+    for(int i=0;i<_Bridges.size();i++)
+        set.insert(_Bridges[i]->getId());
 
     int num=0;
     while(set.find(num)!=set.end())

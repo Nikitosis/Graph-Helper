@@ -17,34 +17,17 @@ MyEdge::MyEdge(int x, int y, int radius,QString info,int id, QObject *parent):
     _yStart=y;
     setPos(x,y);
     this->setZValue(2);
+    _color=QColor(68,182,254);
 }
 
 MyEdge::MyEdge(QPointF p, int radius, QString info,int id, QObject *parent):
-    _x(p.x()),
-    _y(p.y()),
-    _radius(radius),
-    _info(info),
-    _id(id),
-    QObject(parent)
+    MyEdge(p.x(),p.y(),radius,info,id,parent)
 {
-    _xStart=_x;
-    _yStart=_y;
-    setPos(_x,_y);
-    this->setZValue(2);
 }
 
 MyEdge::MyEdge(MyEdge *edge, QObject *parent):
-    _x(edge->_x),
-    _y(edge->_y),
-    _radius(edge->_radius),
-    _info(edge->_info),
-    _id(edge->_id),
-    QObject(parent)
+    MyEdge(edge->_x,edge->_y,edge->_radius,edge->_info,edge->_id,parent)
 {
-    _xStart=_x;
-    _yStart=_y;
-    setPos(_x,_y);
-    this->setZValue(2);
 }
 
 int MyEdge::getId() const
@@ -74,6 +57,11 @@ void MyEdge::setInfo(QString info)
     update();
 }
 
+void MyEdge::setColor(QColor &color)
+{
+    _color=color;
+}
+
 QRectF MyEdge::boundingRect() const
 {
     return QRectF(0,0,_radius*2+4,_radius*2+4);   //we added 4 to not have artifacts
@@ -86,7 +74,7 @@ void MyEdge::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QW
     QPen pen;
     QBrush brush(Qt::white);
     pen.setWidth(4);
-    pen.setColor(QColor(68,182,254));
+    pen.setColor(_color);
     painter->setBrush(brush);
     painter->setPen(pen);
 

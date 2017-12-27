@@ -7,7 +7,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    visualGraphWindow=new VisualGraph(this);
+    _visualGraphWindow=new VisualGraph(this);
     //Button connections with lambdas
 
 
@@ -21,9 +21,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
     //Initializing some variables and installation the scene
-    ui->graphicsView->setMode(VisualGraphSceneView::Mode::EdgeMode);
-    ui->graphicsView->setViewportUpdateMode(QGraphicsView::NoViewportUpdate);
-
 }
 
 MainWindow::~MainWindow()
@@ -36,13 +33,13 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_visualizeGraph_clicked()
 {
-    visualGraphWindow->init(ui->graphicsView->getCorrectMatrix(),ui->graphicsView->getEdges());
-    visualGraphWindow->exec();
+    _visualGraphWindow->init(ui->graphicsView->getCorrectMatrix(),ui->graphicsView->getEdges());
+    _visualGraphWindow->exec();
 }
 
 void MainWindow::on_openDfs_clicked()
 {
     VisualAlgorithm *alg=new VisualAlgorithm(ui->graphicsView->getGraph(),this);
-    alg->show();
-    //this->hide();
+    alg->exec();
+
 }

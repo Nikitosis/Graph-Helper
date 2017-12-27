@@ -61,18 +61,18 @@ public slots:
 protected:
     void deleteProxys(QMouseEvent *event);
 private:
-     QGraphicsScene *scene;
-     Graph *graph;
-     Mode nowMode;
-     Bridge *curBridge;
-     Line *line;
-     QGraphicsProxyWidget *curEdgeEditProxy;
-     QGraphicsProxyWidget *curBridgeEditProxy;
-     int originPosX;
-     int originPosY;
-     bool makingBridge;
+     QGraphicsScene *_scene;
+     Graph *_graph;
+     Mode _nowMode;
+     Bridge *_curBridge;
+     Line *_line;
+     QGraphicsProxyWidget *_curEdgeEditProxy;
+     QGraphicsProxyWidget *_curBridgeEditProxy;
+     int _originPosX;
+     int _originPosY;
+     bool _makingBridge;
 
-     QTimer *timer; //update optimization
+     QTimer *_timer; //update optimization
 
 };
 

@@ -1,16 +1,16 @@
 #include "bridge.h"
 
-Bridge::Bridge(QObject *parent) : QObject(parent),startEdge(nullptr),endEdge(nullptr)
+Bridge::Bridge(int id,QObject *parent) : QObject(parent),_startEdge(nullptr),_endEdge(nullptr),_id(id)
 {
     this->setZValue(1);
-    connectMode=StartToEnd;
-    weight=1;
+    _connectMode=StartToEnd;
+    _weight=1;
+    _color=Qt::green;
 }
-Bridge::Bridge(MyEdge *start, MyEdge *end, QObject *parent):QObject(parent),startEdge(start),endEdge(end)
+Bridge::Bridge(int id,MyEdge *start, MyEdge *end, QObject *parent):Bridge(id,parent)
 {
-    this->setZValue(1);
-    connectMode=StartToEnd;
-    weight=1;
+    _startEdge=start;
+    _endEdge=end;
 }
 
 
@@ -24,38 +24,37 @@ void Bridge::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QW
     prepareGeometryChange();
     QPen pen;
     pen.setWidth(4);
-    pen.setColor(Qt::green);
+    pen.setColor(_color);
     painter->setPen(pen);
-    painter->drawLine(startEdge->getCordinates(),endEdge->getCordinates());
+    painter->drawLine(_startEdge->getCordinates(),_endEdge->getCordinates());
 
 
 
-    QPointF A=startEdge->getCordinates();           //First Point
-    QPointF B=endEdge->getCordinates();             //Second Point
-    const double radius=startEdge->getRadius();
+    QPointF A=_startEdge->getCordinates();           //First Point
+    QPointF B=_endEdge->getCordinates();             //Second Point
+    const double radius=_startEdge->getRadius();
 
-    if(len2(startEdge->getCordinates(),endEdge->getCordinates())>2*radius)      //If they are not intersected,we paint triangles
+    if(len2(_startEdge->getCordinates(),_endEdge->getCordinates())>2*radius)      //If they are not intersected,we paint triangles
     {
         painter->setBrush(Qt::blue);
-        if(connectMode==StartToEnd)
+        if(_connectMode==StartToEnd)
             {
-                QPolygon polygon=getTrianglePolygon(A,B,endEdge->getRadius(),radius);
+                QPolygon polygon=getTrianglePolygon(A,B,_endEdge->getRadius(),radius);
                 painter->drawPolygon(polygon);
             }
-        if(connectMode==EndToStart)
+        if(_connectMode==EndToStart)
             {
-                QPolygon polygon=getTrianglePolygon(B,A,startEdge->getRadius(),radius);
+                QPolygon polygon=getTrianglePolygon(B,A,_startEdge->getRadius(),radius);
                 painter->drawPolygon(polygon);
             }
-        if(connectMode==Both)
+        if(_connectMode==Both)
             {
-                QPolygon polygon=getTrianglePolygon(A,B,endEdge->getRadius(),radius);
+                QPolygon polygon=getTrianglePolygon(A,B,_endEdge->getRadius(),radius);
                 painter->drawPolygon(polygon);
-                polygon=getTrianglePolygon(B,A,startEdge->getRadius(),radius);
+                polygon=getTrianglePolygon(B,A,_startEdge->getRadius(),radius);
                 painter->drawPolygon(polygon);
             }
     }
-    qDebug()<<"Paint "<<del++<<endl;
     paintWeight(painter);
 }
 
@@ -121,79 +120,89 @@ void Bridge::paintWeight(QPainter *painter)   //paint weight in center of the br
 
     int angle=getAngle();
     painter->rotate(angle);
-    painter->drawText(rect,Qt::AlignCenter,QString::number(weight));
+    painter->drawText(rect,Qt::AlignCenter,QString::number(_weight));
 
     painter->resetTransform();
 }
 
 void Bridge::setEndEdge(MyEdge *point)
 {
-    endEdge=point;
+   _endEdge=point;
 }
 
 void Bridge::changeConnectMode()
 {
-    if(connectMode==StartToEnd)
-        connectMode=EndToStart;
+    if(_connectMode==StartToEnd)
+        _connectMode=EndToStart;
     else
-        if(connectMode==EndToStart)
-            connectMode=Both;
+        if(_connectMode==EndToStart)
+            _connectMode=Both;
     else
-            connectMode=StartToEnd;
+            _connectMode=StartToEnd;
     update();
 }
 
 void Bridge::setConnectMode(ConnectMode mode)
 {
-    connectMode=mode;
+    _connectMode=mode;
 }
 
 void Bridge::setWeight(int weight)
 {
-    this->weight=weight;
+    _weight=weight;
+}
+
+void Bridge::setColor(QColor color)
+{
+    _color=color;
 }
 
 Bridge::ConnectMode Bridge::getConnectMode() const
 {
-    return connectMode;
+    return _connectMode;
 }
 
 MyEdge* Bridge::getStartEdge() const
 {
-    return startEdge;
+    return _startEdge;
 }
 
 MyEdge* Bridge::getEndEdge() const
 {
-    return endEdge;
+    return _endEdge;
 }
 
 QPointF Bridge::getCenter() const
 {
-    QPointF start=startEdge->getCordinates();
-    QPointF end=endEdge->getCordinates();
+    QPointF start=_startEdge->getCordinates();
+    QPointF end=_endEdge->getCordinates();
     QPointF center=start+(end-start)/2;
     return center;
 }
 
 int Bridge::getWeight() const
 {
-    return weight;
+    return _weight;
 }
 
 int Bridge::getAngle() const
 {
-    double tg=(double)(endEdge->getCordinates().y()-startEdge->getCordinates().y())/
-            (double)(endEdge->getCordinates().x()-startEdge->getCordinates().x());
+    double tg=(double)(_endEdge->getCordinates().y()-_startEdge->getCordinates().y())/
+            (double)(_endEdge->getCordinates().x()-_startEdge->getCordinates().x());
     const double PI=3.14159265358979;
     return atan(tg)/PI*180;
+}
+
+int Bridge::getId() const
+{
+    return _id;
 }
 
 QRectF Bridge::boundingRect() const
 {
     //+-20 to not have any artifacts
-    QPointF start=startEdge->getCordinates();
-    QPointF end=endEdge->getCordinates();
+    QPointF start=_startEdge->getCordinates();
+    QPointF end=_endEdge->getCordinates();
     return QRectF(QPointF(std::min(start.x(),end.x())-20,std::min(start.y(),end.y())-20),
                   QPointF(std::max(start.x(),end.x())+20,std::max(start.y(),end.y())+20));
 }

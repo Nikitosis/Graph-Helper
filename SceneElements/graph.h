@@ -23,7 +23,8 @@ public:
     void updateBridges();
     void updateBridgeInfo(Bridge *bridge);
 
-    int getFreeId() const;
+    int getFreeEdgeId() const;
+    int getFreeBridgeId() const;
     QVector<QVector<int> > getCorrectMatrix() const;
     QVector<MyEdge *> getEdges() const;
     QVector<Bridge *> getBridges() const;

@@ -27,6 +27,8 @@ protected:
     void addOneDArray(QVector<QString> &values, QVector<QString> &names, QString mainName);
     void addTwoDArray(QVector<QVector<QString> > &values, QVector<QString> &arrayNames, QVector<QVector<QString> > valueNames, QString mainName);
     void initCodeText();
+    void changeBridgeColor(int id);
+    void changeEdgeColor(int id);
 private:
     Graph *_graph;
     Ui::VisualAlgorithm *ui;

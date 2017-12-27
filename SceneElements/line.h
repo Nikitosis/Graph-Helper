@@ -28,7 +28,7 @@ protected:
 public slots:
 
 private:
-    int startX,startY,endX,endY;
+    int _startX,_startY,_endX,_endY;
 };
 
 #endif // LINE_H

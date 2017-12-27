@@ -29,11 +29,11 @@ public slots:
     void mouseMoveMiddleButton(QMouseEvent *event);
 
 private:
-    QGraphicsScene *scene;
-    int originPosX;
-    int originPosY;
+    QGraphicsScene *_scene;
+    int _originPosX;
+    int _originPosY;
 
-    QTimer *timer; //update optimization
+    QTimer *_timer; //update optimization
 
 };
 

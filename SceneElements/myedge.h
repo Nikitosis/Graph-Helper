@@ -25,6 +25,7 @@ public:
     QPointF getCordinates() const;
     QString getInfo() const;
     void setInfo(QString info);
+    void setColor(QColor &color);
 
     QRectF boundingRect() const;
 
@@ -46,6 +47,7 @@ private:
     int _id;
     QString _info;
     int _xStart,_yStart;
+    QColor _color;
 };
 
 #endif // MYEDGE_H
