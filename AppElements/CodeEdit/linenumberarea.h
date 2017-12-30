@@ -19,7 +19,7 @@ public slots:
 protected:
     void paintEvent(QPaintEvent *event);
 private:
-    CodeEditor *codeEditor;
+    CodeEditor *_codeEditor;
 };
 
 #endif // LINENUMBERAREA_H

@@ -64,7 +64,7 @@ private:
      QGraphicsScene *_scene;
      Graph *_graph;
      Mode _nowMode;
-     Bridge *_curBridge;
+     MyEdge *firstBridgeEdge;
      Line *_line;
      QGraphicsProxyWidget *_curEdgeEditProxy;
      QGraphicsProxyWidget *_curBridgeEditProxy;

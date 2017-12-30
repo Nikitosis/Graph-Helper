@@ -3,7 +3,7 @@
 
 CodeEditor::CodeEditor(QWidget *parent):QPlainTextEdit(parent)
 {
-    lineNumberArea=new LineNumberArea(this);
+    _lineNumberArea=new LineNumberArea(this);
 
     connect(this,SIGNAL(blockCountChanged(int)),this,SLOT(updateLineNumberAreaWidth(int)));
     connect(this,SIGNAL(updateRequest(QRect,int)),this,SLOT(updateLineNumberArea(QRect,int)));
@@ -14,7 +14,7 @@ CodeEditor::CodeEditor(QWidget *parent):QPlainTextEdit(parent)
 
 void CodeEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
 {
-    QPainter painter(lineNumberArea);
+    QPainter painter(_lineNumberArea);
     painter.fillRect(event->rect(),Qt::lightGray);
 
     QTextBlock block=firstVisibleBlock();
@@ -57,7 +57,7 @@ void CodeEditor::resizeEvent(QResizeEvent *e)
     QPlainTextEdit::resizeEvent(e);
 
     QRect cr=contentsRect();
-    lineNumberArea->setGeometry(QRect(cr.left(),cr.top(),lineNumberAreaWidth(),cr.height()));
+    _lineNumberArea->setGeometry(QRect(cr.left(),cr.top(),lineNumberAreaWidth(),cr.height()));
 }
 
 void CodeEditor::updateLineNumberAreaWidth(int newBlockCount)
@@ -68,9 +68,9 @@ void CodeEditor::updateLineNumberAreaWidth(int newBlockCount)
 void CodeEditor::updateLineNumberArea(const QRect &rect, int scrolly)
 {
     if(scrolly)
-        lineNumberArea->scroll(0,scrolly);
+        _lineNumberArea->scroll(0,scrolly);
     else
-        lineNumberArea->update(0,rect.y(),lineNumberAreaWidth(),rect.height());
+        _lineNumberArea->update(0,rect.y(),lineNumberAreaWidth(),rect.height());
 
     if(rect.contains(viewport()->rect()))
         updateLineNumberAreaWidth(0);

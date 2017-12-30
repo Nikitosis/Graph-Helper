@@ -25,7 +25,7 @@ private slots:
     void updateLineNumberAreaWidth(int newBlockCount);
     void updateLineNumberArea(const QRect& rect,int scrolly);
 private:
-    QWidget *lineNumberArea;
+    QWidget *_lineNumberArea;
 };
 
 #endif // CODEEDITOR_H

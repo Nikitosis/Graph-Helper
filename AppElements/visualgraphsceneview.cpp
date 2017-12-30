@@ -5,16 +5,16 @@ VisualGraphSceneView::VisualGraphSceneView(QWidget *parent) : QGraphicsView(pare
     _scene=new QGraphicsScene(this);
     _scene->setSceneRect(0,0,1000,1000);
 
-    this->setScene(_scene);
-    this->setMouseTracking(true);               //for mouse move event
-    this->setMode(Mode::EdgeMode);
-
     _graph=new Graph(this);
-    _curBridge=nullptr;
     _line=nullptr;
     _makingBridge=false;
     _curEdgeEditProxy=nullptr;
     _curBridgeEditProxy=nullptr;
+
+    this->setScene(_scene);
+    this->setMouseTracking(true);               //for mouse move event
+    this->setMode(Mode::EdgeMode);
+
 
     //update optimization.Update viewport every 17 ms
     this->setCacheMode(QGraphicsView::CacheBackground);
@@ -31,17 +31,8 @@ VisualGraphSceneView::VisualGraphSceneView(QWidget *parent) : QGraphicsView(pare
 
 void VisualGraphSceneView::setMode(Mode mode)
 {
-    if(_nowMode==CursorMode)
-    {
-        _graph->setEdgeMovable(false);       //user can't move Edge
-    }
-
     _nowMode=mode;
-
-    if(_nowMode==CursorMode)
-    {
-        _graph->setEdgeMovable(true);                //user can move edge
-    }
+    _graph->setEdgeMovable(_nowMode==CursorMode);                //user can move edge
 }
 
 void VisualGraphSceneView::deleteAll()
@@ -49,7 +40,7 @@ void VisualGraphSceneView::deleteAll()
     _graph->deleteAll();
 }
 
-void VisualGraphSceneView::deleteProxys(QMouseEvent *event)        //delete proxys if they are not deleted
+void VisualGraphSceneView::deleteProxys(QMouseEvent *event)        //delete proxys,when we click(but not on them)
 {
     if(_curEdgeEditProxy!=nullptr)
     {
@@ -96,6 +87,7 @@ QGraphicsScene *VisualGraphSceneView::getScene() const
 
 void VisualGraphSceneView::mousePressEvent(QMouseEvent *event)//emits the SLOT,which matches the mode
 {
+    deleteProxys(event);
     if(event->buttons() & Qt::MidButton)
         emit mousePressMiddleButton(event);
 
@@ -109,7 +101,6 @@ void VisualGraphSceneView::mousePressEvent(QMouseEvent *event)//emits the SLOT,w
         }
     }
 
-    deleteProxys(event);
 
     if((event->buttons() & Qt::RightButton) && !(event->buttons() & Qt::LeftButton))
     {
@@ -129,7 +120,7 @@ void VisualGraphSceneView::mouseMoveEvent(QMouseEvent *event)
     if(event->buttons() & Qt::MidButton)
         emit mouseMoveMiddleButton(event);
 
-    if(_nowMode==BridgeMode)
+    if(_nowMode==BridgeMode && _makingBridge)
         emit mouseMoveBridgeMode(event);
 
     QGraphicsView::mouseMoveEvent(event);
@@ -138,18 +129,15 @@ void VisualGraphSceneView::mouseMoveEvent(QMouseEvent *event)
 
 void VisualGraphSceneView::mouseMoveBridgeMode(QMouseEvent *event)       //move mouse in Bridge mode
 {
-    if(_makingBridge)                               //if we are making bridge
-    {
-        QPointF pos=mapToScene(event->pos());
-        MyEdge *edge=_curBridge->getStartEdge();
+    QPointF pos=mapToScene(event->pos());
+    MyEdge *edge=firstBridgeEdge;
 
-        if(_line==nullptr)
-            _line=new Line(edge->getCordinates().x(),edge->getCordinates().y(),pos.x(),pos.y(),this);
+    if(_line==nullptr)
+        _line=new Line(edge->getCordinates().x(),edge->getCordinates().y(),pos.x(),pos.y(),this);
 
-        _line->setCoords(edge->getCordinates().x(),edge->getCordinates().y(),pos.x(),pos.y());
-        if(!_scene->items().contains(_line))              //to not add line twice
-            _scene->addItem(_line);
-    }
+    _line->setCoords(edge->getCordinates().x(),edge->getCordinates().y(),pos.x(),pos.y());
+    if(!_scene->items().contains(_line))              //to not add line twice
+        _scene->addItem(_line);
 }
 
 
@@ -158,7 +146,7 @@ void VisualGraphSceneView::mousePressEdgeMode(QMouseEvent *event)
 {
     QPointF pos=mapToScene(event->pos());
     QRectF sceneRect=_scene->sceneRect();
-    if(pos.x()>=sceneRect.x() && pos.x()<=sceneRect.width() && pos.y()>=sceneRect.y() && pos.y()<=sceneRect.height())           //check if user clicked out of the scene
+    if(pos.x()>=sceneRect.x() && pos.x()<=sceneRect.width() && pos.y()>=sceneRect.y() && pos.y()<=sceneRect.height())           //check if user haven't clicked out of the scene
         if(event->buttons() & Qt::LeftButton)
         {
             const int radius=20;
@@ -178,7 +166,7 @@ void VisualGraphSceneView::mousePressDeleteBridgeMode(QMouseEvent *event)
     QPointF pos=mapToScene(event->pos());
     Bridge *closest=_graph->findClosest(pos);
     const int maxLen=20;
-    if(closest!=nullptr && _graph->getLen(closest,pos)<maxLen)
+    if(closest!=nullptr && _graph->getLen(closest,pos)<maxLen)  //delete our bridge it length between click and bridge less than maxLen
     {
         _graph->deleteBridge(closest);
     }
@@ -195,9 +183,6 @@ void VisualGraphSceneView::mousePressBridgeMode(QMouseEvent *event)
     MyEdge *edge=dynamic_cast<MyEdge*>(itemAt(event->pos()));               //find object,we clicked on
     if(!edge)                //if we didn't click on edge
         {
-            delete _curBridge;
-            _curBridge=nullptr;
-
             if(!_makingBridge)               //if we are not making bridge,we find closest bridge and if
             {                                           //length between this bridge and click position is small,then we change bridge mode
                 QPointF pos=mapToScene(event->pos());
@@ -239,12 +224,6 @@ void VisualGraphSceneView::mouseRightClickCursorMode(QMouseEvent *event)
        EdgeEdit *curEdgeEdit=new EdgeEdit(this);
        curEdgeEdit->setEdge(edge);
 
-       if(_curEdgeEditProxy!=nullptr)
-       {
-           delete _curEdgeEditProxy;
-           _curEdgeEditProxy=nullptr;
-       }
-
       _curEdgeEditProxy=getProxyWidget(curEdgeEdit);
 
        QPointF center=edge->getCordinates();
@@ -261,12 +240,6 @@ void VisualGraphSceneView::mouseRightClickCursorMode(QMouseEvent *event)
        {
            BridgeEdit *curBridgeEdit=new BridgeEdit(this);
            curBridgeEdit->setBridge(bridge);
-
-           if(_curBridgeEditProxy!=nullptr)
-           {
-               delete _curBridgeEditProxy;
-               _curBridgeEditProxy=nullptr;
-           }
 
            _curBridgeEditProxy=getProxyWidget(curBridgeEdit);
 
@@ -299,29 +272,25 @@ void VisualGraphSceneView::wheelEvent(QWheelEvent *event)  //scaling scene with 
 
 void VisualGraphSceneView::mousePressEdge(QGraphicsSceneMouseEvent *event)//When we press Edge
 {
+    QObject *snd=QObject::sender();
+    MyEdge *edge=qobject_cast<MyEdge*>(snd);
     if(_nowMode==BridgeMode)
     {
-        QObject *snd=QObject::sender();
-        MyEdge *edge=qobject_cast<MyEdge*>(snd);
         if(!_makingBridge)               //if we are not in making bridge process
         {
+            firstBridgeEdge=edge;
             _makingBridge=true;
-            _curBridge=new Bridge(_graph->getFreeBridgeId(),edge);
         }
         else                                //else add our bridge to the graph and scene
         {
-            _curBridge->setEndEdge(edge);
-            _curBridge->update();
-            _graph->addBridge(_curBridge);
-            _scene->addItem(_curBridge);
-            _curBridge=nullptr;
+            Bridge *bridge=new Bridge(_graph->getFreeBridgeId(),firstBridgeEdge,edge,this);
+            _graph->addBridge(bridge);
+            _scene->addItem(bridge);
             _makingBridge=false;
         }
     }
     if(_nowMode==EdgeDeleteMode)
     {
-        QObject *snd=QObject::sender();
-        MyEdge *edge=qobject_cast<MyEdge*>(snd);
         _graph->deleteEdge(edge);
     }
 }

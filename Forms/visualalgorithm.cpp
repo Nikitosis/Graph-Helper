@@ -8,6 +8,8 @@ VisualAlgorithm::VisualAlgorithm(Graph *graph,QWidget *parent) :
     ui->setupUi(this);
     _graph=new Graph(graph,this);
     init();
+
+    QFuture<void> future = QtConcurrent::run(this,&VisualAlgorithm::Algo);  //Create thread with Algo function
 }
 
 void VisualAlgorithm::init()
@@ -85,4 +87,18 @@ void VisualAlgorithm::addTwoDArray(QVector<QVector<QString> > &values, QVector<Q
             item->setText(1,values[i][j]);
         }
     }
+}
+
+void VisualAlgorithm::Algo()
+{
+    //dosmth
+
+    QMutexLocker locker(&mtx);
+    condit.wait(&mtx);
+    qDebug()<<"Go!";
+}
+
+void VisualAlgorithm::on_pushButton_clicked()
+{
+    condit.wakeAll();
 }

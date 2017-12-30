@@ -72,3 +72,4 @@ void VisualAlgorithmSceneView::mouseMoveMiddleButton(QMouseEvent *event)
     _originPosX=event->x();
     _originPosY=event->y();
 }
+

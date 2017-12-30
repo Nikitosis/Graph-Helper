@@ -8,6 +8,11 @@
 #include <QTreeWidget>
 #include <QVector>
 #include <Forms/visualarray.h>
+//////
+#include <QCoreApplication>
+#include <QtConcurrent/QtConcurrent>
+#include <QFuture>
+//////
 #include <SceneElements/graph.h>
 #include <AppElements/visualalgorithmsceneview.h>
 
@@ -29,9 +34,17 @@ protected:
     void initCodeText();
     void changeBridgeColor(int id);
     void changeEdgeColor(int id);
+
+    void Algo();
+private slots:
+
+    void on_pushButton_clicked();
+
 private:
     Graph *_graph;
     Ui::VisualAlgorithm *ui;
+    QMutex mtx;
+    QWaitCondition condit;
 };
 
 #endif // VISUALALGORITHM_H

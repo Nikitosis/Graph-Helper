@@ -17,7 +17,6 @@ public:
     explicit VisualAlgorithmSceneView(QWidget *parent = nullptr);
     void addElement(QGraphicsItem *element);
     QGraphicsScene *getScene() const;
-
 signals:
 
 public slots:
