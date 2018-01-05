@@ -44,14 +44,8 @@ void VisualAlgorithm::init()
         Bridges[i]->setParent(ui->Graph);
     }
 
-   /* MyEdge *first=new MyEdge(500,500,20,"ada",1,this);
-    MyEdge *second=new MyEdge(600,600,20,"kad",2,this);
-    Bridge *bridge=new Bridge(first,second,this);
-    ui->Graph->addElement(first);
-    ui->Graph->addElement(second);
-    ui->Graph->addElement(bridge);*/
-
-
+    changeAllBridgesColor(DEFAULT_BRIDGE_COLOR);
+    changeAllEdgesColor(DEFAULT_BRIDGE_COLOR);
 }
 
 VisualAlgorithm::~VisualAlgorithm()
@@ -89,13 +83,96 @@ void VisualAlgorithm::addTwoDArray(QVector<QVector<QString> > &values, QVector<Q
     }
 }
 
+void VisualAlgorithm::changeBridgeColor(int startEdgeId, int endEdgeId,QColor color)
+{
+    QVector<Bridge *> &Bridges=_graph->getBridges();
+    for(int i=0;i<Bridges.size();i++)
+        if(Bridges[i]->getStartEdge()->getId()==startEdgeId && Bridges[i]->getEndEdge()->getId()==endEdgeId)
+            Bridges[i]->setColor(color);
+}
+
+void VisualAlgorithm::changeEdgeColor(int id, QColor color)
+{
+    QVector<MyEdge *>&Edges=_graph->getEdges();
+    for(int i=0;i<Edges.size();i++)
+        if(Edges[i]->getId()==id)
+            Edges[i]->setColor(color);
+}
+
+void VisualAlgorithm::changeAllBridgesColor(QColor color)
+{
+    QVector<Bridge *> &Bridges=_graph->getBridges();
+    for(int i=0;i<Bridges.size();i++)
+        Bridges[i]->setColor(color);
+}
+
+void VisualAlgorithm::changeAllEdgesColor(QColor color)
+{
+    QVector<MyEdge *>&Edges=_graph->getEdges();
+    for(int i=0;i<Edges.size();i++)
+        Edges[i]->setColor(color);
+}
+
+void VisualAlgorithm::DFS()
+{
+
+}
+
 void VisualAlgorithm::Algo()
 {
     //dosmth
-
+    int startEdge=0;
+    QVector<QVector<int>> &Matrix=_graph->getCorrectMatrix();
+    QVector<bool> Visited(Matrix.size());
+    QStack<int> Stack;
+    QVector<QPair<int,int>> BridgesVec;
+    Stack.push(startEdge);
+    Visited[startEdge]=true;
+    int n=Matrix.size();
+    while(!Stack.empty())
+    {
+        changeEdgeColor(Stack.last(),ACTIVE_BRIDGE_COLOR);
+        LockLine();
+        for(int i=0;i<n;i++)
+        {
+            if(Matrix[Stack.last()][i]!=0 && !Visited[i])
+            {
+                Visited[i]=true;
+                changeBridgeColor(Stack.last(),i,ACTIVE_BRIDGE_COLOR);
+                changeEdgeColor(i,ACTIVE_BRIDGE_COLOR);
+                changeEdgeColor(Stack.last(),PASSIVE_BRIDGE_COLOR);
+                if(BridgesVec.size()>0)
+                {
+                    int first=BridgesVec[BridgesVec.size()-1].first;
+                    int second=BridgesVec[BridgesVec.size()-1].second;
+                    changeBridgeColor(first,second,PASSIVE_BRIDGE_COLOR);
+                }
+                BridgesVec.push_back({Stack.last(),i});
+                Stack.push(i);
+                i=-1;
+                LockLine();
+            }
+        }
+        changeEdgeColor(Stack.last(),PASSIVE_BRIDGE_COLOR);
+        Stack.pop();
+        if(BridgesVec.size()>0)
+        {
+            int first=BridgesVec[BridgesVec.size()-1].first;
+            int second=BridgesVec[BridgesVec.size()-1].second;
+            changeBridgeColor(first,second,PASSIVE_BRIDGE_COLOR);
+            BridgesVec.pop_back();
+        }
+    }
     QMutexLocker locker(&mtx);
     condit.wait(&mtx);
+    LockLine();
     qDebug()<<"Go!";
+}
+
+void VisualAlgorithm::LockLine()
+{
+    QMutexLocker locker(&mtx);
+    condit.wait(&mtx);
 }
 
 void VisualAlgorithm::on_pushButton_clicked()
