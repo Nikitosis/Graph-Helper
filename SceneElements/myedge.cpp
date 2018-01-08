@@ -112,18 +112,16 @@ QFont MyEdge::getFont(QPainter* painter)
     if(_info.length()>=4)
     {
         size-=4;
-        font.setPixelSize(size);
     }
     if(_info.length()>=7)
     {
         size-=4;
-        font.setPixelSize(size);
     }
     if(_info.length()>=10)
     {
         size-=2;
-        font.setPixelSize(size);
     }
+    font.setPixelSize(size);
     return font;
 }
 

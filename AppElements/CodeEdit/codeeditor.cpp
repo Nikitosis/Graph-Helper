@@ -9,7 +9,9 @@ CodeEditor::CodeEditor(QWidget *parent):QPlainTextEdit(parent)
     connect(this,SIGNAL(updateRequest(QRect,int)),this,SLOT(updateLineNumberArea(QRect,int)));
 
     updateLineNumberAreaWidth(0);
-
+    setLineWrapMode(QPlainTextEdit::NoWrap);
+    _pixMap.load(":/Debug/img/DebugArrow.png");
+    _debugBlockIndex=-1;
 }
 
 void CodeEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
@@ -30,6 +32,19 @@ void CodeEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
             painter.setPen(Qt::black);
             painter.setFont(QFont("Arial",10));
             painter.drawText(QRect(0,top,lineNumberAreaWidth(),fontMetrics().height()),Qt::AlignRight,number);
+            if(blockNumber==_debugBlockIndex)
+            {
+                painter.drawPixmap(QRect(0,top,15,fontMetrics().height()),_pixMap);
+                QTextBlockFormat fm;
+                fm.setBackground(QColor(201,225,226));
+                QTextCursor(block).setBlockFormat(fm);
+            }
+            else
+            {
+                QTextBlockFormat fm;
+                fm.setBackground(Qt::white);
+                QTextCursor(block).setBlockFormat(fm);
+            }
         }
 
         block=block.next();
@@ -37,6 +52,7 @@ void CodeEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
         bottom=top+(int) blockBoundingGeometry(block).height();
         blockNumber++;
     }
+
 
 }
 
@@ -49,7 +65,17 @@ int CodeEditor::lineNumberAreaWidth()
         maxLines/=10;
         digits++;
     }
-    return 5+fontMetrics().width('9')*digits;
+    return 15+fontMetrics().width('9')*digits;
+}
+
+void CodeEditor::enableDebugMode(int blockIndex)
+{
+    _debugBlockIndex=blockIndex;
+}
+
+void CodeEditor::disableDebugMode()
+{
+    _debugBlockIndex=-1;
 }
 
 void CodeEditor::resizeEvent(QResizeEvent *e)

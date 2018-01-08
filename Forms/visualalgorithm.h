@@ -31,7 +31,7 @@ public:
     ~VisualAlgorithm();
 protected:
     void addOneDArray(QVector<QString> &values, QVector<QString> &names, QString mainName);
-    void addTwoDArray(QVector<QVector<QString> > &values, QVector<QString> &arrayNames, QVector<QVector<QString> > valueNames, QString mainName);
+    void addTwoDArray(QVector<QVector<QString> > &values, QVector<QString> &arrayNames, QVector<QString> valueNames, QString mainName);
     void initCodeText();
     void changeBridgeColor(int startEdgeId, int endEdgeId,QColor color);
     void changeEdgeColor(int id,QColor color);
@@ -39,17 +39,29 @@ protected:
     void changeAllEdgesColor(QColor color);
 
     void DFS();
-    void Algo();
-    void LockLine();
+    void initDFS();
+    void updateDFS(QVector<QVector<int>> &Matrix, QVector<bool> &Visited, QVector<int> &Stack);
+    void LockLine(int codeLineIndex);
+signals:
+
+protected slots:
+
+
 private slots:
 
     void on_pushButton_clicked();
+
+    void on_pushButton_2_clicked();
+
+    void reject();
 
 private:
     Graph *_graph;
     Ui::VisualAlgorithm *ui;
     QMutex mtx;
     QWaitCondition condit;
+    QFuture<void> future;
+    bool isExit;
 };
 
 #endif // VISUALALGORITHM_H

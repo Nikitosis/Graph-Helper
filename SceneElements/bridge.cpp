@@ -22,6 +22,7 @@ void Bridge::mousePressEvent(QGraphicsSceneMouseEvent *event)
 void Bridge::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     prepareGeometryChange();
+    painter->setClipRect(option->exposedRect);
     QPen pen;
     pen.setWidth(4);
     pen.setColor(_color);
@@ -39,19 +40,17 @@ void Bridge::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QW
         painter->setBrush(Qt::blue);
         if(_connectMode==StartToEnd)
             {
-                QPolygon polygon=getTrianglePolygon(A,B,_endEdge->getRadius(),radius);
-                painter->drawPolygon(polygon);
+                painter->drawPolygon(getTrianglePolygon(A,B,radius,radius));
             }
         if(_connectMode==EndToStart)
             {
-                QPolygon polygon=getTrianglePolygon(B,A,_startEdge->getRadius(),radius);
-                painter->drawPolygon(polygon);
+                painter->drawPolygon(getTrianglePolygon(B,A,radius,radius));
             }
         if(_connectMode==Both)
             {
-                QPolygon polygon=getTrianglePolygon(A,B,_endEdge->getRadius(),radius);
+                QPolygon polygon=getTrianglePolygon(A,B,radius,radius);
                 painter->drawPolygon(polygon);
-                polygon=getTrianglePolygon(B,A,_startEdge->getRadius(),radius);
+                polygon=getTrianglePolygon(B,A,radius,radius);
                 painter->drawPolygon(polygon);
             }
     }

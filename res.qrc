@@ -13,5 +13,15 @@
         <file>img/EdgeEdit.png</file>
         <file>img/BridgeEdit.png</file>
     </qresource>
-    <qresource prefix="/Help"/>
+    <qresource prefix="/Help">
+        <file>HelpText/HelpText1.txt</file>
+        <file>HelpText/HelpText2.txt</file>
+        <file>HelpText/HelpText3.txt</file>
+    </qresource>
+    <qresource prefix="/Debug">
+        <file>img/DebugArrow.png</file>
+    </qresource>
+    <qresource prefix="/Algorithms">
+        <file>Algorithms/DFS.txt</file>
+    </qresource>
 </RCC>

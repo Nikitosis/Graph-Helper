@@ -6,6 +6,7 @@
 #include <QGraphicsObject>
 #include <QGraphicsSceneMouseEvent>
 #include <QPolygon>
+#include <QStyleOptionGraphicsItem>
 #include <qmath.h>
 
 #include "myedge.h"

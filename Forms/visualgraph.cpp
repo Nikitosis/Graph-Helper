@@ -80,7 +80,7 @@ void VisualGraph::initBridge(const QVector<QVector<int> > Vec, const QVector<MyE
 
 void VisualGraph::initHelp()
 {
-    QFile file(QCoreApplication::applicationDirPath()+"/HelpText/HelpText1.txt");
+    QFile file(":/Help/HelpText/HelpText1.txt");
     file.open(QIODevice::ReadOnly | QIODevice::Text);
 
     QTextStream stream(&file);
@@ -89,13 +89,13 @@ void VisualGraph::initHelp()
     ui->Question_1->setToolTip(stream.readAll());
     stream.seek(0);
 
-    file.setFileName(QCoreApplication::applicationDirPath()+"/HelpText/HelpText2.txt");
+    file.setFileName(":/Help/HelpText/HelpText2.txt");
         file.open(QIODevice::ReadOnly | QIODevice::Text);
 
     ui->Question_2->setToolTip(stream.readAll());
     stream.seek(0);
 
-    file.setFileName(QCoreApplication::applicationDirPath()+"/HelpText/HelpText3.txt");
+    file.setFileName(":/Help/HelpText/HelpText3.txt");
     file.open(QIODevice::ReadOnly | QIODevice::Text);
 
     ui->Question_3->setToolTip(stream.readAll());

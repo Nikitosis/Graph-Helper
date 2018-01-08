@@ -18,6 +18,8 @@ public:
 
     void lineNumberAreaPaintEvent(QPaintEvent *event);
     int lineNumberAreaWidth();
+    void enableDebugMode(int blockIndex);
+    void disableDebugMode();
 
 protected:
     void resizeEvent(QResizeEvent *e);
@@ -26,6 +28,8 @@ private slots:
     void updateLineNumberArea(const QRect& rect,int scrolly);
 private:
     QWidget *_lineNumberArea;
+    QPixmap _pixMap;
+    int _debugBlockIndex;
 };
 
 #endif // CODEEDITOR_H

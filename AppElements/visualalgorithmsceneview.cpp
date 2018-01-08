@@ -15,6 +15,7 @@ VisualAlgorithmSceneView::VisualAlgorithmSceneView(QWidget *parent) : QGraphicsV
     _timer=new QTimer(this);
     connect(_timer,SIGNAL(timeout()),this->viewport(),SLOT(update()));
     _timer->start(17);
+
 }
 
 void VisualAlgorithmSceneView::addElement(QGraphicsItem *element)

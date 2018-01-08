@@ -8,8 +8,9 @@ VisualAlgorithm::VisualAlgorithm(Graph *graph,QWidget *parent) :
     ui->setupUi(this);
     _graph=new Graph(graph,this);
     init();
-
-    QFuture<void> future = QtConcurrent::run(this,&VisualAlgorithm::Algo);  //Create thread with Algo function
+    initDFS();
+    future = QtConcurrent::run(this,&VisualAlgorithm::DFS);  //Create thread with Algo function
+    isExit=false;
 }
 
 void VisualAlgorithm::init()
@@ -46,6 +47,9 @@ void VisualAlgorithm::init()
 
     changeAllBridgesColor(DEFAULT_BRIDGE_COLOR);
     changeAllEdgesColor(DEFAULT_BRIDGE_COLOR);
+
+    //ui->Code->enableDebugMode(14);
+
 }
 
 VisualAlgorithm::~VisualAlgorithm()
@@ -65,7 +69,7 @@ void VisualAlgorithm::addOneDArray(QVector<QString> &values, QVector<QString> &n
     }
 }
 
-void VisualAlgorithm::addTwoDArray(QVector<QVector<QString> > &values, QVector<QString> &arrayNames,QVector<QVector<QString>> valueNames, QString mainName)
+void VisualAlgorithm::addTwoDArray(QVector<QVector<QString>> &values, QVector<QString> &arrayNames,QVector<QString> valueNames, QString mainName)
 {
     QTreeWidgetItem *mainItem=new QTreeWidgetItem(ui->Watch);
     mainItem->setText(0,mainName);
@@ -74,10 +78,10 @@ void VisualAlgorithm::addTwoDArray(QVector<QVector<QString> > &values, QVector<Q
         QTreeWidgetItem *arrayItem=new QTreeWidgetItem(mainItem);
         arrayItem->setText(0,arrayNames[i]);
 
-        for(int j=0;j<valueNames[i].size();j++)
+        for(int j=0;j<valueNames.size();j++)
         {
             QTreeWidgetItem *item=new QTreeWidgetItem(arrayItem);
-            item->setText(0,valueNames[i][j]);
+            item->setText(0,valueNames[j]);
             item->setText(1,values[i][j]);
         }
     }
@@ -87,8 +91,13 @@ void VisualAlgorithm::changeBridgeColor(int startEdgeId, int endEdgeId,QColor co
 {
     QVector<Bridge *> &Bridges=_graph->getBridges();
     for(int i=0;i<Bridges.size();i++)
-        if(Bridges[i]->getStartEdge()->getId()==startEdgeId && Bridges[i]->getEndEdge()->getId()==endEdgeId)
+        if((Bridges[i]->getStartEdge()->getId()==startEdgeId && Bridges[i]->getEndEdge()->getId()==endEdgeId)
+        || (Bridges[i]->getStartEdge()->getId()==endEdgeId && Bridges[i]->getEndEdge()->getId()==startEdgeId))
+        {
             Bridges[i]->setColor(color);
+            return;
+        }
+    qDebug()<<"Cannot find Bridge by its Edges"<<endl;
 }
 
 void VisualAlgorithm::changeEdgeColor(int id, QColor color)
@@ -96,7 +105,11 @@ void VisualAlgorithm::changeEdgeColor(int id, QColor color)
     QVector<MyEdge *>&Edges=_graph->getEdges();
     for(int i=0;i<Edges.size();i++)
         if(Edges[i]->getId()==id)
+        {
             Edges[i]->setColor(color);
+            return;
+        }
+    qDebug()<<"Cannot find Edge by its Id"<<endl;
 }
 
 void VisualAlgorithm::changeAllBridgesColor(QColor color)
@@ -115,63 +128,144 @@ void VisualAlgorithm::changeAllEdgesColor(QColor color)
 
 void VisualAlgorithm::DFS()
 {
+    mtx.lock();
 
-}
-
-void VisualAlgorithm::Algo()
-{
-    //dosmth
     int startEdge=0;
     QVector<QVector<int>> &Matrix=_graph->getCorrectMatrix();
+    QVector<MyEdge *> Edges=_graph->getEdges();
     QVector<bool> Visited(Matrix.size());
-    QStack<int> Stack;
+    QVector<int> Stack;
     QVector<QPair<int,int>> BridgesVec;
-    Stack.push(startEdge);
+
+    updateDFS(Matrix,Visited,Stack);
+    LockLine(4);
+
     Visited[startEdge]=true;
-    int n=Matrix.size();
+
+    updateDFS(Matrix,Visited,Stack);
+    LockLine(5);
+
+    Stack.push_back(startEdge);
+
+    updateDFS(Matrix,Visited,Stack);
+    LockLine(6);
+
     while(!Stack.empty())
     {
-        changeEdgeColor(Stack.last(),ACTIVE_BRIDGE_COLOR);
-        LockLine();
-        for(int i=0;i<n;i++)
+        changeEdgeColor(Edges[Stack.last()]->getId(),ACTIVE_BRIDGE_COLOR);
+        updateDFS(Matrix,Visited,Stack);
+        LockLine(8);
+        for(int i=0;i<Matrix.size();i++)
         {
+            LockLine(9);
+            LockLine(10);
             if(Matrix[Stack.last()][i]!=0 && !Visited[i])
             {
-                Visited[i]=true;
-                changeBridgeColor(Stack.last(),i,ACTIVE_BRIDGE_COLOR);
-                changeEdgeColor(i,ACTIVE_BRIDGE_COLOR);
-                changeEdgeColor(Stack.last(),PASSIVE_BRIDGE_COLOR);
+                changeBridgeColor(Edges[Stack.last()]->getId(),Edges[i]->getId(),ACTIVE_BRIDGE_COLOR);
+                changeEdgeColor(Edges[i]->getId(),ACTIVE_BRIDGE_COLOR);
+                changeEdgeColor(Edges[Stack.last()]->getId(),PASSIVE_BRIDGE_COLOR);
                 if(BridgesVec.size()>0)
                 {
                     int first=BridgesVec[BridgesVec.size()-1].first;
                     int second=BridgesVec[BridgesVec.size()-1].second;
-                    changeBridgeColor(first,second,PASSIVE_BRIDGE_COLOR);
+                    changeBridgeColor(Edges[first]->getId(),Edges[second]->getId(),PASSIVE_BRIDGE_COLOR);
                 }
                 BridgesVec.push_back({Stack.last(),i});
-                Stack.push(i);
+
+                LockLine(11);
+                LockLine(12);
+
+                Visited[i]=true;
+
+                updateDFS(Matrix,Visited,Stack);
+                LockLine(13);
+
+                Stack.push_back(i);
+
+                updateDFS(Matrix,Visited,Stack);
+                LockLine(14);
+
                 i=-1;
-                LockLine();
+
+                updateDFS(Matrix,Visited,Stack);
+                LockLine(15);
             }
+            LockLine(16);
         }
-        changeEdgeColor(Stack.last(),PASSIVE_BRIDGE_COLOR);
-        Stack.pop();
+        changeEdgeColor(Edges[Stack.last()]->getId(),PASSIVE_BRIDGE_COLOR);
         if(BridgesVec.size()>0)
         {
             int first=BridgesVec[BridgesVec.size()-1].first;
             int second=BridgesVec[BridgesVec.size()-1].second;
-            changeBridgeColor(first,second,PASSIVE_BRIDGE_COLOR);
+            changeBridgeColor(Edges[first]->getId(),Edges[second]->getId(),PASSIVE_BRIDGE_COLOR);
             BridgesVec.pop_back();
         }
+
+        updateDFS(Matrix,Visited,Stack);
+        LockLine(17);
+
+        Stack.pop_back();
+
+        updateDFS(Matrix,Visited,Stack);
+        LockLine(18);
     }
-    QMutexLocker locker(&mtx);
-    condit.wait(&mtx);
-    LockLine();
+
+    updateDFS(Matrix,Visited,Stack);
+    LockLine(19);
     qDebug()<<"Go!";
+
+    mtx.unlock();
 }
 
-void VisualAlgorithm::LockLine()
+void VisualAlgorithm::initDFS()
 {
-    QMutexLocker locker(&mtx);
+    QFile file(":/Algorithms/Algorithms/DFS.txt");
+    file.open(QIODevice::ReadOnly | QIODevice::Text);
+    QTextStream stream(&file);
+    stream.setCodec("UTF-8");
+    ui->Code->document()->setPlainText(stream.readAll());
+}
+
+void VisualAlgorithm::updateDFS(QVector<QVector<int> > &Matrix, QVector<bool> &Visited, QVector<int> &Stack)
+{
+    ui->Watch->clear();
+
+    QVector<MyEdge *>Edges=_graph->getEdges();
+    QVector<QString> Names(Edges.size());
+    QVector<QVector<QString>> StringMatrix(Matrix.size());
+
+    for(int i=0;i<Edges.size();i++)
+        Names[i]=Edges[i]->getInfo();
+
+    for(int i=0;i<Matrix.size();i++)
+        for(int j=0;j<Matrix[i].size();j++)
+            StringMatrix[i].push_back(QString::number(Matrix[i][j]));
+
+
+    addTwoDArray(StringMatrix,Names,Names,"Matrix");
+
+    QVector<QString> Values;
+    for(int i=0;i<Visited.size();i++)
+        Values.push_back(QString::number(Visited[i]));
+    addOneDArray(Values,Names,"Visited");
+
+    Values.clear();
+
+    for(int i=0;i<Stack.size();i++)
+        Values.push_back(Edges[Stack[i]]->getInfo());
+    QVector<QString> Numbers;
+    for(int i=0;i<Stack.size();i++)
+        Numbers.push_back(QString::number(i+1));
+
+    addOneDArray(Values,Numbers,"Stack");
+}
+
+void VisualAlgorithm::LockLine(int codeLineIndex)
+{
+    if(isExit)
+        return;
+    ui->Code->enableDebugMode(codeLineIndex);
+    //QMutexLocker locker(&mtx);
     condit.wait(&mtx);
 }
 
@@ -179,3 +273,18 @@ void VisualAlgorithm::on_pushButton_clicked()
 {
     condit.wakeAll();
 }
+
+void VisualAlgorithm::on_pushButton_2_clicked()
+{
+
+}
+
+void VisualAlgorithm::reject()
+{
+    isExit=true;
+    condit.wakeAll();
+    future.waitForFinished();  //to not leave working thread
+    delete this;
+}
+
+
