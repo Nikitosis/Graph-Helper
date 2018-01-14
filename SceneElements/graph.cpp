@@ -36,10 +36,7 @@ void Graph::addBridge(Bridge *bridge)
 {
     _Bridges.push_back(bridge);
 
-    int startNum=bridge->getStartEdge()->getId();
-    int endNum=bridge->getEndEdge()->getId();
-
-    _Matrix[startNum][endNum]=1;
+    changeConnectMode(bridge);
 }
 
 bool cmp(MyEdge *first,MyEdge *second) //to compare Edges when sorting

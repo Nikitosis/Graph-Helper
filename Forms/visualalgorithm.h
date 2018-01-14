@@ -13,7 +13,6 @@
 #include <QtConcurrent/QtConcurrent>
 #include <QFuture>
 //////
-#include <Forms/visualarray.h>
 #include <SceneElements/graph.h>
 #include <AppElements/visualalgorithmsceneview.h>
 
@@ -38,10 +37,11 @@ protected:
     void changeAllBridgesColor(QColor color);
     void changeAllEdgesColor(QColor color);
 
-    void DFS();
-    void initDFS();
-    void updateDFS(QVector<QVector<int>> &Matrix, QVector<bool> &Visited, QVector<int> &Stack);
-    void LockLine(int codeLineIndex);
+    void Dfs();
+    void initDfs();
+    void updateDfs(QVector<QVector<int>> &Matrix, QVector<bool> &Visited, QVector<int> &Stack);
+    void lockLine(int codeLineIndex);
+    void breakAlgo();
 signals:
 
 protected slots:
@@ -49,11 +49,11 @@ protected slots:
 
 private slots:
 
-    void on_pushButton_clicked();
-
-    void on_pushButton_2_clicked();
-
     void reject();
+
+    void on_debugStep_clicked();
+
+    void on_debugBreak_clicked();
 
 private:
     Graph *_graph;

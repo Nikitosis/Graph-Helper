@@ -34,6 +34,7 @@ public:
     Graph *getGraph() const;
     QGraphicsScene *getScene() const;
     QGraphicsProxyWidget *getProxyWidget(QWidget *uiElement);
+    QTimer *getTimer() const;
 
 signals:
 

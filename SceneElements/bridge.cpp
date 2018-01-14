@@ -35,7 +35,7 @@ void Bridge::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QW
     QPointF B=_endEdge->getCordinates();             //Second Point
     const double radius=_startEdge->getRadius();
 
-    if(len2(_startEdge->getCordinates(),_endEdge->getCordinates())>2*radius)      //If they are not intersected,we paint triangles
+    /*if(len2(_startEdge->getCordinates(),_endEdge->getCordinates())>2*radius)      //If they are not intersected,we paint triangles
     {
         painter->setBrush(Qt::blue);
         if(_connectMode==StartToEnd)
@@ -53,7 +53,7 @@ void Bridge::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QW
                 polygon=getTrianglePolygon(B,A,radius,radius);
                 painter->drawPolygon(polygon);
             }
-    }
+    }*/
     paintWeight(painter);
 }
 

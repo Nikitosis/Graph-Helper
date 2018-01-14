@@ -16,8 +16,19 @@
   <property name="styleSheet">
    <string notr="true">QPushButton
 {
-	margin:0px;
-	padding:0px;
+	background-color:#474747;
+	border:0px solid blue;
+	margin:0px 0px 0px 0px;
+	padding: 0px 0px 0px 0px;
+}
+QPushButton:pressed
+{
+	border:2px solid #54bae5;
+	margin:3px;
+}
+QPushButton:hover{
+	background-color:#504f4f;
+	border:2px solid #767676;
 }</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
@@ -68,7 +79,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton">
+        <widget class="QPushButton" name="debugStep">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
            <horstretch>0</horstretch>
@@ -83,7 +94,7 @@
          </property>
          <property name="icon">
           <iconset resource="../res.qrc">
-           <normaloff>:/buttons/img/Question.png</normaloff>:/buttons/img/Question.png</iconset>
+           <normaloff>:/Debug/img/DebugStep.png</normaloff>:/Debug/img/DebugStep.png</iconset>
          </property>
          <property name="iconSize">
           <size>
@@ -91,10 +102,13 @@
            <height>60</height>
           </size>
          </property>
+         <property name="flat">
+          <bool>true</bool>
+         </property>
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_2">
+        <widget class="QPushButton" name="debugBreak">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
            <horstretch>0</horstretch>
@@ -106,13 +120,16 @@
          </property>
          <property name="icon">
           <iconset resource="../res.qrc">
-           <normaloff>:/buttons/img/Question.png</normaloff>:/buttons/img/Question.png</iconset>
+           <normaloff>:/Debug/img/DebugBreak.png</normaloff>:/Debug/img/DebugBreak.png</iconset>
          </property>
          <property name="iconSize">
           <size>
            <width>60</width>
            <height>60</height>
           </size>
+         </property>
+         <property name="flat">
+          <bool>true</bool>
          </property>
         </widget>
        </item>

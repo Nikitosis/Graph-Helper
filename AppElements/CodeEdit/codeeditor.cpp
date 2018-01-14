@@ -16,6 +16,7 @@ CodeEditor::CodeEditor(QWidget *parent):QPlainTextEdit(parent)
 
 void CodeEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
 {
+    qDebug()<<"Paint"<<endl;
     QPainter painter(_lineNumberArea);
     painter.fillRect(event->rect(),Qt::lightGray);
 
@@ -23,7 +24,13 @@ void CodeEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
     int blockNumber=block.blockNumber();
     int top=(int) blockBoundingGeometry(block).translated(contentOffset()).top();
     int bottom=top+(int)blockBoundingGeometry(block).height();
+    QTextBlockFormat fm;
+    /*fm.setBackground(QColor(201,225,226));
+    QTextDocument *document=this->document();
+    QTextCursor(document->findBlockByNumber(_debugBlockIndex)).setBlockFormat(fm);*/
 
+
+    QTextCursor(block).setBlockFormat(fm);
     while(block.isValid() && top<=event->rect().bottom())
     {
         if(block.isVisible() && bottom>=event->rect().top())
@@ -35,15 +42,13 @@ void CodeEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
             if(blockNumber==_debugBlockIndex)
             {
                 painter.drawPixmap(QRect(0,top,15,fontMetrics().height()),_pixMap);
-                QTextBlockFormat fm;
                 fm.setBackground(QColor(201,225,226));
-                QTextCursor(block).setBlockFormat(fm);
+                QTextCursor(block).setBlockFormat(fm);//very slow
             }
             else
             {
-                QTextBlockFormat fm;
                 fm.setBackground(Qt::white);
-                QTextCursor(block).setBlockFormat(fm);
+                QTextCursor(block).setBlockFormat(fm);//very slow
             }
         }
 
@@ -52,6 +57,8 @@ void CodeEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
         bottom=top+(int) blockBoundingGeometry(block).height();
         blockNumber++;
     }
+
+    qDebug()<<"End"<<endl;
 
 
 }

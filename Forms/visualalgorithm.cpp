@@ -8,8 +8,7 @@ VisualAlgorithm::VisualAlgorithm(Graph *graph,QWidget *parent) :
     ui->setupUi(this);
     _graph=new Graph(graph,this);
     init();
-    initDFS();
-    future = QtConcurrent::run(this,&VisualAlgorithm::DFS);  //Create thread with Algo function
+    initDfs();
     isExit=false;
 }
 
@@ -44,12 +43,6 @@ void VisualAlgorithm::init()
         ui->Graph->addElement(Bridges[i]);
         Bridges[i]->setParent(ui->Graph);
     }
-
-    changeAllBridgesColor(DEFAULT_BRIDGE_COLOR);
-    changeAllEdgesColor(DEFAULT_BRIDGE_COLOR);
-
-    //ui->Code->enableDebugMode(14);
-
 }
 
 VisualAlgorithm::~VisualAlgorithm()
@@ -126,7 +119,7 @@ void VisualAlgorithm::changeAllEdgesColor(QColor color)
         Edges[i]->setColor(color);
 }
 
-void VisualAlgorithm::DFS()
+void VisualAlgorithm::Dfs()
 {
     mtx.lock();
 
@@ -137,28 +130,28 @@ void VisualAlgorithm::DFS()
     QVector<int> Stack;
     QVector<QPair<int,int>> BridgesVec;
 
-    updateDFS(Matrix,Visited,Stack);
-    LockLine(4);
+    updateDfs(Matrix,Visited,Stack);
+    lockLine(4);
 
     Visited[startEdge]=true;
 
-    updateDFS(Matrix,Visited,Stack);
-    LockLine(5);
+    updateDfs(Matrix,Visited,Stack);
+    lockLine(5);
 
     Stack.push_back(startEdge);
 
-    updateDFS(Matrix,Visited,Stack);
-    LockLine(6);
+    updateDfs(Matrix,Visited,Stack);
+    lockLine(6);
 
     while(!Stack.empty())
     {
         changeEdgeColor(Edges[Stack.last()]->getId(),ACTIVE_BRIDGE_COLOR);
-        updateDFS(Matrix,Visited,Stack);
-        LockLine(8);
+        updateDfs(Matrix,Visited,Stack);
+        lockLine(8);
         for(int i=0;i<Matrix.size();i++)
         {
-            LockLine(9);
-            LockLine(10);
+            lockLine(9);
+            lockLine(10);
             if(Matrix[Stack.last()][i]!=0 && !Visited[i])
             {
                 changeBridgeColor(Edges[Stack.last()]->getId(),Edges[i]->getId(),ACTIVE_BRIDGE_COLOR);
@@ -172,25 +165,25 @@ void VisualAlgorithm::DFS()
                 }
                 BridgesVec.push_back({Stack.last(),i});
 
-                LockLine(11);
-                LockLine(12);
+                lockLine(11);
+                lockLine(12);
 
                 Visited[i]=true;
 
-                updateDFS(Matrix,Visited,Stack);
-                LockLine(13);
+                updateDfs(Matrix,Visited,Stack);
+                lockLine(13);
 
                 Stack.push_back(i);
 
-                updateDFS(Matrix,Visited,Stack);
-                LockLine(14);
+                updateDfs(Matrix,Visited,Stack);
+                lockLine(14);
 
                 i=-1;
 
-                updateDFS(Matrix,Visited,Stack);
-                LockLine(15);
+                updateDfs(Matrix,Visited,Stack);
+                lockLine(15);
             }
-            LockLine(16);
+            lockLine(16);
         }
         changeEdgeColor(Edges[Stack.last()]->getId(),PASSIVE_BRIDGE_COLOR);
         if(BridgesVec.size()>0)
@@ -201,33 +194,42 @@ void VisualAlgorithm::DFS()
             BridgesVec.pop_back();
         }
 
-        updateDFS(Matrix,Visited,Stack);
-        LockLine(17);
+        updateDfs(Matrix,Visited,Stack);
+        lockLine(17);
 
         Stack.pop_back();
 
-        updateDFS(Matrix,Visited,Stack);
-        LockLine(18);
+        updateDfs(Matrix,Visited,Stack);
+        lockLine(18);
     }
 
-    updateDFS(Matrix,Visited,Stack);
-    LockLine(19);
+    updateDfs(Matrix,Visited,Stack);
+    lockLine(19);
     qDebug()<<"Go!";
 
     mtx.unlock();
 }
 
-void VisualAlgorithm::initDFS()
+void VisualAlgorithm::initDfs()
 {
     QFile file(":/Algorithms/Algorithms/DFS.txt");
     file.open(QIODevice::ReadOnly | QIODevice::Text);
     QTextStream stream(&file);
     stream.setCodec("UTF-8");
     ui->Code->document()->setPlainText(stream.readAll());
+
+    changeAllBridgesColor(DEFAULT_BRIDGE_COLOR);
+    changeAllEdgesColor(DEFAULT_BRIDGE_COLOR);
+
+    isExit=false;
+
+    future = QtConcurrent::run(this,&VisualAlgorithm::Dfs);  //Create thread with Algo function
 }
 
-void VisualAlgorithm::updateDFS(QVector<QVector<int> > &Matrix, QVector<bool> &Visited, QVector<int> &Stack)
+void VisualAlgorithm::updateDfs(QVector<QVector<int> > &Matrix, QVector<bool> &Visited, QVector<int> &Stack)
 {
+    if(isExit)
+        return;
     ui->Watch->clear();
 
     QVector<MyEdge *>Edges=_graph->getEdges();
@@ -260,7 +262,14 @@ void VisualAlgorithm::updateDFS(QVector<QVector<int> > &Matrix, QVector<bool> &V
     addOneDArray(Values,Numbers,"Stack");
 }
 
-void VisualAlgorithm::LockLine(int codeLineIndex)
+void VisualAlgorithm::breakAlgo()
+{
+    isExit=true;
+    condit.wakeAll();
+    future.waitForFinished();  //to not leave working thread
+}
+
+void VisualAlgorithm::lockLine(int codeLineIndex)
 {
     if(isExit)
         return;
@@ -269,22 +278,21 @@ void VisualAlgorithm::LockLine(int codeLineIndex)
     condit.wait(&mtx);
 }
 
-void VisualAlgorithm::on_pushButton_clicked()
-{
-    condit.wakeAll();
-}
-
-void VisualAlgorithm::on_pushButton_2_clicked()
-{
-
-}
-
 void VisualAlgorithm::reject()
 {
-    isExit=true;
-    condit.wakeAll();
-    future.waitForFinished();  //to not leave working thread
+    breakAlgo();
     delete this;
 }
 
 
+
+void VisualAlgorithm::on_debugStep_clicked()
+{
+    condit.wakeAll();
+}
+
+void VisualAlgorithm::on_debugBreak_clicked()
+{
+    breakAlgo();
+    initDfs();
+}

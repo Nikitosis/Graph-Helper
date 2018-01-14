@@ -7,6 +7,8 @@
 #include <QFontMetrics>
 #include <QTextBlock>
 #include <QPaintEvent>
+#include <QTimer>
+#include <QDebug>
 //#include "AppElements/CodeEdit/linenumberarea.h"
 
 class CodeEditor:public QPlainTextEdit

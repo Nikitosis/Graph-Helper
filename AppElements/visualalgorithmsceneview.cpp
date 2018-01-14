@@ -45,6 +45,7 @@ void VisualAlgorithmSceneView::wheelEvent(QWheelEvent *event)
            if(this->width()*(1.0/k)>_scene->width())//if we went out,then approximate
               scale(scaleFactor, scaleFactor);
     }
+
 }
 
 void VisualAlgorithmSceneView::mousePressEvent(QMouseEvent *event)
@@ -72,5 +73,6 @@ void VisualAlgorithmSceneView::mouseMoveMiddleButton(QMouseEvent *event)
 
     _originPosX=event->x();
     _originPosY=event->y();
+    this->viewport()->update();
 }
 

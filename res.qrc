@@ -8,6 +8,7 @@
         <file>img/Trash.png</file>
         <file>img/List.png</file>
         <file>img/Question.png</file>
+        <file>img/DFSAlgo.png</file>
     </qresource>
     <qresource prefix="/Backgrounds">
         <file>img/EdgeEdit.png</file>
@@ -20,6 +21,8 @@
     </qresource>
     <qresource prefix="/Debug">
         <file>img/DebugArrow.png</file>
+        <file>img/DebugBreak.png</file>
+        <file>img/DebugStep.png</file>
     </qresource>
     <qresource prefix="/Algorithms">
         <file>Algorithms/DFS.txt</file>

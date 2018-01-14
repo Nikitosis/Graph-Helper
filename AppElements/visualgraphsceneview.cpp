@@ -304,3 +304,8 @@ QGraphicsProxyWidget *VisualGraphSceneView::getProxyWidget(QWidget *uiElement)
     proxy->setZValue(5000);
     return proxy;
 }
+
+QTimer *VisualGraphSceneView::getTimer() const
+{
+    return _timer;
+}

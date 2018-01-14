@@ -40,6 +40,9 @@ void MainWindow::on_visualizeGraph_clicked()
 void MainWindow::on_openDfs_clicked()
 {
     VisualAlgorithm *alg=new VisualAlgorithm(ui->graphicsView->getGraph(),this);
-    alg->exec();
+
+    //disconnect(ui->graphicsView->getTimer(),SIGNAL(timeout()),ui->graphicsView->viewport(),SLOT(update()));
+    alg->show();
+    //alg->exec();
 
 }

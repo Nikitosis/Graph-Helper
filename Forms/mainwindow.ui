@@ -55,7 +55,7 @@ QTabWidget::pane{
          <enum>QTabWidget::South</enum>
         </property>
         <property name="currentIndex">
-         <number>2</number>
+         <number>0</number>
         </property>
         <property name="movable">
          <bool>false</bool>
@@ -357,13 +357,22 @@ QPushButton:pressed
 }
 QPushButton:hover{
 	background-color:#504f4f;
-	border:2px solid #767676;
+	border:2px solid #e9941a;
 }</string>
          </property>
          <attribute name="title">
           <string>Страница</string>
          </attribute>
          <layout class="QGridLayout" name="gridLayout_3">
+          <property name="topMargin">
+           <number>12</number>
+          </property>
+          <property name="bottomMargin">
+           <number>12</number>
+          </property>
+          <property name="horizontalSpacing">
+           <number>0</number>
+          </property>
           <item row="0" column="0">
            <widget class="QPushButton" name="visualizeGraph">
             <property name="sizePolicy">
@@ -412,7 +421,8 @@ QPushButton:hover{
             </property>
             <property name="icon">
              <iconset resource="../res.qrc">
-              <normaloff>:/buttons/img/Question.png</normaloff>:/buttons/img/Question.png</iconset>
+              <normaloff>:/buttons/img/DFSAlgo.png</normaloff>
+              <disabledoff>:/buttons/img/DFSAlgo.png</disabledoff>:/buttons/img/DFSAlgo.png</iconset>
             </property>
             <property name="iconSize">
              <size>
