@@ -32,6 +32,7 @@ private:
     QWidget *_lineNumberArea;
     QPixmap _pixMap;
     int _debugBlockIndex;
+    int _prevDebugBlockIndex;
 };
 
 #endif // CODEEDITOR_H

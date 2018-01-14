@@ -12,6 +12,9 @@ CodeEditor::CodeEditor(QWidget *parent):QPlainTextEdit(parent)
     setLineWrapMode(QPlainTextEdit::NoWrap);
     _pixMap.load(":/Debug/img/DebugArrow.png");
     _debugBlockIndex=-1;
+    _prevDebugBlockIndex=-1;
+    setReadOnly(true);
+    setUndoRedoEnabled(false);
 }
 
 void CodeEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
@@ -25,12 +28,8 @@ void CodeEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
     int top=(int) blockBoundingGeometry(block).translated(contentOffset()).top();
     int bottom=top+(int)blockBoundingGeometry(block).height();
     QTextBlockFormat fm;
-    /*fm.setBackground(QColor(201,225,226));
-    QTextDocument *document=this->document();
-    QTextCursor(document->findBlockByNumber(_debugBlockIndex)).setBlockFormat(fm);*/
+    fm.setBackground(QColor(201,225,226));
 
-
-    QTextCursor(block).setBlockFormat(fm);
     while(block.isValid() && top<=event->rect().bottom())
     {
         if(block.isVisible() && bottom>=event->rect().top())
@@ -41,14 +40,7 @@ void CodeEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
             painter.drawText(QRect(0,top,lineNumberAreaWidth(),fontMetrics().height()),Qt::AlignRight,number);
             if(blockNumber==_debugBlockIndex)
             {
-                painter.drawPixmap(QRect(0,top,15,fontMetrics().height()),_pixMap);
-                fm.setBackground(QColor(201,225,226));
-                QTextCursor(block).setBlockFormat(fm);//very slow
-            }
-            else
-            {
-                fm.setBackground(Qt::white);
-                QTextCursor(block).setBlockFormat(fm);//very slow
+                //painter.drawPixmap(QRect(0,top,15,fontMetrics().height()),_pixMap);
             }
         }
 
@@ -57,6 +49,32 @@ void CodeEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
         bottom=top+(int) blockBoundingGeometry(block).height();
         blockNumber++;
     }
+    if(_prevDebugBlockIndex!=-1 && _prevDebugBlockIndex!=_debugBlockIndex)//clear previous colored block
+    {
+        QTextDocument *document=this->document();
+
+        fm.setBackground(Qt::white);
+        QTextCursor(document->findBlockByNumber(_prevDebugBlockIndex)).setBlockFormat(fm);
+    }
+    if(_prevDebugBlockIndex!=_debugBlockIndex) //paint current block
+    {
+        QTextDocument *document=this->document();
+
+        QTextBlock curBlock=document->findBlockByNumber(_debugBlockIndex);
+
+        fm.setBackground(QColor(201,225,226));
+        QTextCursor(curBlock).setBlockFormat(fm);
+    }
+
+    if(_debugBlockIndex!=-1)
+    {
+        QTextDocument *document=this->document();
+        QTextBlock curBlock=document->findBlockByNumber(_debugBlockIndex);
+        int curTop=(int)blockBoundingGeometry(curBlock).translated(contentOffset()).top();
+        painter.drawPixmap(QRect(0,curTop,15,fontMetrics().height()),_pixMap);
+    }
+
+    _prevDebugBlockIndex=_debugBlockIndex;
 
     qDebug()<<"End"<<endl;
 

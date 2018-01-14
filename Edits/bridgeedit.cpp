@@ -7,6 +7,7 @@ BridgeEdit::BridgeEdit(QWidget *parent) :
 {
     ui->setupUi(this);
     this->setWindowFlags(Qt::FramelessWindowHint);
+    ui->BridgeWeight->setValidator(new QIntValidator);
 }
 
 void BridgeEdit::setBridge(Bridge *bridge)

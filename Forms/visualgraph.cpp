@@ -88,12 +88,14 @@ void VisualGraph::initHelp()
 
     ui->Question_1->setToolTip(stream.readAll());
     stream.seek(0);
+    file.close();
 
     file.setFileName(":/Help/HelpText/HelpText2.txt");
-        file.open(QIODevice::ReadOnly | QIODevice::Text);
+    file.open(QIODevice::ReadOnly | QIODevice::Text);
 
     ui->Question_2->setToolTip(stream.readAll());
     stream.seek(0);
+    file.close();
 
     file.setFileName(":/Help/HelpText/HelpText3.txt");
     file.open(QIODevice::ReadOnly | QIODevice::Text);

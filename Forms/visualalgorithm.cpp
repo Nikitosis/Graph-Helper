@@ -10,6 +10,7 @@ VisualAlgorithm::VisualAlgorithm(Graph *graph,QWidget *parent) :
     init();
     initDfs();
     isExit=false;
+
 }
 
 void VisualAlgorithm::init()
@@ -129,6 +130,13 @@ void VisualAlgorithm::Dfs()
     QVector<bool> Visited(Matrix.size());
     QVector<int> Stack;
     QVector<QPair<int,int>> BridgesVec;
+
+    if(Matrix.size()==0)
+    {
+        isExit=true;
+        mtx.unlock();
+        return;
+    }
 
     updateDfs(Matrix,Visited,Stack);
     lockLine(4);
@@ -274,7 +282,7 @@ void VisualAlgorithm::lockLine(int codeLineIndex)
     if(isExit)
         return;
     ui->Code->enableDebugMode(codeLineIndex);
-    //QMutexLocker locker(&mtx);
+    ui->Code->update();
     condit.wait(&mtx);
 }
 
