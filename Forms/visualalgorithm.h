@@ -8,6 +8,7 @@
 #include <QTreeWidget>
 #include <QVector>
 #include <QStack>
+#include <QInputDialog>
 //////
 #include <QCoreApplication>
 #include <QtConcurrent/QtConcurrent>
@@ -37,7 +38,7 @@ protected:
     void changeAllBridgesColor(QColor color);
     void changeAllEdgesColor(QColor color);
 
-    void Dfs();
+    void Dfs(int startEdge);
     void initDfs();
     void updateDfs(QVector<QVector<int>> &Matrix, QVector<bool> &Visited, QVector<int> &Stack);
     void lockLine(int codeLineIndex);

@@ -21,6 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
     //Initializing some variables and installation the scene
+    //ui->tabWidget->tabBar()->setTa
 }
 
 MainWindow::~MainWindow()

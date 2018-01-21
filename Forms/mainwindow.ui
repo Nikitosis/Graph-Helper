@@ -29,7 +29,7 @@
     <item row="0" column="0">
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <widget class="QTabWidget" name="tabWidget">
+       <widget class="MyTabWidget" name="tabWidget">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
           <horstretch>50</horstretch>
@@ -42,9 +42,21 @@
           <height>100</height>
          </size>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>9</pointsize>
+         </font>
+        </property>
         <property name="styleSheet">
          <string notr="true">QTabBar::tab{
 	width:100px;
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #666666, stop: 0.4 #9E9E9E, stop: 1.0 #F9F9F9);
+}
+QTabBar::tab:hover{
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #848484, stop: 0.4 #ADADAD, stop: 1.0 #FFFFFF);
+}
+QTabBar::tab:selected{
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 1 #848484, stop: 0.9 #D3D3D3,stop: 0.2 #9E9E9E, stop: 0 #848484);
 }
 QTabWidget::pane{
 	border: 0 solid white;
@@ -61,7 +73,7 @@ QTabWidget::pane{
         <property name="movable">
          <bool>false</bool>
         </property>
-        <widget class="QWidget" name="tab_1">
+        <widget class="QWidget" name="changeTab">
          <property name="styleSheet">
           <string notr="true">QPushButton
 {
@@ -81,7 +93,7 @@ QPushButton:hover{
 }</string>
          </property>
          <attribute name="title">
-          <string>Tab 1</string>
+          <string>Change</string>
          </attribute>
          <layout class="QGridLayout" name="gridLayout">
           <property name="topMargin">
@@ -200,7 +212,7 @@ QPushButton:hover{
           </item>
          </layout>
         </widget>
-        <widget class="QWidget" name="tab_2">
+        <widget class="QWidget" name="deleteTab">
          <property name="styleSheet">
           <string notr="true">QPushButton
 {
@@ -220,7 +232,7 @@ QPushButton:hover{
 }</string>
          </property>
          <attribute name="title">
-          <string>Tab 2</string>
+          <string>Delete</string>
          </attribute>
          <layout class="QGridLayout" name="gridLayout_2">
           <property name="leftMargin">
@@ -342,7 +354,7 @@ QPushButton:hover{
           </item>
          </layout>
         </widget>
-        <widget class="QWidget" name="tab_3">
+        <widget class="QWidget" name="functionTab">
          <property name="styleSheet">
           <string notr="true">QPushButton
 {
@@ -362,7 +374,7 @@ QPushButton:hover{
 }</string>
          </property>
          <attribute name="title">
-          <string>Страница</string>
+          <string>Watch</string>
          </attribute>
          <layout class="QGridLayout" name="gridLayout_3">
           <property name="topMargin">
@@ -469,6 +481,12 @@ QPushButton:hover{
    <class>VisualGraphSceneView</class>
    <extends>QGraphicsView</extends>
    <header>AppElements/visualgraphsceneview.h</header>
+  </customwidget>
+  <customwidget>
+   <class>MyTabWidget</class>
+   <extends>QTabWidget</extends>
+   <header>AppElements/mytabwidget.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>

@@ -8,7 +8,6 @@ VisualAlgorithm::VisualAlgorithm(Graph *graph,QWidget *parent) :
     ui->setupUi(this);
     _graph=new Graph(graph,this);
     init();
-    initDfs();
     isExit=false;
 
 }
@@ -120,11 +119,11 @@ void VisualAlgorithm::changeAllEdgesColor(QColor color)
         Edges[i]->setColor(color);
 }
 
-void VisualAlgorithm::Dfs()
+void VisualAlgorithm::Dfs(int startEdge)
 {
+
     mtx.lock();
 
-    int startEdge=0;
     QVector<QVector<int>> &Matrix=_graph->getCorrectMatrix();
     QVector<MyEdge *> Edges=_graph->getEdges();
     QVector<bool> Visited(Matrix.size());
@@ -231,7 +230,30 @@ void VisualAlgorithm::initDfs()
 
     isExit=false;
 
-    future = QtConcurrent::run(this,&VisualAlgorithm::Dfs);  //Create thread with Algo function
+    int startEdge=-1;
+    do
+    {
+    bool isOk=false;
+    QString str= QInputDialog::getText(0,
+                                       "First Edge",
+                                       "First Edge:",
+                                       QLineEdit::Normal,
+                                       "",
+                                       &isOk
+                                       );
+    if(!isOk)
+        return;
+
+    QVector<MyEdge *>Edges=_graph->getEdges();
+    for(int i=0;i<Edges.size();i++)
+        if(Edges[i]->getInfo()==str)
+        {
+            startEdge=i;
+            break;
+        }
+    }while(startEdge==-1);
+
+    future = QtConcurrent::run(this,&VisualAlgorithm::Dfs,startEdge);  //Create thread with Algo function
 }
 
 void VisualAlgorithm::updateDfs(QVector<QVector<int> > &Matrix, QVector<bool> &Visited, QVector<int> &Stack)
@@ -296,6 +318,8 @@ void VisualAlgorithm::reject()
 
 void VisualAlgorithm::on_debugStep_clicked()
 {
+    if(!future.isRunning())
+        initDfs();
     condit.wakeAll();
 }
 

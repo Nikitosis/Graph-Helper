@@ -40,7 +40,8 @@ SOURCES += \
     AppElements/CodeEdit/linenumberarea.cpp \
     AppElements/CodeEdit/codeeditor.cpp \
     AppElements/visualgraphsceneview.cpp \
-    AppElements/visualalgorithmsceneview.cpp
+    AppElements/visualalgorithmsceneview.cpp \
+    AppElements/mytabwidget.cpp
 
 
 HEADERS += \
@@ -56,7 +57,8 @@ HEADERS += \
     AppElements/CodeEdit/linenumberarea.h \
     AppElements/CodeEdit/codeeditor.h \
     AppElements/visualgraphsceneview.h \
-    AppElements/visualalgorithmsceneview.h
+    AppElements/visualalgorithmsceneview.h \
+    AppElements/mytabwidget.h
 
 
 FORMS += \

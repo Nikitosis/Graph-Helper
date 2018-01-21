@@ -255,16 +255,20 @@
              <property name="font">
               <font>
                <pointsize>12</pointsize>
+               <kerning>true</kerning>
               </font>
              </property>
              <property name="frameShape">
-              <enum>QFrame::Box</enum>
+              <enum>QFrame::NoFrame</enum>
              </property>
              <property name="text">
               <string>Список смежности</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
+             </property>
+             <property name="textInteractionFlags">
+              <set>Qt::LinksAccessibleByMouse</set>
              </property>
             </widget>
            </item>
