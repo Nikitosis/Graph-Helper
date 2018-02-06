@@ -8,6 +8,7 @@ VisualAlgorithm::VisualAlgorithm(Graph *graph,QWidget *parent) :
     ui->setupUi(this);
     _graph=new Graph(graph,this);
     init();
+    initDfs();
     isExit=false;
 
 }
