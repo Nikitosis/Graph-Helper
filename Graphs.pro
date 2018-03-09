@@ -15,7 +15,10 @@ TEMPLATE = app
 # any feature of Qt which as been marked as deprecated (the exact warnings
 # depend on your compiler). Please consult the documentation of the
 # deprecated API in order to know how to port your code away from it.
-DEFINES += QT_DEPRECATED_WARNINGS
+DEFINES += QT_DEPRECATED_WARNINGS\
+           ACTIVE_BRIDGE_COLOR=QColor(205,97,97)\
+           PASSIVE_BRIDGE_COLOR=QColor(71,144,119)\
+           DEFAULT_BRIDGE_COLOR=QColor(163,170,168)
 
 # You can also make your code fail to compile if you use deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -24,24 +27,49 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += \
-        main.cpp \
-        mainwindow.cpp \
-    myedge.cpp \
-    mygraphicssceneview.cpp \
-    bridge.cpp \
-    graph.cpp \
-    line.cpp
+    main.cpp \
+    Edits/bridgeedit.cpp \
+    Edits/edgeedit.cpp \
+    Forms/mainwindow.cpp \
+    Forms/visualalgorithm.cpp \
+    Forms/visualgraph.cpp \
+    SceneElements/bridge.cpp \
+    SceneElements/graph.cpp \
+    SceneElements/line.cpp \
+    SceneElements/myedge.cpp \
+    AppElements/CodeEdit/linenumberarea.cpp \
+    AppElements/CodeEdit/codeeditor.cpp \
+    AppElements/visualgraphsceneview.cpp \
+    AppElements/visualalgorithmsceneview.cpp \
+    AppElements/mytabwidget.cpp
+
 
 HEADERS += \
-        mainwindow.h \
-    myedge.h \
-    mygraphicssceneview.h \
-    bridge.h \
-    graph.h \
-    line.h
+    Edits/bridgeedit.h \
+    Edits/edgeedit.h \
+    Forms/mainwindow.h \
+    Forms/visualalgorithm.h \
+    Forms/visualgraph.h \
+    SceneElements/bridge.h \
+    SceneElements/graph.h \
+    SceneElements/line.h \
+    SceneElements/myedge.h \
+    AppElements/CodeEdit/linenumberarea.h \
+    AppElements/CodeEdit/codeeditor.h \
+    AppElements/visualgraphsceneview.h \
+    AppElements/visualalgorithmsceneview.h \
+    AppElements/mytabwidget.h
+
 
 FORMS += \
-        mainwindow.ui
+    Edits/bridgeedit.ui \
+    Edits/edgeedit.ui \
+    Forms/mainwindow.ui \
+    Forms/visualalgorithm.ui \
+    Forms/visualgraph.ui \
 
 RESOURCES += \
-    res.qrc
+    res.qrc \
+
+SUBDIRS += \
+    Graphs.pro
