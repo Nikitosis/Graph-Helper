@@ -17,6 +17,10 @@ CodeEditor::CodeEditor(QWidget *parent):QPlainTextEdit(parent)
     setUndoRedoEnabled(false);
 }
 
+CodeEditor::~CodeEditor()
+{
+}
+
 void CodeEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
 {
     qDebug()<<"Paint"<<endl;

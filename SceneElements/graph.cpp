@@ -32,6 +32,11 @@ Graph::Graph(Graph *graph, QObject *parent):QObject(parent)
 
 }
 
+Graph::~Graph()
+{
+    qDebug()<<"delete Graph";
+}
+
 void Graph::addBridge(Bridge *bridge)
 {
     _Bridges.push_back(bridge);

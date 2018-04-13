@@ -31,7 +31,7 @@ public:
     ~VisualAlgorithm();
 protected:
     void addOneDArray(QVector<QString> &values, QVector<QString> &names, QString mainName);
-    void addTwoDArray(QVector<QVector<QString> > &values, QVector<QString> &arrayNames, QVector<QString> valueNames, QString mainName);
+    void addTwoDArray(QVector<QVector<QString> > &values, QVector<QString> &arrayNames, QVector<QString> &valueNames, QString mainName);
     void initCodeText();
     void changeBridgeColor(int startEdgeId, int endEdgeId,QColor color);
     void changeEdgeColor(int id,QColor color);
@@ -43,6 +43,9 @@ protected:
     void updateDfs(QVector<QVector<int>> &Matrix, QVector<bool> &Visited, QVector<int> &Stack);
     void lockLine(int codeLineIndex);
     void breakAlgo();
+
+
+    QString getHashTreeItem(QTreeWidgetItem *item);
 signals:
 
 protected slots:

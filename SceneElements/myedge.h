@@ -20,6 +20,7 @@ public:
     explicit MyEdge(int x, int y, int radius, QString info, int id, QObject *parent = nullptr);
     explicit MyEdge(QPointF p,int radius,QString info,int id,QObject *parent = nullptr);
     explicit MyEdge(MyEdge *edge,QObject *parent=nullptr);
+    ~MyEdge();
     int getId() const;
     double getRadius() const;
     QPointF getCordinates() const;

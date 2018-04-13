@@ -15,6 +15,7 @@ class VisualAlgorithmSceneView : public QGraphicsView
     Q_OBJECT
 public:
     explicit VisualAlgorithmSceneView(QWidget *parent = nullptr);
+    ~VisualAlgorithmSceneView();
     void addElement(QGraphicsItem *element);
     QGraphicsScene *getScene() const;
 signals:

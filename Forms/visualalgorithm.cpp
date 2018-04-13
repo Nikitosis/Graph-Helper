@@ -63,7 +63,7 @@ void VisualAlgorithm::addOneDArray(QVector<QString> &values, QVector<QString> &n
     }
 }
 
-void VisualAlgorithm::addTwoDArray(QVector<QVector<QString>> &values, QVector<QString> &arrayNames,QVector<QString> valueNames, QString mainName)
+void VisualAlgorithm::addTwoDArray(QVector<QVector<QString>> &values, QVector<QString> &arrayNames,QVector<QString> &valueNames, QString mainName)
 {
     QTreeWidgetItem *mainItem=new QTreeWidgetItem(ui->Watch);
     mainItem->setText(0,mainName);
@@ -261,8 +261,15 @@ void VisualAlgorithm::updateDfs(QVector<QVector<int> > &Matrix, QVector<bool> &V
 {
     if(isExit)
         return;
-    ui->Watch->clear();
 
+    QVector<bool> State;
+
+    for(int i=0;i<ui->Watch->topLevelItemCount();i++)                             //save state of expanded items
+    {
+        State.push_back(ui->Watch->isItemExpanded(ui->Watch->topLevelItem(i)));
+    }
+
+    ui->Watch->clear();
     QVector<MyEdge *>Edges=_graph->getEdges();
     QVector<QString> Names(Edges.size());
     QVector<QVector<QString>> StringMatrix(Matrix.size());
@@ -282,15 +289,18 @@ void VisualAlgorithm::updateDfs(QVector<QVector<int> > &Matrix, QVector<bool> &V
         Values.push_back(QString::number(Visited[i]));
     addOneDArray(Values,Names,"Visited");
 
-    Values.clear();
 
+    QVector<QString> StackNames;
     for(int i=0;i<Stack.size();i++)
-        Values.push_back(Edges[Stack[i]]->getInfo());
+        StackNames.push_back(Edges[Stack[i]]->getInfo());
     QVector<QString> Numbers;
     for(int i=0;i<Stack.size();i++)
         Numbers.push_back(QString::number(i+1));
 
-    addOneDArray(Values,Numbers,"Stack");
+    addOneDArray(StackNames,Numbers,"Stack");
+
+    for(int i=0;i<ui->Watch->topLevelItemCount();i++)        //expand every item,which was expanded by user
+        ui->Watch->itemExpanded(ui->Watch->topLevelItem(i));
 }
 
 void VisualAlgorithm::breakAlgo()
@@ -298,6 +308,16 @@ void VisualAlgorithm::breakAlgo()
     isExit=true;
     condit.wakeAll();
     future.waitForFinished();  //to not leave working thread
+}
+
+QString VisualAlgorithm::getHashTreeItem(QTreeWidgetItem *item)
+{
+    QString res;
+    while(item!=nullptr)
+    {
+        res+=item->text(0);
+    }
+    return res;
 }
 
 void VisualAlgorithm::lockLine(int codeLineIndex)

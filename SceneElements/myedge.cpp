@@ -30,6 +30,11 @@ MyEdge::MyEdge(MyEdge *edge, QObject *parent):
 {
 }
 
+MyEdge::~MyEdge()
+{
+    qDebug()<<"delete edge";
+}
+
 int MyEdge::getId() const
 {
     return _id;

@@ -18,6 +18,11 @@ VisualAlgorithmSceneView::VisualAlgorithmSceneView(QWidget *parent) : QGraphicsV
 
 }
 
+VisualAlgorithmSceneView::~VisualAlgorithmSceneView()
+{
+  qDebug()<<"delete VisualAlgorithm";
+}
+
 void VisualAlgorithmSceneView::addElement(QGraphicsItem *element)
 {
     _scene->addItem(element);

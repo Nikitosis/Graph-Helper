@@ -28,6 +28,7 @@ class VisualGraphSceneView :public QGraphicsView
 public:
     enum Mode{CursorMode,BridgeMode,EdgeMode,BridgeDeleteMode,EdgeDeleteMode};
     explicit VisualGraphSceneView(QWidget *parent = nullptr);
+    ~VisualGraphSceneView();
 
     QVector<QVector<int>> getCorrectMatrix() const;
     QVector<MyEdge*> getEdges() const;

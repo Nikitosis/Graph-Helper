@@ -28,6 +28,11 @@ VisualGraphSceneView::VisualGraphSceneView(QWidget *parent) : QGraphicsView(pare
     verticalScrollBar()->setHidden(true);
 }
 
+VisualGraphSceneView::~VisualGraphSceneView()
+{
+    qDebug()<<"deelte VisualGraphScene";
+}
+
 
 void VisualGraphSceneView::setMode(Mode mode)
 {

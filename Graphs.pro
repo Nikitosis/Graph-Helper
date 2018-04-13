@@ -41,7 +41,48 @@ SOURCES += \
     AppElements/CodeEdit/codeeditor.cpp \
     AppElements/visualgraphsceneview.cpp \
     AppElements/visualalgorithmsceneview.cpp \
-    AppElements/mytabwidget.cpp
+    AppElements/mytabwidget.cpp \
+    AppElements/CodeEdit/codeeditor.cpp \
+    AppElements/CodeEdit/linenumberarea.cpp \
+    AppElements/mytabwidget.cpp \
+    AppElements/visualalgorithmsceneview.cpp \
+    AppElements/visualgraphsceneview.cpp \
+    AppElements/CodeEdit/codeeditor.cpp \
+    AppElements/CodeEdit/linenumberarea.cpp \
+    AppElements/mytabwidget.cpp \
+    AppElements/visualalgorithmsceneview.cpp \
+    AppElements/visualgraphsceneview.cpp \
+    AppElements/CodeEdit/codeeditor.cpp \
+    AppElements/CodeEdit/linenumberarea.cpp \
+    AppElements/mytabwidget.cpp \
+    AppElements/visualalgorithmsceneview.cpp \
+    AppElements/visualgraphsceneview.cpp \
+    Edits/bridgeedit.cpp \
+    Edits/edgeedit.cpp \
+    Forms/mainwindow.cpp \
+    Forms/visualalgorithm.cpp \
+    Forms/visualgraph.cpp \
+    SceneElements/bridge.cpp \
+    SceneElements/graph.cpp \
+    SceneElements/line.cpp \
+    SceneElements/myedge.cpp \
+    main.cpp \
+    AppElements/CodeEdit/codeeditor.cpp \
+    AppElements/CodeEdit/linenumberarea.cpp \
+    AppElements/mytabwidget.cpp \
+    AppElements/visualalgorithmsceneview.cpp \
+    AppElements/visualgraphsceneview.cpp \
+    Edits/bridgeedit.cpp \
+    Edits/edgeedit.cpp \
+    Forms/mainwindow.cpp \
+    Forms/visualalgorithm.cpp \
+    Forms/visualgraph.cpp \
+    SceneElements/bridge.cpp \
+    SceneElements/graph.cpp \
+    SceneElements/line.cpp \
+    SceneElements/myedge.cpp \
+    main.cpp \
+    AppElements/DebugWatch/debugwatch.cpp
 
 
 HEADERS += \
@@ -58,7 +99,46 @@ HEADERS += \
     AppElements/CodeEdit/codeeditor.h \
     AppElements/visualgraphsceneview.h \
     AppElements/visualalgorithmsceneview.h \
-    AppElements/mytabwidget.h
+    AppElements/mytabwidget.h \
+    AppElements/CodeEdit/codeeditor.h \
+    AppElements/CodeEdit/linenumberarea.h \
+    AppElements/mytabwidget.h \
+    AppElements/visualalgorithmsceneview.h \
+    AppElements/visualgraphsceneview.h \
+    AppElements/CodeEdit/codeeditor.h \
+    AppElements/CodeEdit/linenumberarea.h \
+    AppElements/mytabwidget.h \
+    AppElements/visualalgorithmsceneview.h \
+    AppElements/visualgraphsceneview.h \
+    AppElements/CodeEdit/codeeditor.h \
+    AppElements/CodeEdit/linenumberarea.h \
+    AppElements/mytabwidget.h \
+    AppElements/visualalgorithmsceneview.h \
+    AppElements/visualgraphsceneview.h \
+    Edits/bridgeedit.h \
+    Edits/edgeedit.h \
+    Forms/mainwindow.h \
+    Forms/visualalgorithm.h \
+    Forms/visualgraph.h \
+    SceneElements/bridge.h \
+    SceneElements/graph.h \
+    SceneElements/line.h \
+    SceneElements/myedge.h \
+    AppElements/CodeEdit/codeeditor.h \
+    AppElements/CodeEdit/linenumberarea.h \
+    AppElements/mytabwidget.h \
+    AppElements/visualalgorithmsceneview.h \
+    AppElements/visualgraphsceneview.h \
+    Edits/bridgeedit.h \
+    Edits/edgeedit.h \
+    Forms/mainwindow.h \
+    Forms/visualalgorithm.h \
+    Forms/visualgraph.h \
+    SceneElements/bridge.h \
+    SceneElements/graph.h \
+    SceneElements/line.h \
+    SceneElements/myedge.h \
+    AppElements/DebugWatch/debugwatch.h
 
 
 FORMS += \
