@@ -16,6 +16,8 @@
 //////
 #include <SceneElements/graph.h>
 #include <AppElements/visualalgorithmsceneview.h>
+#include <AppElements/DebugWatch/debugwatch.h>
+#include <AppElements/Algorithm/algorithm.h>
 
 namespace Ui {
 class VisualAlgorithm;
@@ -30,22 +32,21 @@ public:
     void init();
     ~VisualAlgorithm();
 protected:
-    void addOneDArray(QVector<QString> &values, QVector<QString> &names, QString mainName);
-    void addTwoDArray(QVector<QVector<QString> > &values, QVector<QString> &arrayNames, QVector<QString> &valueNames, QString mainName);
     void initCodeText();
+
+    void Dfs(int startEdge);
+    void initDfs();
+    void breakAlgo();
+
+    QString getHashTreeItem(QTreeWidgetItem *item);
+
+public slots:
     void changeBridgeColor(int startEdgeId, int endEdgeId,QColor color);
     void changeEdgeColor(int id,QColor color);
     void changeAllBridgesColor(QColor color);
     void changeAllEdgesColor(QColor color);
-
-    void Dfs(int startEdge);
-    void initDfs();
-    void updateDfs(QVector<QVector<int>> &Matrix, QVector<bool> &Visited, QVector<int> &Stack);
+    void updateDfs(QVector<QVector<int>> Matrix, QVector<bool> Visited, QVector<int> Stack);
     void lockLine(int codeLineIndex);
-    void breakAlgo();
-
-
-    QString getHashTreeItem(QTreeWidgetItem *item);
 signals:
 
 protected slots:
@@ -66,6 +67,8 @@ private:
     QWaitCondition condit;
     QFuture<void> future;
     bool isExit;
+    Algorithm *algo;
+    QThread *algoThread;
 };
 
 #endif // VISUALALGORITHM_H

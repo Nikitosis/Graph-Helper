@@ -70,7 +70,7 @@ QPushButton:hover:!pressed
         <number>0</number>
        </property>
        <item>
-        <widget class="QTreeWidget" name="Watch">
+        <widget class="DebugWatch" name="Watch">
          <column>
           <property name="text">
            <string notr="true">1</string>
@@ -149,6 +149,11 @@ QPushButton:hover:!pressed
    <class>VisualAlgorithmSceneView</class>
    <extends>QGraphicsView</extends>
    <header>AppElements/visualalgorithmsceneview.h</header>
+  </customwidget>
+  <customwidget>
+   <class>DebugWatch</class>
+   <extends>QTreeWidget</extends>
+   <header>debugwatch.h</header>
   </customwidget>
  </customwidgets>
  <resources>

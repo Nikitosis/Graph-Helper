@@ -7,9 +7,22 @@ VisualAlgorithm::VisualAlgorithm(Graph *graph,QWidget *parent) :
 {
     ui->setupUi(this);
     _graph=new Graph(graph,this);
+    algoThread=new QThread;
     init();
-    initDfs();
     isExit=false;
+    algo=new Algorithm(&mtx,graph,&isExit);
+
+    QObject::connect(algo,SIGNAL(updateDfs(QVector<QVector<int> >,QVector<bool>,QVector<int>)),
+                     this,SLOT(updateDfs(QVector<QVector<int> >,QVector<bool>,QVector<int>)),Qt::QueuedConnection);
+    QObject::connect(algo,SIGNAL(changeBridgeColor(int,int,QColor)),
+                     this,SLOT(changeBridgeColor(int,int,QColor)),Qt::QueuedConnection);
+    QObject::connect(algo,SIGNAL(changeEdgeColor(int,QColor)),
+                     this,SLOT(changeEdgeColor(int,QColor)),Qt::QueuedConnection); //Qeued connections because it have to be executed in GUI thread
+    QObject::connect(algo,SIGNAL(lockLine(int)),
+                     this,SLOT(lockLine(int)),Qt::DirectConnection);   //this function have to be executed immedeately(calls in remote thread)
+    QObject::connect(algoThread,SIGNAL(started()),algo,SLOT(runAlgo()));
+
+    initDfs();
 
 }
 
@@ -51,36 +64,6 @@ VisualAlgorithm::~VisualAlgorithm()
     delete ui;
 }
 
-void VisualAlgorithm::addOneDArray(QVector<QString> &values, QVector<QString> &names, QString mainName)
-{
-    QTreeWidgetItem *mainItem=new QTreeWidgetItem(ui->Watch);
-    mainItem->setText(0,mainName);
-    for(int i=0;i<names.size();i++)
-    {
-        QTreeWidgetItem *item=new QTreeWidgetItem(mainItem);
-        item->setText(0,names[i]);
-        item->setText(1,values[i]);
-    }
-}
-
-void VisualAlgorithm::addTwoDArray(QVector<QVector<QString>> &values, QVector<QString> &arrayNames,QVector<QString> &valueNames, QString mainName)
-{
-    QTreeWidgetItem *mainItem=new QTreeWidgetItem(ui->Watch);
-    mainItem->setText(0,mainName);
-    for(int i=0;i<arrayNames.size();i++)
-    {
-        QTreeWidgetItem *arrayItem=new QTreeWidgetItem(mainItem);
-        arrayItem->setText(0,arrayNames[i]);
-
-        for(int j=0;j<valueNames.size();j++)
-        {
-            QTreeWidgetItem *item=new QTreeWidgetItem(arrayItem);
-            item->setText(0,valueNames[j]);
-            item->setText(1,values[i][j]);
-        }
-    }
-}
-
 void VisualAlgorithm::changeBridgeColor(int startEdgeId, int endEdgeId,QColor color)
 {
     QVector<Bridge *> &Bridges=_graph->getBridges();
@@ -120,104 +103,6 @@ void VisualAlgorithm::changeAllEdgesColor(QColor color)
         Edges[i]->setColor(color);
 }
 
-void VisualAlgorithm::Dfs(int startEdge)
-{
-
-    mtx.lock();
-
-    QVector<QVector<int>> &Matrix=_graph->getCorrectMatrix();
-    QVector<MyEdge *> Edges=_graph->getEdges();
-    QVector<bool> Visited(Matrix.size());
-    QVector<int> Stack;
-    QVector<QPair<int,int>> BridgesVec;
-
-    if(Matrix.size()==0)
-    {
-        isExit=true;
-        mtx.unlock();
-        return;
-    }
-
-    updateDfs(Matrix,Visited,Stack);
-    lockLine(4);
-
-    Visited[startEdge]=true;
-
-    updateDfs(Matrix,Visited,Stack);
-    lockLine(5);
-
-    Stack.push_back(startEdge);
-
-    updateDfs(Matrix,Visited,Stack);
-    lockLine(6);
-
-    while(!Stack.empty())
-    {
-        changeEdgeColor(Edges[Stack.last()]->getId(),ACTIVE_BRIDGE_COLOR);
-        updateDfs(Matrix,Visited,Stack);
-        lockLine(8);
-        for(int i=0;i<Matrix.size();i++)
-        {
-            lockLine(9);
-            lockLine(10);
-            if(Matrix[Stack.last()][i]!=0 && !Visited[i])
-            {
-                changeBridgeColor(Edges[Stack.last()]->getId(),Edges[i]->getId(),ACTIVE_BRIDGE_COLOR);
-                changeEdgeColor(Edges[i]->getId(),ACTIVE_BRIDGE_COLOR);
-                changeEdgeColor(Edges[Stack.last()]->getId(),PASSIVE_BRIDGE_COLOR);
-                if(BridgesVec.size()>0)
-                {
-                    int first=BridgesVec[BridgesVec.size()-1].first;
-                    int second=BridgesVec[BridgesVec.size()-1].second;
-                    changeBridgeColor(Edges[first]->getId(),Edges[second]->getId(),PASSIVE_BRIDGE_COLOR);
-                }
-                BridgesVec.push_back({Stack.last(),i});
-
-                lockLine(11);
-                lockLine(12);
-
-                Visited[i]=true;
-
-                updateDfs(Matrix,Visited,Stack);
-                lockLine(13);
-
-                Stack.push_back(i);
-
-                updateDfs(Matrix,Visited,Stack);
-                lockLine(14);
-
-                i=-1;
-
-                updateDfs(Matrix,Visited,Stack);
-                lockLine(15);
-            }
-            lockLine(16);
-        }
-        changeEdgeColor(Edges[Stack.last()]->getId(),PASSIVE_BRIDGE_COLOR);
-        if(BridgesVec.size()>0)
-        {
-            int first=BridgesVec[BridgesVec.size()-1].first;
-            int second=BridgesVec[BridgesVec.size()-1].second;
-            changeBridgeColor(Edges[first]->getId(),Edges[second]->getId(),PASSIVE_BRIDGE_COLOR);
-            BridgesVec.pop_back();
-        }
-
-        updateDfs(Matrix,Visited,Stack);
-        lockLine(17);
-
-        Stack.pop_back();
-
-        updateDfs(Matrix,Visited,Stack);
-        lockLine(18);
-    }
-
-    updateDfs(Matrix,Visited,Stack);
-    lockLine(19);
-    qDebug()<<"Go!";
-
-    mtx.unlock();
-}
-
 void VisualAlgorithm::initDfs()
 {
     QFile file(":/Algorithms/Algorithms/DFS.txt");
@@ -229,7 +114,6 @@ void VisualAlgorithm::initDfs()
     changeAllBridgesColor(DEFAULT_BRIDGE_COLOR);
     changeAllEdgesColor(DEFAULT_BRIDGE_COLOR);
 
-    isExit=false;
 
     int startEdge=-1;
     do
@@ -254,40 +138,46 @@ void VisualAlgorithm::initDfs()
         }
     }while(startEdge==-1);
 
-    future = QtConcurrent::run(this,&VisualAlgorithm::Dfs,startEdge);  //Create thread with Algo function
+    isExit=false;
+    algo->setStartEdge(startEdge);
+    algo->moveToThread(algoThread);
+    //Algorithm thread1;
+    //thread1.run();
+    algoThread->start();
+    //future = QtConcurrent::run(algo,&Algorithm::runDFS,startEdge);  //Create thread with Algo function
 }
 
-void VisualAlgorithm::updateDfs(QVector<QVector<int> > &Matrix, QVector<bool> &Visited, QVector<int> &Stack)
+void VisualAlgorithm::updateDfs(QVector<QVector<int> > Matrix, QVector<bool> Visited, QVector<int> Stack)
 {
+    qDebug()<<"UPDATE THREAT"<<QThread::currentThreadId();
     if(isExit)
         return;
 
-    QVector<bool> State;
-
-    for(int i=0;i<ui->Watch->topLevelItemCount();i++)                             //save state of expanded items
-    {
-        State.push_back(ui->Watch->isItemExpanded(ui->Watch->topLevelItem(i)));
-    }
-
+    ui->Watch->saveState();
     ui->Watch->clear();
+
     QVector<MyEdge *>Edges=_graph->getEdges();
     QVector<QString> Names(Edges.size());
     QVector<QVector<QString>> StringMatrix(Matrix.size());
 
     for(int i=0;i<Edges.size();i++)
+    {
+        QString k=Edges[i]->getInfo();
         Names[i]=Edges[i]->getInfo();
+    }
 
     for(int i=0;i<Matrix.size();i++)
         for(int j=0;j<Matrix[i].size();j++)
             StringMatrix[i].push_back(QString::number(Matrix[i][j]));
 
 
-    addTwoDArray(StringMatrix,Names,Names,"Matrix");
+    ui->Watch->addTwoDArray(StringMatrix,Names,Names,"Matrix");
 
     QVector<QString> Values;
     for(int i=0;i<Visited.size();i++)
         Values.push_back(QString::number(Visited[i]));
-    addOneDArray(Values,Names,"Visited");
+
+    ui->Watch-> addOneDArray(Values,Names,"Visited");
 
 
     QVector<QString> StackNames;
@@ -297,31 +187,23 @@ void VisualAlgorithm::updateDfs(QVector<QVector<int> > &Matrix, QVector<bool> &V
     for(int i=0;i<Stack.size();i++)
         Numbers.push_back(QString::number(i+1));
 
-    addOneDArray(StackNames,Numbers,"Stack");
+    ui->Watch-> addOneDArray(StackNames,Numbers,"Stack");
 
-    for(int i=0;i<ui->Watch->topLevelItemCount();i++)        //expand every item,which was expanded by user
-        ui->Watch->itemExpanded(ui->Watch->topLevelItem(i));
+    ui->Watch-> resetState();
 }
 
 void VisualAlgorithm::breakAlgo()
 {
     isExit=true;
     condit.wakeAll();
-    future.waitForFinished();  //to not leave working thread
+    algoThread->quit();
+    algoThread->wait();
 }
 
-QString VisualAlgorithm::getHashTreeItem(QTreeWidgetItem *item)
-{
-    QString res;
-    while(item!=nullptr)
-    {
-        res+=item->text(0);
-    }
-    return res;
-}
 
 void VisualAlgorithm::lockLine(int codeLineIndex)
 {
+    qDebug()<<"Locked line";
     if(isExit)
         return;
     ui->Code->enableDebugMode(codeLineIndex);
@@ -339,13 +221,23 @@ void VisualAlgorithm::reject()
 
 void VisualAlgorithm::on_debugStep_clicked()
 {
-    if(!future.isRunning())
+    if(isExit)
+    {
+        algoThread->quit();
+        algoThread->wait();
+        qDebug()<<"isrunning "<<algoThread->isRunning();
+        condit.wakeAll();
         initDfs();
-    condit.wakeAll();
+    }
+    else
+    {
+        condit.wakeAll();
+    }
 }
 
 void VisualAlgorithm::on_debugBreak_clicked()
 {
     breakAlgo();
+    QApplication::processEvents();  //We handle all signals,which are still in our signal queue(from worker thread there are lots of emit UpdateDfs,but this thread hasn't handle them yet,and we don't need it)
     initDfs();
 }
