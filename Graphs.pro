@@ -42,8 +42,9 @@ SOURCES += \
     AppElements/visualgraphsceneview.cpp \
     AppElements/visualalgorithmsceneview.cpp \
     AppElements/DebugWatch/debugwatch.cpp \
-    AppElements/Algorithm/algorithm.cpp \
-    AppElements/mytabwidget.cpp
+    AppElements/mytabwidget.cpp \
+    AppElements/Algorithm/abstractalgorithm.cpp \
+    AppElements/Algorithm/dfsalgorithm.cpp
 
 
 HEADERS += \
@@ -62,8 +63,9 @@ HEADERS += \
     AppElements/visualgraphsceneview.h \
     AppElements/visualalgorithmsceneview.h \
     AppElements/DebugWatch/debugwatch.h \
-    AppElements/Algorithm/algorithm.h \
-    AppElements/mytabwidget.h
+    AppElements/mytabwidget.h \
+    AppElements/Algorithm/abstractalgorithm.h \
+    AppElements/Algorithm/dfsalgorithm.h
 
 
 FORMS += \

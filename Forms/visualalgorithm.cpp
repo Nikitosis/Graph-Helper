@@ -10,7 +10,7 @@ VisualAlgorithm::VisualAlgorithm(Graph *graph,QWidget *parent) :
     algoThread=new QThread;
     init();
     isExit=false;
-    algo=new Algorithm(&mtx,graph,isExit,&condit);
+    algo=new DfsAlgorithm(&mtx,graph,isExit,&condit);
 
     QObject::connect(algo,SIGNAL(changeBridgeColor(int,int,QColor)),
                      this,SLOT(changeBridgeColor(int,int,QColor)),Qt::QueuedConnection);
@@ -167,51 +167,6 @@ void VisualAlgorithm::initDfs()
     algoThread->start();
     //future = QtConcurrent::run(algo,&Algorithm::runDFS,startEdge);  //Create thread with Algo function
 }
-
-/*void VisualAlgorithm::updateDfs(QVector<QVector<int> > Matrix, QVector<bool> Visited, QVector<int> Stack)
-{
-    qDebug()<<"UPDATE THREAT"<<QThread::currentThreadId();
-    if(isExit)
-        return;
-
-    ui->Watch->saveState();
-    ui->Watch->clear();
-
-    QVector<MyEdge *>Edges=_graph->getEdges();
-    QVector<QString> Names(Edges.size());
-    QVector<QVector<QString>> StringMatrix(Matrix.size());
-
-    for(int i=0;i<Edges.size();i++)
-    {
-        QString k=Edges[i]->getInfo();
-        Names[i]=Edges[i]->getInfo();
-    }
-
-    for(int i=0;i<Matrix.size();i++)
-        for(int j=0;j<Matrix[i].size();j++)
-            StringMatrix[i].push_back(QString::number(Matrix[i][j]));
-
-
-    ui->Watch->addTwoDArray(StringMatrix,Names,Names,"Matrix");
-
-    QVector<QString> Values;
-    for(int i=0;i<Visited.size();i++)
-        Values.push_back(QString::number(Visited[i]));
-
-    ui->Watch-> addOneDArray(Values,Names,"Visited");
-
-
-    QVector<QString> StackNames;
-    for(int i=0;i<Stack.size();i++)
-        StackNames.push_back(Edges[Stack[i]]->getInfo());
-    QVector<QString> Numbers;
-    for(int i=0;i<Stack.size();i++)
-        Numbers.push_back(QString::number(i+1));
-
-    ui->Watch-> addOneDArray(StackNames,Numbers,"Stack");
-
-    ui->Watch-> resetState();
-}*/
 
 void VisualAlgorithm::breakAlgo()
 {

@@ -17,7 +17,8 @@
 #include <SceneElements/graph.h>
 #include <AppElements/visualalgorithmsceneview.h>
 #include <AppElements/DebugWatch/debugwatch.h>
-#include <AppElements/Algorithm/algorithm.h>
+#include <AppElements/Algorithm/abstractalgorithm.h>
+#include <AppElements/Algorithm/dfsalgorithm.h>
 
 namespace Ui {
 class VisualAlgorithm;
@@ -45,7 +46,6 @@ public slots:
     void changeEdgeColor(int id,QColor color);
     void changeAllBridgesColor(QColor color);
     void changeAllEdgesColor(QColor color);
-    //void updateDfs(QVector<QVector<int>> Matrix, QVector<bool> Visited, QVector<int> Stack);
     void updateEditor(int codeLineIndex);
     void handleSignals();
 signals:
@@ -68,7 +68,7 @@ private:
     QWaitCondition condit;
     QFuture<void> future;
     bool isExit;
-    Algorithm *algo;
+    AbstractAlgorithm *algo;
     QThread *algoThread;
 };
 

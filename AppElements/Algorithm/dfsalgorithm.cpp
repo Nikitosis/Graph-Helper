@@ -1,15 +1,12 @@
-#include "algorithm.h"
+#include "dfsalgorithm.h"
 
-Algorithm::Algorithm(QMutex *mtx, Graph* graph, bool &isExit, QWaitCondition *condit):
-    _mtx(mtx),
-    _graph(graph),
-    _isExit(isExit),
-    _condit(condit)
+
+DfsAlgorithm::DfsAlgorithm(QMutex *mtx, Graph* graph, bool &isExit, QWaitCondition *condit):AbstractAlgorithm(mtx,graph,isExit,condit)
 {
 }
 
 
-void Algorithm::runDFS(int startEdge)
+void DfsAlgorithm::runDfs(int startEdge)
 {
     _mtx->lock();
 
@@ -107,23 +104,7 @@ void Algorithm::runDFS(int startEdge)
     _isExit=true;
 }
 
-void Algorithm::setStartEdge(int edge)
-{
-    QMutexLocker locker(_mtx);
-    _startEdge=edge;
-}
-
-void Algorithm::lockLine(int codeLineIndex)
-{
-    qDebug()<<_isExit;
-    if(_isExit)
-        return;
-    emit updateEditor(codeLineIndex);
-    emit handleSignals();
-    _condit->wait(_mtx);
-}
-
-void Algorithm::updateDfs(QVector<QVector<int> > Matrix, QVector<bool> Visited, QVector<int> Stack)
+void DfsAlgorithm::updateDfs(QVector<QVector<int> > Matrix, QVector<bool> Visited, QVector<int> Stack)
 {
     qDebug()<<"UPDATE THREAT"<<QThread::currentThreadId();
     if(_isExit)
@@ -171,10 +152,8 @@ void Algorithm::updateDfs(QVector<QVector<int> > Matrix, QVector<bool> Visited, 
     emit handleSignals();
 }
 
-void Algorithm::runAlgo()
+void DfsAlgorithm::runAlgo()
 {
     qDebug()<<"Thread running"<<QThread::currentThreadId();
-    runDFS(_startEdge);
+    runDfs(_startEdge);
 }
-
-
