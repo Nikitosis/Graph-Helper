@@ -17,8 +17,8 @@ public:
 public slots:
     void saveState();
     void resetState();
-    void addOneDArray(QVector<QString> &values, QVector<QString> &names, QString mainName);
-    void addTwoDArray(QVector<QVector<QString> > &values, QVector<QString> &arrayNames, QVector<QString> &valueNames, QString mainName);
+    void addOneDArray(QVector<QString> values, QVector<QString> names, QString mainName);
+    void addTwoDArray(QVector<QVector<QString> > values, QVector<QString> arrayNames, QVector<QString> valueNames, QString mainName);
     void clearTabs();
 protected:
     QString getHashTreeItem(QTreeWidgetItem *item);

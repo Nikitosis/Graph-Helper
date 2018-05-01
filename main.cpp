@@ -11,6 +11,8 @@ int main(int argc, char *argv[])
     qRegisterMetaType<QVector<int> >("QVector<int>");
     qRegisterMetaType<QVector<QVector<int> > >("QVector<QVector<int> >");
     qRegisterMetaType<QVector<bool> >("QVector<bool>");
+    qRegisterMetaType<QVector<QVector<QString> > >("QVector<QVector<QString> >");
+    qRegisterMetaType<QVector<QString>>("QVector<QString>");
 
     return a.exec();
 }

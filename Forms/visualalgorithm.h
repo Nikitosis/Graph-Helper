@@ -45,8 +45,9 @@ public slots:
     void changeEdgeColor(int id,QColor color);
     void changeAllBridgesColor(QColor color);
     void changeAllEdgesColor(QColor color);
-    void updateDfs(QVector<QVector<int>> Matrix, QVector<bool> Visited, QVector<int> Stack);
-    void lockLine(int codeLineIndex);
+    //void updateDfs(QVector<QVector<int>> Matrix, QVector<bool> Visited, QVector<int> Stack);
+    void updateEditor(int codeLineIndex);
+    void handleSignals();
 signals:
 
 protected slots:

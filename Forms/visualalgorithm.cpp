@@ -10,16 +10,35 @@ VisualAlgorithm::VisualAlgorithm(Graph *graph,QWidget *parent) :
     algoThread=new QThread;
     init();
     isExit=false;
-    algo=new Algorithm(&mtx,graph,&isExit);
+    algo=new Algorithm(&mtx,graph,isExit,&condit);
 
-    QObject::connect(algo,SIGNAL(updateDfs(QVector<QVector<int> >,QVector<bool>,QVector<int>)),
-                     this,SLOT(updateDfs(QVector<QVector<int> >,QVector<bool>,QVector<int>)),Qt::QueuedConnection);
     QObject::connect(algo,SIGNAL(changeBridgeColor(int,int,QColor)),
                      this,SLOT(changeBridgeColor(int,int,QColor)),Qt::QueuedConnection);
+
     QObject::connect(algo,SIGNAL(changeEdgeColor(int,QColor)),
                      this,SLOT(changeEdgeColor(int,QColor)),Qt::QueuedConnection); //Qeued connections because it have to be executed in GUI thread
-    QObject::connect(algo,SIGNAL(lockLine(int)),
-                     this,SLOT(lockLine(int)),Qt::DirectConnection);   //this function have to be executed immedeately(calls in remote thread)
+
+    QObject::connect(algo,SIGNAL(updateEditor(int)),
+                     this,SLOT(updateEditor(int)),Qt::QueuedConnection);
+
+    QObject::connect(algo,SIGNAL(watchSaveState()),
+                     ui->Watch,SLOT(saveState()),Qt::QueuedConnection);
+
+    QObject::connect(algo,SIGNAL(watchClear()),
+                     ui->Watch,SLOT(clear()),Qt::QueuedConnection);
+
+    QObject::connect(algo,SIGNAL(watchAddTwoDArray(QVector<QVector<QString> >,QVector<QString>,QVector<QString>,QString)),
+                     ui->Watch,SLOT(addTwoDArray(QVector<QVector<QString> >,QVector<QString>,QVector<QString>,QString)),Qt::QueuedConnection);
+
+    QObject::connect(algo,SIGNAL(watchAddOneDArray(QVector<QString>,QVector<QString>,QString)),
+                     ui->Watch,SLOT(addOneDArray(QVector<QString>,QVector<QString>,QString)),Qt::QueuedConnection);
+
+    QObject::connect(algo,SIGNAL(watchResetState()),
+                     ui->Watch,SLOT(resetState()),Qt::QueuedConnection);
+
+    QObject::connect(algo,SIGNAL(handleSignals()),
+                     this,SLOT(handleSignals()),Qt::DirectConnection); //this function have to be executed immedeately(calls in remote thread)
+
     QObject::connect(algoThread,SIGNAL(started()),algo,SLOT(runAlgo()));
 
     initDfs();
@@ -111,8 +130,10 @@ void VisualAlgorithm::initDfs()
     stream.setCodec("UTF-8");
     ui->Code->document()->setPlainText(stream.readAll());
 
+    QApplication::processEvents();
     changeAllBridgesColor(DEFAULT_BRIDGE_COLOR);
     changeAllEdgesColor(DEFAULT_BRIDGE_COLOR);
+
 
 
     int startEdge=-1;
@@ -147,7 +168,7 @@ void VisualAlgorithm::initDfs()
     //future = QtConcurrent::run(algo,&Algorithm::runDFS,startEdge);  //Create thread with Algo function
 }
 
-void VisualAlgorithm::updateDfs(QVector<QVector<int> > Matrix, QVector<bool> Visited, QVector<int> Stack)
+/*void VisualAlgorithm::updateDfs(QVector<QVector<int> > Matrix, QVector<bool> Visited, QVector<int> Stack)
 {
     qDebug()<<"UPDATE THREAT"<<QThread::currentThreadId();
     if(isExit)
@@ -190,7 +211,7 @@ void VisualAlgorithm::updateDfs(QVector<QVector<int> > Matrix, QVector<bool> Vis
     ui->Watch-> addOneDArray(StackNames,Numbers,"Stack");
 
     ui->Watch-> resetState();
-}
+}*/
 
 void VisualAlgorithm::breakAlgo()
 {
@@ -201,14 +222,16 @@ void VisualAlgorithm::breakAlgo()
 }
 
 
-void VisualAlgorithm::lockLine(int codeLineIndex)
+void VisualAlgorithm::updateEditor(int codeLineIndex)
 {
     qDebug()<<"Locked line";
-    if(isExit)
-        return;
     ui->Code->enableDebugMode(codeLineIndex);
     ui->Code->update();
-    condit.wait(&mtx);
+}
+
+void VisualAlgorithm::handleSignals()
+{
+    QApplication::processEvents();  //We handle all signals,which are still in our signal queue(from worker thread there are lots of emit UpdateDfs,but this thread hasn't handle them yet,and we don't need it)
 }
 
 void VisualAlgorithm::reject()
@@ -238,6 +261,5 @@ void VisualAlgorithm::on_debugStep_clicked()
 void VisualAlgorithm::on_debugBreak_clicked()
 {
     breakAlgo();
-    QApplication::processEvents();  //We handle all signals,which are still in our signal queue(from worker thread there are lots of emit UpdateDfs,but this thread hasn't handle them yet,and we don't need it)
     initDfs();
 }

@@ -4,7 +4,7 @@ DebugWatch::DebugWatch(QWidget *parent):QTreeWidget(parent)
 {
 }
 
-void DebugWatch::addOneDArray(QVector<QString> &values, QVector<QString> &names, QString mainName)
+void DebugWatch::addOneDArray(QVector<QString> values, QVector<QString> names, QString mainName)
 {
     QTreeWidgetItem *mainItem=new QTreeWidgetItem(this);
     mainItem->setText(0,mainName);
@@ -16,7 +16,7 @@ void DebugWatch::addOneDArray(QVector<QString> &values, QVector<QString> &names,
     }
 }
 
-void DebugWatch::addTwoDArray(QVector<QVector<QString> > &values, QVector<QString> &arrayNames, QVector<QString> &valueNames, QString mainName)
+void DebugWatch::addTwoDArray(QVector<QVector<QString> > values, QVector<QString> arrayNames, QVector<QString> valueNames, QString mainName)
 {
     QTreeWidgetItem *mainItem=new QTreeWidgetItem(this);
     mainItem->setText(0,mainName);
@@ -56,8 +56,16 @@ void DebugWatch::saveState()
     qDebug()<<"DEBUG WATCH"<<QThread::currentThreadId();
     for(int i=0;i<this->topLevelItemCount();i++)
     {
-        QString curHash=getHashTreeItem(this->topLevelItem(i));
-        _hash.insert(curHash,this->topLevelItem(i)->isExpanded());
+        QTreeWidgetItem *topItem=this->topLevelItem(i);
+
+        QString curHash=getHashTreeItem(topItem);
+        _hash.insert(curHash,topItem->isExpanded());
+
+        for(int j=0;j<topItem->childCount();j++)
+        {
+            curHash=getHashTreeItem(topItem->child(j));
+            _hash.insert(curHash,topItem->child(j)->isExpanded());
+        }
     }
 }
 
@@ -65,8 +73,16 @@ void DebugWatch::resetState()
 {
     for(int i=0;i<this->topLevelItemCount();i++)
     {
+        QTreeWidgetItem *topItem=this->topLevelItem(i);
+
         QString curHash=getHashTreeItem(this->topLevelItem(i));
         this->topLevelItem(i)->setExpanded(_hash[curHash]);
+
+        for(int j=0;j<topItem->childCount();j++)
+        {
+            curHash=getHashTreeItem(topItem->child(j));
+            topItem->child(j)->setExpanded(_hash[curHash]);
+        }
     }
     _hash.clear();
 }

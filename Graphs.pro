@@ -41,9 +41,9 @@ SOURCES += \
     AppElements/CodeEdit/codeeditor.cpp \
     AppElements/visualgraphsceneview.cpp \
     AppElements/visualalgorithmsceneview.cpp \
-    AppElements/mytabwidget.cpp \
     AppElements/DebugWatch/debugwatch.cpp \
-    AppElements/Algorithm/algorithm.cpp
+    AppElements/Algorithm/algorithm.cpp \
+    AppElements/mytabwidget.cpp
 
 
 HEADERS += \
@@ -61,9 +61,9 @@ HEADERS += \
     AppElements/CodeEdit/codeeditor.h \
     AppElements/visualgraphsceneview.h \
     AppElements/visualalgorithmsceneview.h \
-    AppElements/mytabwidget.h \
     AppElements/DebugWatch/debugwatch.h \
-    AppElements/Algorithm/algorithm.h
+    AppElements/Algorithm/algorithm.h \
+    AppElements/mytabwidget.h
 
 
 FORMS += \
