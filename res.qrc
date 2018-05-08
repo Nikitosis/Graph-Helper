@@ -9,6 +9,7 @@
         <file>img/List.png</file>
         <file>img/Question.png</file>
         <file>img/DFSAlgo.png</file>
+        <file>img/BFSAlgo.png</file>
     </qresource>
     <qresource prefix="/Backgrounds">
         <file>img/EdgeEdit.png</file>
@@ -26,5 +27,6 @@
     </qresource>
     <qresource prefix="/Algorithms">
         <file>Algorithms/DFS.txt</file>
+        <file>Algorithms/BFS.txt</file>
     </qresource>
 </RCC>

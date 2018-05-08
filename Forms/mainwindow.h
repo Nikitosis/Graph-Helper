@@ -30,6 +30,8 @@ private slots:
 
     void on_openDfs_clicked();
 
+    void on_openBfs_clicked();
+
 private:
     Ui::MainWindow *ui;
     VisualGraphSceneView::Mode _nowMode;

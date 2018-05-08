@@ -40,10 +40,12 @@ void MainWindow::on_visualizeGraph_clicked()
 
 void MainWindow::on_openDfs_clicked()
 {
-    VisualAlgorithm *alg=new VisualAlgorithm(ui->graphicsView->getGraph(),this);
-
-    //disconnect(ui->graphicsView->getTimer(),SIGNAL(timeout()),ui->graphicsView->viewport(),SLOT(update()));
+    VisualAlgorithm *alg=new VisualAlgorithm(ui->graphicsView->getGraph(),DFS_ALGORITHM,this);
     alg->show();
-    //alg->exec();
+}
 
+void MainWindow::on_openBfs_clicked()
+{
+    VisualAlgorithm *alg=new VisualAlgorithm(ui->graphicsView->getGraph(),BFS_ALGORITHM,this);
+    alg->show();
 }

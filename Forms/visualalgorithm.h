@@ -19,6 +19,7 @@
 #include <AppElements/DebugWatch/debugwatch.h>
 #include <AppElements/Algorithm/abstractalgorithm.h>
 #include <AppElements/Algorithm/dfsalgorithm.h>
+#include <AppElements/Algorithm/bfsalgorithm.h>
 
 namespace Ui {
 class VisualAlgorithm;
@@ -29,14 +30,14 @@ class VisualAlgorithm : public QDialog
     Q_OBJECT
 
 public:
-    explicit VisualAlgorithm(Graph *graph, QWidget *parent = 0);
+    explicit VisualAlgorithm(Graph *graph,int currentAlgo, QWidget *parent = 0);
     void init();
     ~VisualAlgorithm();
 protected:
     void initCodeText();
 
     void Dfs(int startEdge);
-    void initDfs();
+    void initAlgo();
     void breakAlgo();
 
     QString getHashTreeItem(QTreeWidgetItem *item);
@@ -70,6 +71,7 @@ private:
     bool isExit;
     AbstractAlgorithm *algo;
     QThread *algoThread;
+    int currentAlgo;
 };
 
 #endif // VISUALALGORITHM_H

@@ -18,7 +18,10 @@ TEMPLATE = app
 DEFINES += QT_DEPRECATED_WARNINGS\
            ACTIVE_BRIDGE_COLOR=QColor(205,97,97)\
            PASSIVE_BRIDGE_COLOR=QColor(71,144,119)\
-           DEFAULT_BRIDGE_COLOR=QColor(163,170,168)
+           DEFAULT_BRIDGE_COLOR=QColor(163,170,168)\
+           FUTURE_BRIDGE_COLOR=QColor(166,108,206)\
+           DFS_ALGORITHM=1\
+           BFS_ALGORITHM=2
 
 # You can also make your code fail to compile if you use deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -44,7 +47,8 @@ SOURCES += \
     AppElements/DebugWatch/debugwatch.cpp \
     AppElements/mytabwidget.cpp \
     AppElements/Algorithm/abstractalgorithm.cpp \
-    AppElements/Algorithm/dfsalgorithm.cpp
+    AppElements/Algorithm/dfsalgorithm.cpp \
+    AppElements/Algorithm/bfsalgorithm.cpp
 
 
 HEADERS += \
@@ -65,7 +69,8 @@ HEADERS += \
     AppElements/DebugWatch/debugwatch.h \
     AppElements/mytabwidget.h \
     AppElements/Algorithm/abstractalgorithm.h \
-    AppElements/Algorithm/dfsalgorithm.h
+    AppElements/Algorithm/dfsalgorithm.h \
+    AppElements/Algorithm/bfsalgorithm.h
 
 
 FORMS += \

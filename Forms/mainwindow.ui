@@ -68,7 +68,7 @@ QTabWidget::pane{
          <enum>QTabWidget::South</enum>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>2</number>
         </property>
         <property name="movable">
          <bool>false</bool>
@@ -436,6 +436,35 @@ QPushButton:hover{
              <iconset resource="../res.qrc">
               <normaloff>:/buttons/img/DFSAlgo.png</normaloff>
               <disabledoff>:/buttons/img/DFSAlgo.png</disabledoff>:/buttons/img/DFSAlgo.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>90</width>
+              <height>90</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <widget class="QPushButton" name="openBfs">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>70</width>
+              <height>70</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="../res.qrc">
+              <normaloff>:/buttons/img/BFSAlgo.png</normaloff>:/buttons/img/BFSAlgo.png</iconset>
             </property>
             <property name="iconSize">
              <size>

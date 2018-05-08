@@ -1,7 +1,8 @@
 #include "visualalgorithm.h"
 #include "ui_visualalgorithm.h"
 
-VisualAlgorithm::VisualAlgorithm(Graph *graph,QWidget *parent) :
+VisualAlgorithm::VisualAlgorithm(Graph *graph, int currentAlgo, QWidget *parent) :
+    currentAlgo(currentAlgo),
     QDialog(parent),
     ui(new Ui::VisualAlgorithm)
 {
@@ -10,7 +11,11 @@ VisualAlgorithm::VisualAlgorithm(Graph *graph,QWidget *parent) :
     algoThread=new QThread;
     init();
     isExit=false;
-    algo=new DfsAlgorithm(&mtx,graph,isExit,&condit);
+    switch(currentAlgo)
+    {
+        case DFS_ALGORITHM:{algo=new DfsAlgorithm(&mtx,graph,isExit,&condit);break;}
+        case BFS_ALGORITHM:{algo=new BfsAlgorithm(&mtx,graph,isExit,&condit);break;}
+    }
 
     QObject::connect(algo,SIGNAL(changeBridgeColor(int,int,QColor)),
                      this,SLOT(changeBridgeColor(int,int,QColor)),Qt::QueuedConnection);
@@ -41,7 +46,7 @@ VisualAlgorithm::VisualAlgorithm(Graph *graph,QWidget *parent) :
 
     QObject::connect(algoThread,SIGNAL(started()),algo,SLOT(runAlgo()));
 
-    initDfs();
+    initAlgo();
 
 }
 
@@ -122,9 +127,14 @@ void VisualAlgorithm::changeAllEdgesColor(QColor color)
         Edges[i]->setColor(color);
 }
 
-void VisualAlgorithm::initDfs()
+void VisualAlgorithm::initAlgo()
 {
-    QFile file(":/Algorithms/Algorithms/DFS.txt");
+    QFile file;
+    switch(currentAlgo)
+    {
+        case DFS_ALGORITHM:{file.setFileName(":/Algorithms/Algorithms/DFS.txt");break;}
+        case BFS_ALGORITHM:{file.setFileName(":/Algorithms/Algorithms/BFS.txt");break;}
+    }
     file.open(QIODevice::ReadOnly | QIODevice::Text);
     QTextStream stream(&file);
     stream.setCodec("UTF-8");
@@ -205,7 +215,7 @@ void VisualAlgorithm::on_debugStep_clicked()
         algoThread->wait();
         qDebug()<<"isrunning "<<algoThread->isRunning();
         condit.wakeAll();
-        initDfs();
+        initAlgo();
     }
     else
     {
@@ -216,5 +226,5 @@ void VisualAlgorithm::on_debugStep_clicked()
 void VisualAlgorithm::on_debugBreak_clicked()
 {
     breakAlgo();
-    initDfs();
+    initAlgo();
 }

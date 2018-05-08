@@ -119,7 +119,6 @@ void DfsAlgorithm::updateDfs(QVector<QVector<int> > Matrix, QVector<bool> Visite
 
     for(int i=0;i<Edges.size();i++)
     {
-        QString k=Edges[i]->getInfo();
         Names[i]=Edges[i]->getInfo();
     }
 

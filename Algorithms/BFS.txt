@@ -1,0 +1,19 @@
+void BFS(int start,vector<vector<int>> &Matrix)
+{
+  vector<bool> Visited(Matrix.size(),0);
+  queue<int> Queue;
+  Visited[start]=true;
+  Queue.push(start);
+  while(!Queue.empty())
+  {
+    for(int i=0;i<Matrix.size();i++)
+    {
+      if(Matrix[Queue.top()][i] && !Visited[i])
+      {
+        Visited[i]=true;
+        Queue.push(i);
+      }
+    }
+    Queue.pop();
+  }
+}
